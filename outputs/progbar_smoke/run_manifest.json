@@ -1,0 +1,23 @@
+{
+  "exp_name": "progbar_smoke",
+  "mode": "both",
+  "n_samples": 4,
+  "sample_ids": [
+    "Align:ts2caption_qa_120:0",
+    "Base:synthtic_qa_700:0",
+    "InWild:tsqa_1084:0",
+    "Match:qats_400:0"
+  ],
+  "use_mock_llm": true,
+  "max_series_text_chars": 2000,
+  "subsets": [
+    "Base",
+    "InWild",
+    "Match",
+    "Align"
+  ],
+  "stratified": true,
+  "limit": 4,
+  "prompt_dir": "/root/autodl-tmp/time-series-agent/prompts",
+  "model_path": "/root/autodl-tmp/time-series-agent/models/Qwen2.5-14B-Instruct"
+}

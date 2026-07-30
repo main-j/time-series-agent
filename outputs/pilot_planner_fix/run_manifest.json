@@ -1,0 +1,27 @@
+{
+  "exp_name": "pilot_planner_fix",
+  "mode": "architecture",
+  "n_samples": 8,
+  "sample_ids": [
+    "Align:ts2caption_qa_120:0",
+    "Align:ts2caption_qa_120:1",
+    "Base:synthtic_qa_700:0",
+    "Base:synthtic_qa_700:1",
+    "InWild:tsqa_1084:0",
+    "InWild:tsqa_1084:1",
+    "Match:qats_400:0",
+    "Match:qats_400:1"
+  ],
+  "use_mock_llm": false,
+  "max_series_text_chars": null,
+  "subsets": [
+    "Base",
+    "InWild",
+    "Match",
+    "Align"
+  ],
+  "stratified": true,
+  "limit": 8,
+  "prompt_dir": "/root/autodl-tmp/time-series-agent/prompts",
+  "model_path": "/root/autodl-tmp/time-series-agent/models/Qwen2.5-14B-Instruct"
+}

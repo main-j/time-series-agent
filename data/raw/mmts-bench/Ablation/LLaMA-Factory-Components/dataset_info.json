@@ -1,0 +1,10 @@
+{
+    "chatts_dev": {
+        "file_name": "chatts_stage1.jsonl",
+        "columns": {
+            "prompt": "input",
+            "response": "output",
+            "timeseries": "timeseries"
+        }
+    }
+}

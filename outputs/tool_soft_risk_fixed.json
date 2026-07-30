@@ -1,0 +1,590 @@
+{
+  "n": 73,
+  "bad": [],
+  "all": [
+    {
+      "case": "nan",
+      "tool": "describe_series",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "describe_series",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "sliding_stats",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "sliding_stats",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "diff_stats",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "diff_stats",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "local_extrema",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "local_extrema",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "autocorr",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "autocorr",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "fft_period",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "fft_period",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "stl_strength",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "stl_strength",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "adf_stationarity",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "adf_stationarity",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "change_points",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "change_points",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "interval_compare",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "interval_compare",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "lag_corr",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "lag_corr",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "pairwise_distance",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "pairwise_distance",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "smooth_reverse_stats",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "smooth_reverse_stats",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "nan",
+      "tool": "subsequence_locate",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "inf",
+      "tool": "subsequence_locate",
+      "success": false,
+      "error": "Non-finite values (NaN/Inf) in series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "const_lag",
+      "tool": "lag_corr",
+      "success": false,
+      "error": "zero-variance series; correlation undefined",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "zeros_lag",
+      "tool": "lag_corr",
+      "success": false,
+      "error": "zero-variance series; correlation undefined",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "const_cross",
+      "tool": "lag_corr",
+      "success": false,
+      "error": "zero-variance series; correlation undefined",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "describe_series",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "sliding_stats",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "diff_stats",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "local_extrema",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "autocorr",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "fft_period",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "stl_strength",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "adf_stationarity",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "change_points",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "interval_compare",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "lag_corr",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean_multi",
+      "tool": "pairwise_distance",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean",
+      "tool": "smooth_reverse_stats",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "clean_multi",
+      "tool": "subsequence_locate",
+      "success": true,
+      "error": null,
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "describe_series",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "describe_series",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "sliding_stats",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "sliding_stats",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "diff_stats",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "diff_stats",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "local_extrema",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "local_extrema",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "autocorr",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "autocorr",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "fft_period",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "fft_period",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "stl_strength",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "stl_strength",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "adf_stationarity",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "adf_stationarity",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "change_points",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "change_points",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "interval_compare",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "interval_compare",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "lag_corr",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "lag_corr",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "pairwise_distance",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "pairwise_distance",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "smooth_reverse_stats",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "smooth_reverse_stats",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty",
+      "tool": "subsequence_locate",
+      "success": false,
+      "error": "Empty series",
+      "dirty": false,
+      "ok": true
+    },
+    {
+      "case": "empty_inner",
+      "tool": "subsequence_locate",
+      "success": false,
+      "error": "Empty series at index 1",
+      "dirty": false,
+      "ok": true
+    }
+  ]
+}

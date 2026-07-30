@@ -1,0 +1,417 @@
+{
+  "seed": 20260729,
+  "samples": [
+    {
+      "sample_id": "Base:synthtic_qa_700:434",
+      "subset": "Base",
+      "n_series": 1,
+      "lengths": [
+        177
+      ],
+      "results": {
+        "describe_series": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"series\": [{\"index\": 1, \"length\": 177, \"mean\": -28.23180790960452, \"std\": 448.81494231889036, \"min\": -524.6, \"max\": 524.6, \"start\": 23.8, \"end\": 524.6, \"slope\": 2.8454545454545457}]}"
+        },
+        "sliding_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"window\": 8, \"mean_of_means\": -24.46521323529412, \"mean_of_stds\": 179.47800801856545, \"max_local_std\": 524.6}"
+        },
+        "diff_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mean_diff\": 2.8454545454545457, \"std_diff\": 253.14795158979976, \"max_abs_diff\": 1049.2, \"n_sign_changes\": 7}"
+        },
+        "local_extrema": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"n_peaks\": 3, \"n_troughs\": 4, \"peak_idx\": [3, 32, 36], \"trough_idx\": [2, 31, 35, 46]}"
+        },
+        "autocorr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"max_lag\": 10, \"best_lag\": 1, \"acf\": [0.8374862671283221, 0.6912634162483837, 0.545073590822232, 0.39890803575827277, 0.25277787467070123, 0.10668725848553279, -0.03936808816460498, -0.1701843028279882, -0.3010126522029..."
+        },
+        "fft_period": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"dominant_period\": 25.28571428571429, \"spectral_strength\": 0.1423357345538526}"
+        },
+        "stl_strength": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"period\": 25, \"seasonal_strength\": 0.33003778053281296, \"trend_strength\": 0.0}"
+        },
+        "adf_stationarity": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"adf_stat\": -5.912743232985476, \"pvalue\": 2.615491391175941e-07, \"is_stationary_at_5pct\": true}"
+        },
+        "change_points": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"candidates\": [{\"index\": 68, \"score\": 1049.2}, {\"index\": 81, \"score\": 1049.2}, {\"index\": 95, \"score\": 1049.2}, {\"index\": 108, \"score\": 1049.2}, {\"index\": 122, \"score\": 1049.2}]}"
+        },
+        "interval_compare": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"left_mean\": -3.1321590909090884, \"right_mean\": -53.04943820224719, \"left_std\": 358.3567533879436, \"right_std\": 521.9108325245089, \"mean_delta\": -49.9172791113381}"
+        },
+        "lag_corr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mode\": \"auto\", \"lag\": 1, \"corr\": 0.8411471164794566}"
+        },
+        "pairwise_distance": {
+          "success": null,
+          "skipped": true,
+          "reason": "need >=2 series"
+        },
+        "smooth_reverse_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"smooth_mean\": -28.904655367231648, \"reverse_start_end_delta\": -500.8, \"original_start_end_delta\": 500.8}"
+        },
+        "subsequence_locate": {
+          "success": null,
+          "skipped": true,
+          "reason": "need >=2 series"
+        }
+      }
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:969",
+      "subset": "InWild",
+      "n_series": 2,
+      "lengths": [
+        864,
+        864
+      ],
+      "results": {
+        "describe_series": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"series\": [{\"index\": 1, \"length\": 864, \"mean\": 0.0007523148148148148, \"std\": 0.008580433394312026, \"min\": 0.0, \"max\": 0.13, \"start\": 0.0, \"end\": 0.0, \"slope\": 0.0}, {\"index\": 2, \"length\": 864, \"mean\": 40.03459490740741,..."
+        },
+        "sliding_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"window\": 43, \"mean_of_means\": 0.0006546709670118261, \"mean_of_stds\": 0.004123714747692552, \"max_local_std\": 0.019592936995186556}"
+        },
+        "diff_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mean_diff\": 0.0, \"std_diff\": 0.012188173132612804, \"max_abs_diff\": 0.13, \"n_sign_changes\": 9}"
+        },
+        "local_extrema": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"n_peaks\": 9, \"n_troughs\": 0, \"peak_idx\": [5, 293, 447, 479, 581, 650, 735, 757, 814], \"trough_idx\": []}"
+        },
+        "autocorr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"max_lag\": 10, \"best_lag\": 5, \"acf\": [-0.007696320492267643, -0.007705217972605523, -0.007714115452943406, -0.007723012933281286, -0.007731910413619169, -0.006203323291571099, -0.006212220771908978, -0.00622111825224685..."
+        },
+        "fft_period": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"dominant_period\": 2.4827586206896552, \"spectral_strength\": 0.006874397880853737}"
+        },
+        "stl_strength": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"period\": 2, \"seasonal_strength\": 1.0, \"trend_strength\": 1.0}"
+        },
+        "adf_stationarity": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"adf_stat\": -29.569511202460248, \"pvalue\": 0.0, \"is_stationary_at_5pct\": true}"
+        },
+        "change_points": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"candidates\": [{\"index\": 43, \"score\": 0.0030232558139534887}, {\"index\": 44, \"score\": 0.0030232558139534887}, {\"index\": 45, \"score\": 0.0030232558139534887}, {\"index\": 46, \"score\": 0.0030232558139534887}, {\"index\": 47, \"s..."
+        },
+        "interval_compare": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"left_mean\": 0.0006018518518518519, \"right_mean\": 0.0009027777777777778, \"left_std\": 0.008824880457499877, \"right_std\": 0.008326096394640136, \"mean_delta\": 0.00030092592592592595}"
+        },
+        "lag_corr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mode\": \"cross\", \"lag\": 1, \"corr\": -0.0448656679741494}"
+        },
+        "pairwise_distance": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"method\": \"euclidean\", \"distances\": [{\"series_index\": 2, \"distance\": 42.13369445914586}], \"nearest\": {\"series_index\": 2, \"distance\": 42.13369445914586}}"
+        },
+        "smooth_reverse_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"smooth_mean\": 0.0007523148148148149, \"reverse_start_end_delta\": 0.0, \"original_start_end_delta\": 0.0}"
+        },
+        "subsequence_locate": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"best_start\": 0, \"distance\": 42.13369445914586, \"query_len\": 864}"
+        }
+      }
+    },
+    {
+      "sample_id": "Match:qats_400:194",
+      "subset": "Match",
+      "n_series": 5,
+      "lengths": [
+        120,
+        360,
+        360,
+        360,
+        360
+      ],
+      "results": {
+        "describe_series": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"series\": [{\"index\": 1, \"length\": 120, \"mean\": 7.876500000000001, \"std\": 5.559327994461201, \"min\": 0.96, \"max\": 28.12, \"start\": 7.57, \"end\": 8.93, \"slope\": 0.011428571428571423}, {\"index\": 2, \"length\": 360, \"mean\": 7.67..."
+        },
+        "sliding_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"window\": 6, \"mean_of_means\": 7.707797101449276, \"mean_of_stds\": 2.87804376032847, \"max_local_std\": 10.500622865123551}"
+        },
+        "diff_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mean_diff\": 0.011428571428571453, \"std_diff\": 3.9210552699205743, \"max_abs_diff\": 14.47, \"n_sign_changes\": 38}"
+        },
+        "local_extrema": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"n_peaks\": 20, \"n_troughs\": 18, \"peak_idx\": [1, 4, 8, 27, 30, 46, 49, 51, 53, 69, 73, 77, 79, 84, 94, 96, 101, 103, 110, 117], \"trough_idx\": [3, 5, 17, 29, 47, 50, 52, 63, 72, 74, 78, 83, 87, 95, 97, 102, 107, 111]}"
+        },
+        "autocorr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"max_lag\": 10, \"best_lag\": 1, \"acf\": [0.7531765626828915, 0.43459543000066275, 0.21441929323384737, 0.05591437445604938, -0.0539700041765989, -0.13521435850209343, -0.1527854538894798, -0.17370161272737675, -0.127146325..."
+        },
+        "fft_period": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"dominant_period\": 24.0, \"spectral_strength\": 0.10715540721541385}"
+        },
+        "stl_strength": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"period\": 24, \"seasonal_strength\": 0.512985942365412, \"trend_strength\": 0.08953701724623031}"
+        },
+        "adf_stationarity": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"adf_stat\": -5.239367821020289, \"pvalue\": 7.302745734799209e-06, \"is_stationary_at_5pct\": true}"
+        },
+        "change_points": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"candidates\": [{\"index\": 67, \"score\": 15.338333333333333}, {\"index\": 68, \"score\": 15.206666666666667}, {\"index\": 66, \"score\": 14.643333333333334}, {\"index\": 69, \"score\": 11.853333333333332}, {\"index\": 91, \"score\": 11.73..."
+        },
+        "interval_compare": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"left_mean\": 6.670166666666668, \"right_mean\": 9.082833333333332, \"left_std\": 4.012735347892036, \"right_std\": 6.542150281486628, \"mean_delta\": 2.412666666666664}"
+        },
+        "lag_corr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mode\": \"cross\", \"lag\": 1, \"corr\": 0.14756530937728188}"
+        },
+        "pairwise_distance": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"method\": \"euclidean\", \"distances\": [{\"series_index\": 2, \"distance\": 13.670686690966793}, {\"series_index\": 3, \"distance\": 10.176131843289108}, {\"series_index\": 4, \"distance\": 13.12149582011697}, {\"series_index\": 5, \"dis..."
+        },
+        "smooth_reverse_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"smooth_mean\": 7.773666666666668, \"reverse_start_end_delta\": -1.3599999999999994, \"original_start_end_delta\": 1.3599999999999994}"
+        },
+        "subsequence_locate": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"best_start\": 213, \"distance\": 7.597575073844569, \"query_len\": 120}"
+        }
+      }
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:57",
+      "subset": "Align",
+      "n_series": 4,
+      "lengths": [
+        720,
+        720,
+        720,
+        720
+      ],
+      "results": {
+        "describe_series": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"series\": [{\"index\": 1, \"length\": 720, \"mean\": 11.335347222222222, \"std\": 2.3618181888567347, \"min\": 6.0, \"max\": 16.14, \"start\": 7.7, \"end\": 11.66, \"slope\": 0.005507649513212796}, {\"index\": 2, \"length\": 720, \"mean\": 94...."
+        },
+        "sliding_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"window\": 36, \"mean_of_means\": 11.406471613949716, \"mean_of_stds\": 0.8404964833469195, \"max_local_std\": 2.494363398831874}"
+        },
+        "diff_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mean_diff\": 0.005507649513212796, \"std_diff\": 0.6436859151114261, \"max_abs_diff\": 4.390000000000001, \"n_sign_changes\": 327}"
+        },
+        "local_extrema": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"n_peaks\": 166, \"n_troughs\": 161, \"peak_idx\": [6, 8, 12, 14, 17, 24, 26, 56, 60, 62, 64, 69, 74, 90, 92, 96, 98, 100, 102, 105], \"trough_idx\": [5, 7, 13, 15, 19, 25, 27, 58, 61, 63, 67, 73, 91, 95, 97, 99, 101, 103, 107..."
+        },
+        "autocorr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"max_lag\": 10, \"best_lag\": 1, \"acf\": [0.9612519150643554, 0.9548910186300538, 0.9413453207162166, 0.9347205586419045, 0.9177302478435962, 0.9083266021232892, 0.8869538172334933, 0.878064671272867, 0.8636501194307673, 0...."
+        },
+        "fft_period": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"dominant_period\": 240.0, \"spectral_strength\": 0.099144548751261}"
+        },
+        "stl_strength": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"period\": 240, \"seasonal_strength\": 0.7901465278547724, \"trend_strength\": 0.0514650565859428}"
+        },
+        "adf_stationarity": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"adf_stat\": -3.065236625732345, \"pvalue\": 0.029235104982530777, \"is_stationary_at_5pct\": true}"
+        },
+        "change_points": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"candidates\": [{\"index\": 510, \"score\": 5.384166666666669}, {\"index\": 511, \"score\": 5.360277777777778}, {\"index\": 512, \"score\": 5.352500000000001}, {\"index\": 513, \"score\": 5.325555555555557}, {\"index\": 509, \"score\": 5.30..."
+        },
+        "interval_compare": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"left_mean\": 10.903027777777776, \"right_mean\": 11.767666666666665, \"left_std\": 2.4600783635453465, \"right_std\": 2.174990702406692, \"mean_delta\": 0.864638888888889}"
+        },
+        "lag_corr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mode\": \"cross\", \"lag\": 1, \"corr\": -0.343512269990186}"
+        },
+        "pairwise_distance": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"method\": \"euclidean\", \"distances\": [{\"series_index\": 2, \"distance\": 44.06863782425747}, {\"series_index\": 3, \"distance\": 38.740557451723085}, {\"series_index\": 4, \"distance\": 40.36598156072389}], \"nearest\": {\"series_inde..."
+        },
+        "smooth_reverse_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"smooth_mean\": 11.319175, \"reverse_start_end_delta\": -3.96, \"original_start_end_delta\": 3.96}"
+        },
+        "subsequence_locate": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"best_start\": 0, \"distance\": 44.06863782425747, \"query_len\": 720}"
+        }
+      }
+    },
+    {
+      "sample_id": "Match:qats_400:245",
+      "subset": "Match",
+      "n_series": 5,
+      "lengths": [
+        48,
+        48,
+        48,
+        48,
+        48
+      ],
+      "results": {
+        "describe_series": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"series\": [{\"index\": 1, \"length\": 48, \"mean\": 3.984375, \"std\": 5.05900101561975, \"min\": 0.0, \"max\": 17.41, \"start\": 0.71, \"end\": 6.73, \"slope\": 0.12808510638297874}, {\"index\": 2, \"length\": 48, \"mean\": 6.561875000000001,..."
+        },
+        "sliding_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"window\": 5, \"mean_of_means\": 4.112363636363637, \"mean_of_stds\": 1.233849854605476, \"max_local_std\": 4.262088689832721}"
+        },
+        "diff_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mean_diff\": 0.12808510638297874, \"std_diff\": 1.5750942400686154, \"max_abs_diff\": 6.34, \"n_sign_changes\": 7}"
+        },
+        "local_extrema": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"n_peaks\": 4, \"n_troughs\": 3, \"peak_idx\": [1, 3, 19, 37], \"trough_idx\": [2, 22, 44]}"
+        },
+        "autocorr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"max_lag\": 10, \"best_lag\": 1, \"acf\": [0.9447961907180038, 0.8643043103768041, 0.7584171336352484, 0.6413473041671411, 0.5077927791603182, 0.3858509936453212, 0.2755265162479026, 0.17235311337828785, 0.08035501680361404,..."
+        },
+        "fft_period": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"dominant_period\": 48.0, \"spectral_strength\": 0.3206021865082364}"
+        },
+        "stl_strength": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"period\": 24, \"seasonal_strength\": 0.5942201577640386, \"trend_strength\": 0.6150118852355217}"
+        },
+        "adf_stationarity": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"adf_stat\": -1.5964168507856207, \"pvalue\": 0.48539317530228276, \"is_stationary_at_5pct\": false}"
+        },
+        "change_points": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"candidates\": [{\"index\": 40, \"score\": 10.640000000000002}, {\"index\": 41, \"score\": 10.106000000000002}, {\"index\": 39, \"score\": 9.875999999999998}, {\"index\": 38, \"score\": 8.344000000000001}, {\"index\": 42, \"score\": 8.20800..."
+        },
+        "interval_compare": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"left_mean\": 0.4741666666666666, \"right_mean\": 7.494583333333334, \"left_std\": 0.6533625631216475, \"right_std\": 5.110476966623457, \"mean_delta\": 7.020416666666668}"
+        },
+        "lag_corr": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"mode\": \"cross\", \"lag\": 1, \"corr\": 0.2815206060013118}"
+        },
+        "pairwise_distance": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"method\": \"euclidean\", \"distances\": [{\"series_index\": 2, \"distance\": 8.846353613031994}, {\"series_index\": 3, \"distance\": 9.252986646267598}, {\"series_index\": 4, \"distance\": 1.2127897159109264}, {\"series_index\": 5, \"dist..."
+        },
+        "smooth_reverse_stats": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"smooth_mean\": 3.9038333333333335, \"reverse_start_end_delta\": -6.0200000000000005, \"original_start_end_delta\": 6.0200000000000005}"
+        },
+        "subsequence_locate": {
+          "success": true,
+          "error": null,
+          "data_preview": "{\"best_start\": 0, \"distance\": 8.846353613031994, \"query_len\": 48}"
+        }
+      }
+    }
+  ]
+}
