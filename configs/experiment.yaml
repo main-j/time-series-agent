@@ -1,0 +1,28 @@
+project_root: /root/autodl-tmp/time-series-agent
+model:
+  local_path: /root/autodl-tmp/time-series-agent/models/Qwen2.5-14B-Instruct
+  repo_id: Qwen/Qwen2.5-14B-Instruct
+  offline: true
+  dtype: bfloat16
+  max_new_tokens: 1024
+  temperature: 1.0
+  top_p: 0.9
+  seed: 42
+  device_map: auto
+data:
+  raw_dir: /root/autodl-tmp/time-series-agent/data/raw/mmts-bench
+  processed_dir: /root/autodl-tmp/time-series-agent/data/processed/mmts-bench
+  schema_version: "1.0"
+experiment:
+  n_evaluations: 1
+  max_tool_rounds: 3
+  output_dir: /root/autodl-tmp/time-series-agent/outputs
+  prompt_dir: /root/autodl-tmp/time-series-agent/prompts
+  cache_dir: /root/autodl-tmp/time-series-agent/outputs/llm_cache
+  # Use mock provider when GPU is unavailable; set to false once GPU is ready.
+  use_mock_llm: true
+  # Development subset size per CSV for prompt iteration; null = all.
+  # Cap series text length in prompts to reduce memory (full series still available to tools).
+  max_series_text_chars: 8000
+  dev_limit: null
+  subsets: [Base, InWild, Match, Align]

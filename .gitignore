@@ -1,0 +1,45 @@
+# Secrets / local env
+.env
+.env.*
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local LLM weights (too large for GitHub; download separately)
+models/
+*.safetensors
+*.bin
+*.gguf
+*.pt
+*.pth
+
+# Hugging Face / torch caches
+.cache/
+**/huggingface/
+
+# Experiment runtime artifacts (keep small summaries optional; exclude bulky traces by default)
+outputs/**/llm_cache/
+outputs/**/*_traces.jsonl
+outputs/**/*.jsonl
+logs/*.log
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Temp downloads
+*.zip
+*.part
+*.incomplete
+/tmp/
