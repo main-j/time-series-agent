@@ -1,0 +1,25 @@
+{
+  "n_total": 2424,
+  "n_success": 2349,
+  "valid_output_rate": 0.969059405940594,
+  "choice_accuracy": 0.5457677165354331,
+  "n_choice": 2032,
+  "numerical_metrics": {
+    "n": 392,
+    "Accuracy@5%": 0.25510204081632654,
+    "RelativeAccuracy": 0.4947217786356142
+  },
+  "subset_choice_accuracy": {
+    "Base": 0.37662337662337664,
+    "InWild": 0.5267527675276753,
+    "Match": 0.5475,
+    "Align": 0.8458333333333333
+  },
+  "avg_latency_sec": 13.802544879933002,
+  "avg_model_calls": 1.0,
+  "avg_tool_calls": 0.0,
+  "avg_prompt_tokens": 5874.456683168317,
+  "avg_completion_tokens": 341.6736798679868,
+  "total_prompt_tokens": 14239683,
+  "total_completion_tokens": 828217
+}

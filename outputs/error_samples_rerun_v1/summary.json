@@ -1,0 +1,313 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:108",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      315
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 79.80926966667175,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/Base_synthtic_qa_700_108",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:91",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      642
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "A",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 18,
+    "arch_tool_calls": 15,
+    "arch_latency_sec": 311.71774792671204,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/Base_synthtic_qa_700_91",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 18,
+      "successes": 13,
+      "failed": 5,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:47",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      104
+    ],
+    "task_type": "['trend analysis', 'inductive reasoning']",
+    "gold": "D",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 101.20811223983765,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/InWild_tsqa_1084_47",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 3,
+      "successes": 3,
+      "failed": 0,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:944",
+    "subset": "SubsetName.INWILD",
+    "n_series": 4,
+    "series_lengths": [
+      720,
+      720,
+      720,
+      720
+    ],
+    "task_type": "['causal reasoning']",
+    "gold": "C",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 20,
+    "arch_tool_calls": 17,
+    "arch_latency_sec": 424.9446642398834,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/InWild_tsqa_1084_944",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 17,
+      "successes": 14,
+      "failed": 3,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:908",
+    "subset": "SubsetName.INWILD",
+    "n_series": 3,
+    "series_lengths": [
+      720,
+      720,
+      720
+    ],
+    "task_type": "['seasonality analysis', 'analogical reasoning']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 83.337397813797,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/InWild_tsqa_1084_908",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:303",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      672
+    ],
+    "task_type": "['volatility analysis', 'counterfactual reasoning']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 119.29818296432495,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/InWild_tsqa_1084_303",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 3,
+      "successes": 3,
+      "failed": 0,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Match:qats_400:226",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      120,
+      120,
+      120,
+      120,
+      120
+    ],
+    "task_type": "['choose it']",
+    "gold": "B",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 113.38928627967834,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/Match_qats_400_226",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 3,
+      "successes": 3,
+      "failed": 0,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Match:qats_400:57",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      26,
+      26,
+      26,
+      26,
+      26
+    ],
+    "task_type": "['smooth it']",
+    "gold": "A",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 14,
+    "arch_tool_calls": 6,
+    "arch_latency_sec": 153.31616497039795,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/Match_qats_400_57",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 6,
+      "successes": 6,
+      "failed": 0,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Match:qats_400:136",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      26,
+      78,
+      78,
+      78,
+      52
+    ],
+    "task_type": "['find it']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 12,
+    "arch_tool_calls": 6,
+    "arch_latency_sec": 154.11644673347473,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/Match_qats_400_136",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 6,
+      "successes": 5,
+      "failed": 1,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Match:qats_400:340",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      120,
+      120,
+      120,
+      120,
+      120
+    ],
+    "task_type": "['reverse it']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 18,
+    "arch_tool_calls": 8,
+    "arch_latency_sec": 217.19423961639404,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/error_samples_rerun_v1/runs/Match_qats_400_340",
+    "tool_report": {
+      "stop": false,
+      "reason": null,
+      "attempted": 8,
+      "successes": 8,
+      "failed": 0,
+      "unresolved": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  }
+]

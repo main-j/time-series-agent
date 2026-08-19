@@ -1,0 +1,65 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:499",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      299
+    ],
+    "task_type": "['stationarity']",
+    "gold": " 190.22",
+    "arch_pred": "148.45",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": false,
+    "baseline_skipped": true,
+    "arch_model_calls": 11,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 88.83848071098328,
+    "arch_error": null,
+    "baseline_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/gen_smoke_v1_code_routing/runs/Base_synthtic_qa_700_499"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:420",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      536
+    ],
+    "task_type": "['stationarity']",
+    "gold": "-230.18",
+    "arch_pred": "-230.18179104477616",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": false,
+    "baseline_skipped": true,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 64.45908665657043,
+    "arch_error": null,
+    "baseline_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/gen_smoke_v1_code_routing/runs/Base_synthtic_qa_700_420"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:488",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      355
+    ],
+    "task_type": "['stationarity']",
+    "gold": " 115.36",
+    "arch_pred": "121.49",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": false,
+    "baseline_skipped": true,
+    "arch_model_calls": 4,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 31.252816915512085,
+    "arch_error": null,
+    "baseline_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/gen_smoke_v1_code_routing/runs/Base_synthtic_qa_700_488"
+  }
+]

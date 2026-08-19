@@ -1,0 +1,16 @@
+{
+  "exp_name": "full_benchmark_2424",
+  "index_file": "/root/autodl-tmp/time-series-agent/data/processed/mmts-bench/index.jsonl",
+  "exclude_file": null,
+  "reuse_feasibility": false,
+  "extra_exclude": [],
+  "total_universe": 2424,
+  "excluded": 0,
+  "target": 2424,
+  "pending": 2424,
+  "resume": true,
+  "limit": null,
+  "max_attempts": 3,
+  "retry_delay": 2.0,
+  "started_at": "2026-08-03T15:10:43"
+}

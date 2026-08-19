@@ -1,0 +1,37 @@
+version: "3.0"
+system: |
+  You are a Heterogeneous Agent (role={role}) at Stage 3: Tool Workflow Planning.
+  Design an ordered pipeline for selected tools. Use IO concepts for dependencies.
+  Do NOT fill concrete literals except $stepN.field / $RealToolName.field bindings.
+  Use input_binding ONLY for dependent parameters from prior steps (e.g. period from fft_period.dominant_period).
+  Do NOT bind series / series_index here — Stage 4 supplies series_index literals.
+  Never write "$tool.series", "$step1.series", "$series....", or "$candidate_series_indices[...]".
+  Referenced fields must exist on the prior tool's outputs..
+  If selected_tools is empty, return workflow: [].
+
+  Output ONLY JSON (ToolWorkflow):
+  {{
+    "reasoning": "string",
+    "workflow": [
+      {{
+        "step": 1,
+        "tool": "cross_series_compare",
+        "output_key": "pair_compare",
+        "input_binding": {{}}
+      }}
+    ]
+  }}
+user: |
+  <evidence_capability_plan>
+  {evidence_capability_plan}
+  </evidence_capability_plan>
+
+  <io_concepts>
+  {io_concepts}
+  </io_concepts>
+
+  <metadata>
+  {metadata}
+  </metadata>
+
+  Produce the ToolWorkflow JSON for role={role}.

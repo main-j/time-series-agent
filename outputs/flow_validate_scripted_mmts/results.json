@@ -1,0 +1,151 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:3",
+    "subset": "Base",
+    "task_type": "['noise analysis']",
+    "n_series": 1,
+    "stages": [
+      "baseline",
+      "planner",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "integration"
+    ],
+    "capability": "feature_analysis",
+    "scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "roles": [
+      "structure",
+      "reasoning"
+    ],
+    "tool_calls": 5,
+    "baseline_pred": "A",
+    "final_answer": "A",
+    "ground_truth": "A",
+    "profile_summary": "short pattern from tools medium pattern from tools long pattern from tools",
+    "errors": [],
+    "ok": true
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:1",
+    "subset": "InWild",
+    "task_type": "['noise analysis', 'deductive reasoning']",
+    "n_series": 2,
+    "stages": [
+      "baseline",
+      "planner",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "integration"
+    ],
+    "capability": "temporal_reasoning",
+    "scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "roles": [
+      "reasoning",
+      "structure"
+    ],
+    "tool_calls": 5,
+    "baseline_pred": "A",
+    "final_answer": "A",
+    "ground_truth": "A",
+    "profile_summary": "short pattern from tools medium pattern from tools long pattern from tools",
+    "errors": [],
+    "ok": true
+  },
+  {
+    "sample_id": "Match:qats_400:200",
+    "subset": "Match",
+    "task_type": "['choose it']",
+    "n_series": 5,
+    "stages": [
+      "baseline",
+      "planner",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "integration"
+    ],
+    "capability": "sequence_matching",
+    "scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "roles": [
+      "matching"
+    ],
+    "tool_calls": 4,
+    "baseline_pred": "D",
+    "final_answer": "D",
+    "ground_truth": "D",
+    "profile_summary": "short pattern from tools medium pattern from tools long pattern from tools",
+    "errors": [],
+    "ok": true
+  },
+  {
+    "sample_id": "Align:ts2caption_qa_120:0",
+    "subset": "Align",
+    "task_type": "caption",
+    "n_series": 1,
+    "stages": [
+      "baseline",
+      "planner",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "homogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "heterogeneous",
+      "integration"
+    ],
+    "capability": "cross_modal_alignment",
+    "scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "roles": [
+      "alignment",
+      "structure"
+    ],
+    "tool_calls": 5,
+    "baseline_pred": "C",
+    "final_answer": "C",
+    "ground_truth": "C",
+    "profile_summary": "short pattern from tools medium pattern from tools long pattern from tools",
+    "errors": [],
+    "ok": true
+  }
+]

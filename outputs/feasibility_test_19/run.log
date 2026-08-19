@@ -1,0 +1,143 @@
+[info] loading 19 samples...
+[info] building LLM provider (Qwen2.5-14B)...
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/579 [00:00<?, ?it/s]Loading weights:   0%|          | 1/579 [00:00<01:47,  5.39it/s]Loading weights:   0%|          | 2/579 [00:00<02:15,  4.26it/s]Loading weights:   3%|▎         | 16/579 [00:00<00:14, 38.17it/s]Loading weights:   5%|▌         | 29/579 [00:00<00:08, 62.27it/s]Loading weights:   7%|▋         | 42/579 [00:00<00:06, 76.98it/s]Loading weights:  10%|▉         | 57/579 [00:00<00:05, 96.75it/s]Loading weights:  12%|█▏        | 69/579 [00:01<00:05, 98.77it/s]Loading weights:  14%|█▍        | 83/579 [00:01<00:04, 106.52it/s]Loading weights:  16%|█▋        | 95/579 [00:01<00:04, 106.81it/s]Loading weights:  18%|█▊        | 107/579 [00:01<00:04, 106.39it/s]Loading weights:  21%|██        | 119/579 [00:01<00:04, 105.25it/s]Loading weights:  22%|██▏       | 130/579 [00:01<00:04, 103.81it/s]Loading weights:  25%|██▍       | 142/579 [00:01<00:04, 106.78it/s]Loading weights:  27%|██▋       | 154/579 [00:01<00:03, 108.40it/s]Loading weights:  28%|██▊       | 165/579 [00:01<00:03, 107.92it/s]Loading weights:  30%|███       | 176/579 [00:02<00:03, 102.51it/s]Loading weights:  32%|███▏      | 187/579 [00:02<00:03, 99.82it/s] Loading weights:  34%|███▍      | 198/579 [00:02<00:03, 95.57it/s]Loading weights:  36%|███▋      | 210/579 [00:02<00:03, 97.41it/s]Loading weights:  38%|███▊      | 222/579 [00:02<00:03, 99.50it/s]Loading weights:  40%|████      | 234/579 [00:02<00:03, 97.82it/s]Loading weights:  42%|████▏     | 245/579 [00:02<00:03, 99.70it/s]Loading weights:  45%|████▍     | 258/579 [00:02<00:03, 103.98it/s]Loading weights:  47%|████▋     | 270/579 [00:02<00:02, 104.41it/s]Loading weights:  49%|████▊     | 282/579 [00:03<00:02, 105.44it/s]Loading weights:  51%|█████     | 294/579 [00:03<00:02, 105.06it/s]Loading weights:  53%|█████▎    | 306/579 [00:03<00:02, 107.11it/s]Loading weights:  55%|█████▍    | 318/579 [00:03<00:02, 106.69it/s]Loading weights:  57%|█████▋    | 330/579 [00:03<00:02, 103.73it/s]Loading weights:  59%|█████▉    | 342/579 [00:03<00:02, 103.18it/s]Loading weights:  61%|██████    | 354/579 [00:03<00:02, 106.65it/s]Loading weights:  63%|██████▎   | 366/579 [00:03<00:01, 110.04it/s]Loading weights:  66%|██████▋   | 384/579 [00:03<00:01, 127.48it/s]Loading weights:  69%|██████▉   | 400/579 [00:04<00:01, 127.54it/s]Loading weights:  71%|███████▏  | 413/579 [00:04<00:01, 117.39it/s]Loading weights:  73%|███████▎  | 425/579 [00:04<00:01, 112.76it/s]Loading weights:  75%|███████▌  | 437/579 [00:04<00:01, 111.10it/s]Loading weights:  78%|███████▊  | 449/579 [00:04<00:01, 111.15it/s]Loading weights:  80%|███████▉  | 461/579 [00:04<00:01, 111.06it/s]Loading weights:  82%|████████▏ | 473/579 [00:04<00:01, 102.57it/s]Loading weights:  84%|████████▍ | 486/579 [00:04<00:00, 103.13it/s]Loading weights:  86%|████████▌ | 498/579 [00:05<00:00, 105.97it/s]Loading weights:  88%|████████▊ | 510/579 [00:05<00:00, 105.19it/s]Loading weights:  90%|█████████ | 522/579 [00:05<00:00, 103.70it/s]Loading weights:  92%|█████████▏| 534/579 [00:05<00:00, 102.74it/s]Loading weights:  94%|█████████▍| 546/579 [00:05<00:00, 105.02it/s]Loading weights:  96%|█████████▋| 558/579 [00:05<00:00, 108.70it/s]Loading weights:  98%|█████████▊| 569/579 [00:05<00:00, 108.96it/s]Loading weights: 100%|██████████| 579/579 [00:05<00:00, 100.93it/s]
+
+[info] === Base:synthtic_qa_700:496 n_series=1 lens=[838] task=['stationarity'] gold=-934.95
+[info] Q: Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the minimum value in the series?
+[info] running architecture...
+[info] architecture pred=-934.95 gold=-934.95 ok=True calls=9 tools=3 latency=79.5s error=None
+[info] running baseline...
+[info] baseline pred=-934.95 gold=-934.95 ok=True calls=1 latency=6.7s
+
+[info] === Base:synthtic_qa_700:597 n_series=1 lens=[1299] task=['index'] gold=D
+[info] Q: Here is a list of values in a Time Series 1. Based on provided Time Series 1, which of the following options has a downward trend?
+[info] running architecture...
+[info] architecture pred=D gold=D ok=True calls=5 tools=4 latency=54.6s error=None
+[info] running baseline...
+[info] baseline pred=D gold=D ok=True calls=1 latency=9.8s
+
+[info] === Base:synthtic_qa_700:648 n_series=2 lens=[512, 394] task=['basic analysis'] gold=635.14
+[info] Q: Given the values of Time Series 1 and Time Series 2, what is the range of this Time Series 1?
+[info] running architecture...
+[info] architecture pred=A gold=635.14 ok=True calls=9 tools=3 latency=96.5s error=None
+[info] running baseline...
+[info] baseline pred=616.06 gold=635.14 ok=True calls=1 latency=4.1s
+
+[info] === Base:synthtic_qa_700:194 n_series=1 lens=[1077] task=['trend analysis'] gold= 0.40
+[info] Q: Based on the provided Time Series 1 data, please provide the slope of the Time Series 1.
+[info] running architecture...
+[info] architecture pred=0.399 gold= 0.40 ok=True calls=7 tools=2 latency=56.6s error=None
+[info] running baseline...
+[info] baseline pred=9.45 gold= 0.40 ok=True calls=1 latency=11.0s
+
+[info] === InWild:tsqa_1084:508 n_series=1 lens=[52] task=['seasonality analysis'] gold=B
+[info] Q: The seasonality analysis of the sequence can be performed using seas_acf1 as a reference metric. The calculation method is seas_acf1 is as follows: The `seas_acf1` feature captures seasonal autocorrel
+[info] running architecture...
+[info] architecture pred=B gold=B ok=True calls=6 tools=2 latency=59.2s error=None
+[info] running baseline...
+[info] baseline pred=B gold=B ok=True calls=1 latency=10.5s
+
+[info] === InWild:tsqa_1084:251 n_series=1 lens=[78] task=['noise analysis', 'causal reasoning'] gold=B
+[info] Q: The noise analysis of the sequence can be performed using entropy as a reference metric. The calculation method is entropy is as follows: The `entropy` feature computes normalized spectral entropy $ H
+[info] running architecture...
+[info] architecture pred=B gold=B ok=True calls=6 tools=1 latency=51.9s error=None
+[info] running baseline...
+[info] baseline pred=A gold=B ok=True calls=1 latency=13.1s
+
+[info] === InWild:tsqa_1084:627 n_series=1 lens=[40] task=['volatility analysis', 'counterfactual reasoning'] gold=B
+[info] Q: If the volatility pattern observed in the time series segment between indices 20-25 had been maintained throughout indices 35-40, what would be the most likely characteristic of the data during that p
+[info] running architecture...
+[info] architecture pred=C gold=B ok=True calls=6 tools=2 latency=61.0s error=None
+[info] running baseline...
+[info] baseline pred=C gold=B ok=True calls=1 latency=15.1s
+
+[info] === InWild:tsqa_1084:64 n_series=1 lens=[72] task=['basic analysis', 'counterfactual reasoning'] gold=B
+[info] Q: If the values between indices 32-38 (August 2002 to February 2003) had remained at their period average instead of showing the observed increase, would the maximum value in the entire time series stil
+[info] running architecture...
+[info] architecture pred=A gold=B ok=True calls=6 tools=1 latency=48.4s error=None
+[info] running baseline...
+[info] baseline pred=A gold=B ok=True calls=1 latency=33.8s
+
+[info] === InWild:tsqa_1084:979 n_series=2 lens=[864, 864] task=['seasonality analysis', 'deductive reasoning'] gold=A
+[info] Q: The `seasonal_strength` feature quantifies seasonality strength as $ 1 - \\frac{\\mathrm{Var}(R_t)}{\\mathrm{Var}(S_t + R_t)} $, where $ S_t $ and $ R_t $ are the seasonal and remainder components. Hi
+[info] running architecture...
+[info] architecture pred=A gold=A ok=True calls=8 tools=3 latency=99.1s error=None
+[info] running baseline...
+[info] baseline pred=A gold=A ok=True calls=1 latency=13.9s
+
+[info] === InWild:tsqa_1084:880 n_series=3 lens=[24, 24, 24] task=['basic analysis', 'inductive reasoning'] gold=A
+[info] Q: Based on the three time series spanning 24 hours with 1-hour sampling frequency, which of the following statements best describes the overall distributional characteristics across all three sequences?
+[info] running architecture...
+[info] architecture pred=B gold=A ok=True calls=10 tools=5 latency=115.8s error=None
+[info] running baseline...
+[info] baseline pred=A gold=A ok=True calls=1 latency=26.2s
+
+[info] === InWild:tsqa_1084:281 n_series=1 lens=[168] task=['volatility analysis', 'causal reasoning'] gold=D
+[info] Q: Analyze the time series data between indices 91-119 and indices 21-42. Which of the following statements is most accurate?
+[info] running architecture...
+[info] architecture pred=B gold=D ok=True calls=6 tools=4 latency=90.7s error=None
+[info] running baseline...
+[info] baseline pred=B gold=D ok=True calls=1 latency=30.2s
+
+[info] === InWild:tsqa_1084:392 n_series=1 lens=[672] task=['noise analysis', 'analogical reasoning'] gold=A
+[info] Q: Based on this hourly time series data, is the following statement correct: the segment from index 121 to 144, when compared to the segment from index 504 to 527, exhibits similar residual noise charac
+[info] running architecture...
+[info] architecture pred=B gold=A ok=True calls=7 tools=2 latency=93.8s error=None
+[info] running baseline...
+[info] baseline pred=B gold=A ok=True calls=1 latency=25.6s
+
+[info] === InWild:tsqa_1084:1080 n_series=2 lens=[864, 864] task=['basic analysis', 'counterfactual reasoning'] gold=D
+[info] Q: In the time series data, what would most likely happen to Time Series 2 patterns if Time Series 1 had maintained a consistent level around 3.5%?
+[info] running architecture...
+[info] architecture pred=B gold=D ok=True calls=8 tools=4 latency=123.1s error=None
+[info] running baseline...
+[info] baseline pred=B gold=D ok=True calls=1 latency=16.4s
+
+[info] === Match:qats_400:248 n_series=5 lens=[48, 48, 48, 48, 48] task=['choose it'] gold=C
+[info] Q: Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?
+[info] running architecture...
+[info] architecture pred=C gold=C ok=True calls=9 tools=12 latency=127.5s error=None
+[info] running baseline...
+[info] baseline pred=C gold=C ok=True calls=1 latency=10.2s
+
+[info] === Match:qats_400:77 n_series=5 lens=[13, 13, 13, 13, 13] task=['smooth it'] gold=C
+[info] Q: Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?
+[info] running architecture...
+[info] architecture pred=C gold=C ok=True calls=5 tools=4 latency=52.6s error=None
+[info] running baseline...
+[info] baseline pred=C gold=C ok=True calls=1 latency=21.8s
+
+[info] === Match:qats_400:181 n_series=5 lens=[168, 504, 504, 504, 504] task=['find it'] gold=D
+[info] Q: Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?
+[info] running architecture...
+[info] architecture pred=D gold=D ok=True calls=5 tools=4 latency=89.3s error=None
+[info] running baseline...
+[info] baseline pred=C gold=D ok=True calls=1 latency=15.5s
+
+[info] === Match:qats_400:380 n_series=5 lens=[13, 13, 13, 13, 13] task=['reverse it'] gold=B
+[info] Q: Each of the following four candidate sequences is the reversed version of an original sequence with the same length as Time Series 1. Which original sequence is most similar in pattern to Time Series 
+[info] running architecture...
+[info] architecture pred=A gold=B ok=True calls=9 tools=12 latency=132.4s error=None
+[info] running baseline...
+[info] baseline pred=B gold=B ok=True calls=1 latency=18.4s
+
+[info] === Align:ts2caption_qa_120:73 n_series=1 lens=[24] task=caption gold=B
+[info] Q: Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data.
+[info] running architecture...
+[info] architecture pred=A gold=B ok=True calls=9 tools=16 latency=107.9s error=None
+[info] running baseline...
+[info] baseline pred=B gold=B ok=True calls=1 latency=13.5s
+
+[info] === Align:caption2ts_qa_120:119 n_series=4 lens=[24, 24, 24, 24] task=['caption'] gold=B
+[info] Q: 'This time series exhibits a distinctive V-shaped pattern, starting at 4.16, declining steadily to near-zero values around index 8-13, then recovering sharply to reach the maximum value of 4.32 at ind
+[info] running architecture...
+[info] architecture pred=B gold=B ok=True calls=9 tools=12 latency=138.9s error=None
+[info] running baseline...
+[info] baseline pred=B gold=B ok=True calls=1 latency=8.7s
+[done] summary → /root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/summary.json
+[done] architecture correct 10/19

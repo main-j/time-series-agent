@@ -1,0 +1,23 @@
+{
+  "sample_id": "Match:qats_400:380",
+  "subset": "SubsetName.MATCH",
+  "n_series": 5,
+  "series_lengths": [
+    13,
+    13,
+    13,
+    13,
+    13
+  ],
+  "task_type": "['reverse it']",
+  "gold": "B",
+  "arch_pred": "B",
+  "arch_ok": true,
+  "baseline_pred": "B",
+  "baseline_ok": true,
+  "arch_model_calls": 10,
+  "arch_tool_calls": 13,
+  "arch_latency_sec": 33.86231207847595,
+  "arch_error": null,
+  "out_dir": "/root/autodl-tmp/time-series-agent/outputs/prompt_mapping_validation_reverse_380/Match_qats_400_380"
+}

@@ -1,0 +1,11 @@
+{
+  "exp_name": "arch_eval_per_task_2x_v1",
+  "checklist_file": "outputs/per_task_2x_v1/sample_ids.txt",
+  "total_checklist": 38,
+  "already_done": 0,
+  "pending": 38,
+  "resume": false,
+  "limit": null,
+  "started_at": "2026-08-04T17:03:02",
+  "policy": "skip_sample_on_tool_issue"
+}

@@ -1,0 +1,99 @@
+[
+    {
+        "category": "trend",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, please determine the overall trend direction of the time series (The direction can be roughly determined through indicators of linear fitting).",
+        "options": "A) an upward trend \nB) a downward trend \nC) a vague trend \nD) undeterminable",
+        "answer": ""
+    },
+    {
+        "category": "trend",
+        "question": "Here is a list of values in a time series. Based on the provided time series, please determine whether the time series exhibits persistence (long-term positive correlation), which means that past trends are likely to continue into the future (For example, if the series has been increasing recently, it is highly likely to continue increasing in the future).It can be measured by the Hurst Exponent:{hurst:.2f}.",
+        "options": "A) The Hurst exponent (H) is significantly greater than 0.5, indicating that the time series has strong persistence (long-term positive correlation).\nB) The Hurst exponent (H) is significantly less than 0.5, indicating that the time series has strong anti-persistence or mean-reverting behavior (long-term negative correlation).\nC) The Hurst exponent (H) is approximately 0.5, indicating that the time series behaves like a random walk with no long-term memory.\nD) The Hurst exponent (H) is close to 0.5, but the deviation is not statistically significant enough to make a definitive conclusion about its long-term correlation.",
+        "answer": ""
+    },
+    {
+        "category": "trend",
+        "question": "Here is a list of values in a time series. Based on the provided time series, if trend analysis is performed on a time series using linear regression, what is the approximate interval for the fitting slope k of the time series?",
+        "options": "A) k is greater than 0.5, the time series shows an upward trend.\nB) k is less than -0.5,  the time series shows a downward trend.\nC) k is roughly 0, the time series approximately shows a constant trend.\nD) Linear regression is not suitable for this time series.",
+        "answer": ""
+    },
+    {
+        "category": "seasonality",
+        "question": "Based on the provided time series data, please provide the slope of the linear fit for the trend component.",
+        "answer": ""
+    },
+    {
+        "category": "seasonality",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, does the time series have significant periodicity? If so, what is the period length (e.g., 100, 200 units)?",
+        "options": "A) The series has significant periodicity with around 50~100 units period length.\nB) The series has significant periodicity with around 100~200 units period length.\nC) The series has significant periodicity with more than 200 units period length.\nD) The series does not have significant periodicity.",
+        "answer": ""
+    },
+    {
+        "category": "seasonality",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, according to the thresholds (<0.1 not significant, 0.1-0.5 weak, 0.5-0.8 moderate, >0.8 strong), which category does the seasonality strength of the time series fall into? The sesonality strength is {seasonal_strength:.2f}.",
+        "options": "A) The seasonality strength is strong.\nB) The seasonality strength is moderate.\nC) The seasonality strength is weak.\nD) The seasonality strength is not significant.",
+        "answer": ""
+    },
+    {
+        "category": "noise",
+        "question": "Based on the provided time series data, if the time series exhibits strong seasonal strength, please provide the period length for the seasonal component. If not, the answer is 0.",
+        "answer": ""
+    },
+    {
+        "category": "noise",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, based on the ratio of the residual standard deviation to the sequence standard deviation (<0.33 for low, 0.33–0.66 for medium, >0.66 for high), which category does the noise level of the sequence belong to?",
+        "options": "A) The noise level is low.\nB) The noise level is medium.\nC) The noise level is high.\nD) The noise level is not significant.",
+        "answer": ""
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, which type does the noise in the time series most resemble?",
+        "options": "A) Uniform.\nB) Gauss.\nC) Random walk.\nD) Quantization.",
+        "answer": ""
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the maximum value in the series?",
+        "answer": "{max: .2f}."
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the minimum value in the series?",
+        "answer": "{min: .2f}."
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the mean value of the sequence?",
+        "answer": "{mean: .2f}."
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the range of this sequence?",
+        "answer": "{range_value: .2f}."
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the median value of the sequence?",
+        "answer": "{median: .2f}."
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the standard deviation of the sequence?",
+        "answer": "{std: .2f}."
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the 50th percentile value of the sequence?",
+        "answer": "{PCT50: .2f}."
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the 90th percentile value of the sequence?",
+        "answer": "{PCT90: .2f}."
+    },
+    {
+        "category": "basic",
+        "question": "Here is a list of values in a time series. Based on the time series data provided, what is the 99th percentile value of the sequence?",
+        "answer": "{PCT99: .2f}."
+    }
+]

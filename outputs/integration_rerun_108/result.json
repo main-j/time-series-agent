@@ -1,0 +1,19 @@
+{
+  "sample_id": "Base:synthtic_qa_700:108",
+  "subset": "SubsetName.BASE",
+  "n_series": 1,
+  "series_lengths": [
+    315
+  ],
+  "task_type": "['seasonality analysis']",
+  "gold": "B",
+  "arch_pred": "D",
+  "arch_ok": false,
+  "baseline_pred": null,
+  "baseline_ok": null,
+  "arch_model_calls": 18,
+  "arch_tool_calls": 8,
+  "arch_latency_sec": 163.16919898986816,
+  "arch_error": null,
+  "out_dir": "/root/autodl-tmp/time-series-agent/outputs/integration_rerun_108/runs/Base_synthtic_qa_700_108"
+}

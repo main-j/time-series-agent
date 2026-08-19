@@ -1,0 +1,78 @@
+{
+  "Structural/Non-Stationarity": [
+    "Base:synthtic_qa_700:459",
+    "Base:synthtic_qa_700:488"
+  ],
+  "Structural/Local-Global": [
+    "Base:synthtic_qa_700:531",
+    "Base:synthtic_qa_700:585"
+  ],
+  "Structural/Uni.-Multi.": [
+    "Base:synthtic_qa_700:423",
+    "Base:synthtic_qa_700:321"
+  ],
+  "Feature/Trend": [
+    "InWild:tsqa_1084:831",
+    "InWild:tsqa_1084:189"
+  ],
+  "Feature/Season.": [
+    "Base:synthtic_qa_700:112",
+    "Base:synthtic_qa_700:108"
+  ],
+  "Feature/Noise": [
+    "InWild:tsqa_1084:453",
+    "Base:synthtic_qa_700:91"
+  ],
+  "Feature/Volat.": [
+    "InWild:tsqa_1084:662",
+    "InWild:tsqa_1084:1005"
+  ],
+  "Feature/Basic": [
+    "Base:synthtic_qa_700:384",
+    "Base:synthtic_qa_700:379"
+  ],
+  "Reasoning/Ded.": [
+    "InWild:tsqa_1084:956",
+    "InWild:tsqa_1084:878"
+  ],
+  "Reasoning/Ind.": [
+    "InWild:tsqa_1084:250",
+    "InWild:tsqa_1084:47"
+  ],
+  "Reasoning/Causal": [
+    "InWild:tsqa_1084:663",
+    "InWild:tsqa_1084:944"
+  ],
+  "Reasoning/Analog.": [
+    "InWild:tsqa_1084:88",
+    "InWild:tsqa_1084:908"
+  ],
+  "Reasoning/Count.": [
+    "InWild:tsqa_1084:172",
+    "InWild:tsqa_1084:303"
+  ],
+  "Matching/Isomorphic": [
+    "Match:qats_400:239",
+    "Match:qats_400:226"
+  ],
+  "Matching/Robust": [
+    "Match:qats_400:57",
+    "Match:qats_400:15"
+  ],
+  "Matching/Localization": [
+    "Match:qats_400:136",
+    "Match:qats_400:161"
+  ],
+  "Matching/Reverse": [
+    "Match:qats_400:340",
+    "Match:qats_400:314"
+  ],
+  "CrossModal/TS→Semantic": [
+    "Align:ts2caption_qa_120:56",
+    "Align:ts2caption_qa_120:38"
+  ],
+  "CrossModal/Semantic→TS": [
+    "Align:caption2ts_qa_120:47",
+    "Align:caption2ts_qa_120:97"
+  ]
+}

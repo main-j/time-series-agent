@@ -1,0 +1,107 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:1",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      860
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": false,
+    "baseline_skipped": true,
+    "arch_model_calls": 4,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 33.014506340026855,
+    "arch_error": null,
+    "baseline_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/diagnostic_fix_validation/runs/Base_synthtic_qa_700_1"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:3",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      171
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "A",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": false,
+    "baseline_skipped": true,
+    "arch_model_calls": 4,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 26.12884211540222,
+    "arch_error": null,
+    "baseline_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/diagnostic_fix_validation/runs/Base_synthtic_qa_700_3"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:12",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      860
+    ],
+    "task_type": "['trend analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": false,
+    "baseline_skipped": true,
+    "arch_model_calls": 4,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 33.504496812820435,
+    "arch_error": null,
+    "baseline_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/diagnostic_fix_validation/runs/Base_synthtic_qa_700_12"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:23",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      1966
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "C",
+    "arch_pred": "C",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": false,
+    "baseline_skipped": true,
+    "arch_model_calls": 4,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 50.73988652229309,
+    "arch_error": null,
+    "baseline_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/diagnostic_fix_validation/runs/Base_synthtic_qa_700_23"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:71",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      1802
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": false,
+    "baseline_skipped": true,
+    "arch_model_calls": 4,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 55.33793616294861,
+    "arch_error": null,
+    "baseline_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/diagnostic_fix_validation/runs/Base_synthtic_qa_700_71"
+  }
+]

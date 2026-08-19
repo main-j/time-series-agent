@@ -42,7 +42,7 @@ def _answer_correct(question_type: str, predicted: Any, ground_truth: Any) -> bo
     return str(predicted).strip().upper()[:1] == str(ground_truth).strip().upper()[:1]
 
 
-def _write_md(path: Path, sample_id: str, sample, arch, base) -> None:
+def _write_md(path: Path, sample_id: str, sample, arch, base=None) -> None:
     md_lines = [
         f"# Feasibility IO dump: `{sample_id}`",
         "",
@@ -50,7 +50,11 @@ def _write_md(path: Path, sample_id: str, sample, arch, base) -> None:
         f"- Options: {sample.option}",
         f"- Gold: `{sample.answer}`",
         f"- Architecture pred: `{arch.predicted_answer}` (success={arch.success})",
-        f"- Baseline pred: `{base.predicted_answer}` (success={base.success})",
+        (
+            f"- Baseline pred: `{base.predicted_answer}` (success={base.success})"
+            if base is not None
+            else "- Baseline: skipped"
+        ),
         f"- Architecture model_calls={arch.model_calls}, tool_calls={arch.tool_calls}, "
         f"latency={arch.latency_sec:.1f}s",
         f"- n_series={len(sample.series)} lengths={[len(x) for x in sample.series]} "
@@ -80,34 +84,96 @@ def _write_md(path: Path, sample_id: str, sample, arch, base) -> None:
         md_lines.append("```")
         md_lines.append("")
 
-    md_lines.append("# Baseline LLM calls")
-    md_lines.append("")
-    for c in (base.details or {}).get("llm_calls") or []:
-        md_lines.append(f"## Call {c.get('call_index')}: `{c.get('call_tag')}`")
+    if base is not None:
+        md_lines.append("# Baseline LLM calls")
         md_lines.append("")
-        md_lines.append(
-            f"tokens prompt={c.get('prompt_tokens')} completion={c.get('completion_tokens')} "
-            f"latency={float(c.get('latency_sec') or 0):.2f}s cached={c.get('cached')}"
-        )
-        md_lines.append("")
-        for m in c.get("messages") or []:
-            md_lines.append(f"### INPUT role=`{m.get('role')}`")
+        for c in (base.details or {}).get("llm_calls") or []:
+            md_lines.append(f"## Call {c.get('call_index')}: `{c.get('call_tag')}`")
+            md_lines.append("")
+            md_lines.append(
+                f"tokens prompt={c.get('prompt_tokens')} completion={c.get('completion_tokens')} "
+                f"latency={float(c.get('latency_sec') or 0):.2f}s cached={c.get('cached')}"
+            )
+            md_lines.append("")
+            for m in c.get("messages") or []:
+                md_lines.append(f"### INPUT role=`{m.get('role')}`")
+                md_lines.append("")
+                md_lines.append("```")
+                md_lines.append(str(m.get("content", "")))
+                md_lines.append("```")
+                md_lines.append("")
+            md_lines.append("### OUTPUT")
             md_lines.append("")
             md_lines.append("```")
-            md_lines.append(str(m.get("content", "")))
+            md_lines.append(str(c.get("response_text", "")))
             md_lines.append("```")
             md_lines.append("")
-        md_lines.append("### OUTPUT")
-        md_lines.append("")
-        md_lines.append("```")
-        md_lines.append(str(c.get("response_text", "")))
-        md_lines.append("```")
-        md_lines.append("")
 
     path.write_text("\n".join(md_lines), encoding="utf-8")
 
 
-def run_one(pipe: ExperimentPipeline, sample, out_root: Path) -> Dict[str, Any]:
+def _agent_label(call_tag: str) -> str:
+    tag = str(call_tag or "unknown")
+    if tag == "planner":
+        return "Planner"
+    if tag == "integration":
+        return "Integration"
+    if tag.startswith("homogeneous:"):
+        parts = tag.split(":")
+        scale = parts[1] if len(parts) > 1 else "?"
+        round_no = parts[2] if len(parts) > 2 else "?"
+        return f"Homogeneous ({scale}, {round_no})"
+    if tag.startswith("heterogeneous:"):
+        parts = tag.split(":")
+        role = parts[1] if len(parts) > 1 else "?"
+        round_no = parts[2] if len(parts) > 2 else "?"
+        return f"Heterogeneous ({role}, {round_no})"
+    if tag == "baseline":
+        return "Baseline"
+    return tag
+
+
+def _write_agent_io_summary(path: Path, sample_id: str, arch) -> None:
+    calls = (arch.details or {}).get("llm_calls") or []
+    lines = [
+        f"# Agent IO summary: `{sample_id}`",
+        "",
+        f"- Architecture pred: `{arch.predicted_answer}` (success={arch.success})",
+        f"- model_calls={arch.model_calls}, tool_calls={arch.tool_calls}, latency={arch.latency_sec:.1f}s",
+        "",
+    ]
+    for c in calls:
+        tag = str(c.get("call_tag") or "unknown")
+        lines.append(f"## {_agent_label(tag)} — `{tag}`")
+        lines.append("")
+        lines.append(
+            f"tokens prompt={c.get('prompt_tokens')} completion={c.get('completion_tokens')} "
+            f"latency={float(c.get('latency_sec') or 0):.2f}s"
+        )
+        lines.append("")
+        for m in c.get("messages") or []:
+            lines.append(f"### INPUT ({m.get('role')})")
+            lines.append("")
+            lines.append("```")
+            lines.append(str(m.get("content", "")))
+            lines.append("```")
+            lines.append("")
+        lines.append("### OUTPUT")
+        lines.append("")
+        lines.append("```")
+        lines.append(str(c.get("response_text", "")))
+        lines.append("```")
+        lines.append("")
+    path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def run_one(
+    pipe: ExperimentPipeline,
+    sample,
+    out_root: Path,
+    *,
+    run_baseline: bool = True,
+) -> Dict[str, Any]:
     sid = sample.sample_id
     out_dir = ensure_dir(out_root / _safe_dir_name(sid))
     print(
@@ -126,13 +192,15 @@ def run_one(pipe: ExperimentPipeline, sample, out_root: Path) -> Dict[str, Any]:
         flush=True,
     )
 
-    print("[info] running baseline...", flush=True)
-    base = pipe.run_baseline(sample)
-    print(
-        f"[info] baseline pred={base.predicted_answer} gold={base.ground_truth} "
-        f"ok={base.success} calls={base.model_calls} latency={base.latency_sec:.1f}s",
-        flush=True,
-    )
+    base = None
+    if run_baseline:
+        print("[info] running baseline...", flush=True)
+        base = pipe.run_baseline(sample)
+        print(
+            f"[info] baseline pred={base.predicted_answer} gold={base.ground_truth} "
+            f"ok={base.success} calls={base.model_calls} latency={base.latency_sec:.1f}s",
+            flush=True,
+        )
 
     payload = {
         "sample_id": sid,
@@ -143,11 +211,12 @@ def run_one(pipe: ExperimentPipeline, sample, out_root: Path) -> Dict[str, Any]:
         "n_series": len(sample.series),
         "series_lengths": [len(x) for x in sample.series],
         "architecture": arch.model_dump(),
-        "baseline": base.model_dump(),
+        "baseline": None if base is None else base.model_dump(),
     }
     out_json = out_dir / "full_io.json"
     out_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     _write_md(out_dir / "full_io.md", sid, sample, arch, base)
+    _write_agent_io_summary(out_dir / "agent_io_summary.md", sid, arch)
 
     return {
         "sample_id": sid,
@@ -158,8 +227,12 @@ def run_one(pipe: ExperimentPipeline, sample, out_root: Path) -> Dict[str, Any]:
         "gold": sample.answer,
         "arch_pred": arch.predicted_answer,
         "arch_ok": _answer_correct(sample.question_type, arch.predicted_answer, sample.answer),
-        "baseline_pred": base.predicted_answer,
-        "baseline_ok": _answer_correct(sample.question_type, base.predicted_answer, sample.answer),
+        "baseline_pred": None if base is None else base.predicted_answer,
+        "baseline_ok": (
+            None
+            if base is None
+            else _answer_correct(sample.question_type, base.predicted_answer, sample.answer)
+        ),
         "arch_model_calls": arch.model_calls,
         "arch_tool_calls": arch.tool_calls,
         "arch_latency_sec": arch.latency_sec,

@@ -1,0 +1,21 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:145",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      934
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "186",
+    "arch_pred": "12",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 12,
+    "arch_tool_calls": 15,
+    "arch_latency_sec": 191.00489377975464,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/rerun_145_hetero_inherit/runs/Base_synthtic_qa_700_145"
+  }
+]

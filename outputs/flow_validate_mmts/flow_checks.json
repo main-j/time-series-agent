@@ -1,0 +1,194 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:106",
+    "subset": "Base",
+    "n_series": 1,
+    "question_type": "choice",
+    "task_type": "['noise analysis']",
+    "baseline_pred": "A",
+    "architecture_pred": "A",
+    "ground_truth": "D",
+    "baseline_ok": true,
+    "architecture_ok": true,
+    "baseline_errors": [],
+    "architecture_errors": [],
+    "architecture_model_calls": 10,
+    "architecture_tool_calls": 4,
+    "plan_scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "plan_roles": [
+      "matching"
+    ]
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:43",
+    "subset": "Base",
+    "n_series": 1,
+    "question_type": "choice",
+    "task_type": "['noise analysis']",
+    "baseline_pred": "A",
+    "architecture_pred": "A",
+    "ground_truth": "A",
+    "baseline_ok": true,
+    "architecture_ok": true,
+    "baseline_errors": [],
+    "architecture_errors": [],
+    "architecture_model_calls": 10,
+    "architecture_tool_calls": 4,
+    "plan_scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "plan_roles": [
+      "matching"
+    ]
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:573",
+    "subset": "InWild",
+    "n_series": 1,
+    "question_type": "choice",
+    "task_type": "['basic analysis', 'deductive reasoning']",
+    "baseline_pred": "A",
+    "architecture_pred": "A",
+    "ground_truth": "A",
+    "baseline_ok": true,
+    "architecture_ok": true,
+    "baseline_errors": [],
+    "architecture_errors": [],
+    "architecture_model_calls": 10,
+    "architecture_tool_calls": 4,
+    "plan_scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "plan_roles": [
+      "matching"
+    ]
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:859",
+    "subset": "InWild",
+    "n_series": 3,
+    "question_type": "choice",
+    "task_type": "['volatility analysis', 'analogical reasoning']",
+    "baseline_pred": "A",
+    "architecture_pred": "A",
+    "ground_truth": "A",
+    "baseline_ok": true,
+    "architecture_ok": true,
+    "baseline_errors": [],
+    "architecture_errors": [],
+    "architecture_model_calls": 10,
+    "architecture_tool_calls": 4,
+    "plan_scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "plan_roles": [
+      "matching"
+    ]
+  },
+  {
+    "sample_id": "Match:qats_400:217",
+    "subset": "Match",
+    "n_series": 5,
+    "question_type": "choice",
+    "task_type": "['choose it']",
+    "baseline_pred": "A",
+    "architecture_pred": "A",
+    "ground_truth": "A",
+    "baseline_ok": true,
+    "architecture_ok": true,
+    "baseline_errors": [],
+    "architecture_errors": [],
+    "architecture_model_calls": 10,
+    "architecture_tool_calls": 4,
+    "plan_scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "plan_roles": [
+      "matching"
+    ]
+  },
+  {
+    "sample_id": "Match:qats_400:286",
+    "subset": "Match",
+    "n_series": 5,
+    "question_type": "choice",
+    "task_type": "['choose it']",
+    "baseline_pred": "A",
+    "architecture_pred": "A",
+    "ground_truth": "B",
+    "baseline_ok": true,
+    "architecture_ok": true,
+    "baseline_errors": [],
+    "architecture_errors": [],
+    "architecture_model_calls": 10,
+    "architecture_tool_calls": 4,
+    "plan_scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "plan_roles": [
+      "matching"
+    ]
+  },
+  {
+    "sample_id": "Align:ts2caption_qa_120:45",
+    "subset": "Align",
+    "n_series": 1,
+    "question_type": "choice",
+    "task_type": "caption",
+    "baseline_pred": "A",
+    "architecture_pred": "A",
+    "ground_truth": "B",
+    "baseline_ok": true,
+    "architecture_ok": true,
+    "baseline_errors": [],
+    "architecture_errors": [],
+    "architecture_model_calls": 10,
+    "architecture_tool_calls": 4,
+    "plan_scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "plan_roles": [
+      "matching"
+    ]
+  },
+  {
+    "sample_id": "Align:ts2caption_qa_120:57",
+    "subset": "Align",
+    "n_series": 1,
+    "question_type": "choice",
+    "task_type": "caption",
+    "baseline_pred": "A",
+    "architecture_pred": "A",
+    "ground_truth": "A",
+    "baseline_ok": true,
+    "architecture_ok": true,
+    "baseline_errors": [],
+    "architecture_errors": [],
+    "architecture_model_calls": 10,
+    "architecture_tool_calls": 4,
+    "plan_scales": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "plan_roles": [
+      "matching"
+    ]
+  }
+]

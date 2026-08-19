@@ -1,0 +1,774 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:459",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      380
+    ],
+    "task_type": "['stationarity']",
+    "gold": "-250.66",
+    "arch_pred": "-250.66",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 6,
+    "arch_latency_sec": 125.40324258804321,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_459"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:488",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      355
+    ],
+    "task_type": "['stationarity']",
+    "gold": " 115.36",
+    "arch_pred": "115.36162873024024",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 77.3928644657135,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_488"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:531",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      1958
+    ],
+    "task_type": "['index']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 85.68376588821411,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_531"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:585",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      1675
+    ],
+    "task_type": "['index']",
+    "gold": "7",
+    "arch_pred": "7",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 58.68588995933533,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_585"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:423",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      688
+    ],
+    "task_type": "['stationarity']",
+    "gold": " 690.83",
+    "arch_pred": "690.822",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 75.15658330917358,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_423"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:321",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      2028
+    ],
+    "task_type": "['basic analysis']",
+    "gold": " 134.44",
+    "arch_pred": "134.445",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 111.520756483078,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_321"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:831",
+    "subset": "SubsetName.INWILD",
+    "n_series": 2,
+    "series_lengths": [
+      1728,
+      1728
+    ],
+    "task_type": "['trend analysis']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 10,
+    "arch_latency_sec": 219.30020713806152,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_831"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:189",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      78
+    ],
+    "task_type": "['trend analysis', 'deductive reasoning']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 65.30851101875305,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_189"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:112",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      631
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "D",
+    "arch_pred": "D",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 7,
+    "arch_latency_sec": 95.88979268074036,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_112"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:108",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      315
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "B",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 6,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 78.22897624969482,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_108"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:453",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      104
+    ],
+    "task_type": "['noise analysis', 'inductive reasoning']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 51.2060067653656,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_453"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:91",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      642
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "A",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 6,
+    "arch_latency_sec": 122.1102647781372,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_91"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:662",
+    "subset": "SubsetName.INWILD",
+    "n_series": 2,
+    "series_lengths": [
+      864,
+      864
+    ],
+    "task_type": "['volatility analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 83.8175117969513,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_662"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:1005",
+    "subset": "SubsetName.INWILD",
+    "n_series": 2,
+    "series_lengths": [
+      1728,
+      1728
+    ],
+    "task_type": "['volatility analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 133.73962211608887,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_1005"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:384",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      1047
+    ],
+    "task_type": "['basic analysis']",
+    "gold": " 37.88",
+    "arch_pred": "37.88",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 52.240920543670654,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_384"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:379",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      300
+    ],
+    "task_type": "['basic analysis']",
+    "gold": "-133.47",
+    "arch_pred": "-133.47",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 6,
+    "arch_latency_sec": 106.35289287567139,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Base_synthtic_qa_700_379"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:956",
+    "subset": "SubsetName.INWILD",
+    "n_series": 2,
+    "series_lengths": [
+      1728,
+      1728
+    ],
+    "task_type": "['noise analysis', 'deductive reasoning']",
+    "gold": "C",
+    "arch_pred": "C",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 116.40760040283203,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_956"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:878",
+    "subset": "SubsetName.INWILD",
+    "n_series": 3,
+    "series_lengths": [
+      168,
+      168,
+      168
+    ],
+    "task_type": "['noise analysis', 'deductive reasoning']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 5,
+    "arch_latency_sec": 103.712571144104,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_878"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:250",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      36
+    ],
+    "task_type": "['seasonality analysis', 'inductive reasoning']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 13,
+    "arch_latency_sec": 118.03629279136658,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_250"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:47",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      104
+    ],
+    "task_type": "['trend analysis', 'inductive reasoning']",
+    "gold": "D",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 10,
+    "arch_latency_sec": 96.8497703075409,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_47"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:663",
+    "subset": "SubsetName.INWILD",
+    "n_series": 2,
+    "series_lengths": [
+      336,
+      336
+    ],
+    "task_type": "['causal reasoning']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 11,
+    "arch_tool_calls": 10,
+    "arch_latency_sec": 217.874169588089,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_663"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:944",
+    "subset": "SubsetName.INWILD",
+    "n_series": 4,
+    "series_lengths": [
+      720,
+      720,
+      720,
+      720
+    ],
+    "task_type": "['causal reasoning']",
+    "gold": "C",
+    "arch_pred": "",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 3,
+    "arch_tool_calls": 0,
+    "arch_latency_sec": 42.31410217285156,
+    "arch_error": "CUDA out of memory. Tried to allocate 1.71 GiB. GPU 0 has a total capacity of 47.37 GiB of which 1.27 GiB is free. Including non-PyTorch memory, this process has 46.09 GiB memory in use. Of the allocated memory 41.87 GiB is allocated by PyTorch, and 3.77 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_944"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:88",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      672
+    ],
+    "task_type": "['trend analysis', 'analogical reasoning']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 67.95020174980164,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_88"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:908",
+    "subset": "SubsetName.INWILD",
+    "n_series": 3,
+    "series_lengths": [
+      720,
+      720,
+      720
+    ],
+    "task_type": "['seasonality analysis', 'analogical reasoning']",
+    "gold": "B",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 113.70426940917969,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_908"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:172",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      672
+    ],
+    "task_type": "['counterfactual reasoning']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 6,
+    "arch_tool_calls": 5,
+    "arch_latency_sec": 98.89606142044067,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_172"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:303",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      672
+    ],
+    "task_type": "['volatility analysis', 'counterfactual reasoning']",
+    "gold": "A",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 83.39383578300476,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/InWild_tsqa_1084_303"
+  },
+  {
+    "sample_id": "Match:qats_400:239",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      168,
+      168,
+      168,
+      168,
+      168
+    ],
+    "task_type": "['choose it']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 72.84562969207764,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Match_qats_400_239"
+  },
+  {
+    "sample_id": "Match:qats_400:226",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      120,
+      120,
+      120,
+      120,
+      120
+    ],
+    "task_type": "['choose it']",
+    "gold": "B",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 6,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 75.265127658844,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Match_qats_400_226"
+  },
+  {
+    "sample_id": "Match:qats_400:57",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      26,
+      26,
+      26,
+      26,
+      26
+    ],
+    "task_type": "['smooth it']",
+    "gold": "A",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 15,
+    "arch_latency_sec": 145.82847332954407,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Match_qats_400_57"
+  },
+  {
+    "sample_id": "Match:qats_400:15",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      120,
+      120,
+      120,
+      120,
+      120
+    ],
+    "task_type": "['smooth it']",
+    "gold": "C",
+    "arch_pred": "C",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 18,
+    "arch_latency_sec": 142.7397861480713,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Match_qats_400_15"
+  },
+  {
+    "sample_id": "Match:qats_400:136",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      26,
+      78,
+      78,
+      78,
+      52
+    ],
+    "task_type": "['find it']",
+    "gold": "A",
+    "arch_pred": "D",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 19,
+    "arch_latency_sec": 140.73485445976257,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Match_qats_400_136"
+  },
+  {
+    "sample_id": "Match:qats_400:161",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      120,
+      360,
+      360,
+      360,
+      360
+    ],
+    "task_type": "['find it']",
+    "gold": "D",
+    "arch_pred": "D",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 22,
+    "arch_latency_sec": 193.06168580055237,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Match_qats_400_161"
+  },
+  {
+    "sample_id": "Match:qats_400:340",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      120,
+      120,
+      120,
+      120,
+      120
+    ],
+    "task_type": "['reverse it']",
+    "gold": "A",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 20,
+    "arch_latency_sec": 185.19822931289673,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Match_qats_400_340"
+  },
+  {
+    "sample_id": "Match:qats_400:314",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      24,
+      24,
+      24,
+      24,
+      24
+    ],
+    "task_type": "['reverse it']",
+    "gold": "D",
+    "arch_pred": "D",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 24,
+    "arch_latency_sec": 193.38345336914062,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Match_qats_400_314"
+  },
+  {
+    "sample_id": "Align:ts2caption_qa_120:56",
+    "subset": "SubsetName.ALIGN",
+    "n_series": 1,
+    "series_lengths": [
+      24
+    ],
+    "task_type": "caption",
+    "gold": "D",
+    "arch_pred": "D",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 11,
+    "arch_latency_sec": 95.78509950637817,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Align_ts2caption_qa_120_56"
+  },
+  {
+    "sample_id": "Align:ts2caption_qa_120:38",
+    "subset": "SubsetName.ALIGN",
+    "n_series": 1,
+    "series_lengths": [
+      24
+    ],
+    "task_type": "caption",
+    "gold": "D",
+    "arch_pred": "D",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 11,
+    "arch_latency_sec": 104.6759421825409,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Align_ts2caption_qa_120_38"
+  },
+  {
+    "sample_id": "Align:caption2ts_qa_120:47",
+    "subset": "SubsetName.ALIGN",
+    "n_series": 4,
+    "series_lengths": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "task_type": "['caption']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 15,
+    "arch_latency_sec": 128.14957642555237,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Align_caption2ts_qa_120_47"
+  },
+  {
+    "sample_id": "Align:caption2ts_qa_120:97",
+    "subset": "SubsetName.ALIGN",
+    "n_series": 4,
+    "series_lengths": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "task_type": "['caption']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 17,
+    "arch_latency_sec": 128.28730869293213,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/per_task_2x_v1/runs/Align_caption2ts_qa_120_97"
+  }
+]

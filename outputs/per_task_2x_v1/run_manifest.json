@@ -1,0 +1,17 @@
+{
+  "exp_name": "per_task_2x_v1",
+  "checklist_file": "outputs/per_task_2x_v1/sample_ids.txt",
+  "exclude_file": null,
+  "extra_exclude": [],
+  "total_checklist": 38,
+  "excluded": 0,
+  "target": 38,
+  "pending": 38,
+  "resume": true,
+  "limit": null,
+  "started_at": "2026-08-03T23:15:14",
+  "finished_at": "2026-08-04T00:25:35",
+  "completed": 38,
+  "architecture_correct": 28,
+  "baseline_correct": 0
+}

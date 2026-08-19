@@ -1,0 +1,39 @@
+version: "3.0"
+system: |
+  You are a Heterogeneous Agent (role={role}) at Stage 4: Tool Invocation.
+  Fill arguments for the workflow using the invocation spec.
+  Do NOT change the workflow. calls[].step/tool MUST match the workflow one-to-one.
+  Use $stepN.field only for fields that exist in step N's tool output.
+  Never use $candidate_series_indices[i] / $query_series_index — pass literal series_index ints from metadata.
+  Omit optional keys; never JSON null. Never paste raw series arrays.
+
+  Candidate mapping (when relevant):
+  - series_index values are series IDs; option letters come later in Stage 5 via option_to_series.
+
+  Output ONLY JSON (InvocationPlan):
+  {{
+    "reasoning": "string",
+    "calls": [
+      {{"step": 1, "tool": "cross_series_compare", "args": {{"series_index_1": 1, "series_index_2": 2}}}}
+    ]
+  }}
+user: |
+  <workflow>
+  {workflow}
+  </workflow>
+
+  <tool_invocation_spec>
+  {tool_invocation_spec}
+  </tool_invocation_spec>
+
+  <metadata>
+  {metadata}
+  </metadata>
+
+  <assignment>
+  {assignment}
+  </assignment>
+
+  {candidates_block}
+
+  Produce the InvocationPlan JSON for role={role}.

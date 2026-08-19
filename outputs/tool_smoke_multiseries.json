@@ -1,0 +1,347 @@
+{
+  "seed": 20260729,
+  "samples": [
+    {
+      "sample_id": "Match:qats_400:343",
+      "subset": "Match",
+      "n_series": 5,
+      "lengths": [
+        120,
+        120,
+        120,
+        120,
+        120
+      ],
+      "results": {
+        "pairwise_distance:{\"method\": \"euclidean\"}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "method": "euclidean",
+            "distances": [
+              {
+                "series_index": 2,
+                "distance": 15.458871416975171
+              },
+              {
+                "series_index": 3,
+                "distance": 9.426592411432084
+              },
+              {
+                "series_index": 4,
+                "distance": 19.166464482956997
+              },
+              {
+                "series_index": 5,
+                "distance": 9.461412180887711
+              }
+            ],
+            "nearest": {
+              "series_index": 3,
+              "distance": 9.426592411432084
+            }
+          }
+        },
+        "pairwise_distance:{\"method\": \"dtw\"}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "method": "dtw",
+            "distances": [
+              {
+                "series_index": 2,
+                "distance": 50.21390146164707
+              },
+              {
+                "series_index": 3,
+                "distance": 10.906135887655166
+              },
+              {
+                "series_index": 4,
+                "distance": 22.398466465363203
+              },
+              {
+                "series_index": 5,
+                "distance": 10.71035013433268
+              }
+            ],
+            "nearest": {
+              "series_index": 5,
+              "distance": 10.71035013433268
+            }
+          }
+        },
+        "subsequence_locate:{}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "best_start": 0,
+            "distance": 15.458871416975171,
+            "query_len": 120
+          }
+        },
+        "lag_corr:{\"lag\": 1}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "mode": "cross",
+            "lag": 1,
+            "corr": -0.06572679890282188
+          }
+        }
+      }
+    },
+    {
+      "sample_id": "Match:qats_400:6",
+      "subset": "Match",
+      "n_series": 5,
+      "lengths": [
+        120,
+        120,
+        120,
+        120,
+        120
+      ],
+      "results": {
+        "pairwise_distance:{\"method\": \"euclidean\"}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "method": "euclidean",
+            "distances": [
+              {
+                "series_index": 2,
+                "distance": 17.784058273135187
+              },
+              {
+                "series_index": 3,
+                "distance": 2.0369638665296144
+              },
+              {
+                "series_index": 4,
+                "distance": 19.503131135587516
+              },
+              {
+                "series_index": 5,
+                "distance": 1.8672656521042252
+              }
+            ],
+            "nearest": {
+              "series_index": 5,
+              "distance": 1.8672656521042252
+            }
+          }
+        },
+        "pairwise_distance:{\"method\": \"dtw\"}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "method": "dtw",
+            "distances": [
+              {
+                "series_index": 2,
+                "distance": 22.212185844711456
+              },
+              {
+                "series_index": 3,
+                "distance": 3.8629263518736674
+              },
+              {
+                "series_index": 4,
+                "distance": 12.0616292431827
+              },
+              {
+                "series_index": 5,
+                "distance": 3.631170610147642
+              }
+            ],
+            "nearest": {
+              "series_index": 5,
+              "distance": 3.631170610147642
+            }
+          }
+        },
+        "subsequence_locate:{}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "best_start": 0,
+            "distance": 17.784058273135187,
+            "query_len": 120
+          }
+        },
+        "lag_corr:{\"lag\": 1}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "mode": "cross",
+            "lag": 1,
+            "corr": -0.26251624980752325
+          }
+        }
+      }
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:103",
+      "subset": "Align",
+      "n_series": 4,
+      "lengths": [
+        24,
+        24,
+        24,
+        24
+      ],
+      "results": {
+        "pairwise_distance:{\"method\": \"euclidean\"}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "method": "euclidean",
+            "distances": [
+              {
+                "series_index": 2,
+                "distance": 2.4297328319789178
+              },
+              {
+                "series_index": 3,
+                "distance": 8.77567139830826
+              },
+              {
+                "series_index": 4,
+                "distance": 7.517126940530167
+              }
+            ],
+            "nearest": {
+              "series_index": 2,
+              "distance": 2.4297328319789178
+            }
+          }
+        },
+        "pairwise_distance:{\"method\": \"dtw\"}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "method": "dtw",
+            "distances": [
+              {
+                "series_index": 2,
+                "distance": 29.721293713430445
+              },
+              {
+                "series_index": 3,
+                "distance": 326.4668571233534
+              },
+              {
+                "series_index": 4,
+                "distance": 416.3616453277127
+              }
+            ],
+            "nearest": {
+              "series_index": 2,
+              "distance": 29.721293713430445
+            }
+          }
+        },
+        "subsequence_locate:{}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "best_start": 0,
+            "distance": 2.4297328319789178,
+            "query_len": 24
+          }
+        },
+        "lag_corr:{\"lag\": 1}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "mode": "cross",
+            "lag": 1,
+            "corr": 0.9548454453347612
+          }
+        }
+      }
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:93",
+      "subset": "Align",
+      "n_series": 4,
+      "lengths": [
+        720,
+        720,
+        720,
+        720
+      ],
+      "results": {
+        "pairwise_distance:{\"method\": \"euclidean\"}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "method": "euclidean",
+            "distances": [
+              {
+                "series_index": 2,
+                "distance": 38.41377962038118
+              },
+              {
+                "series_index": 3,
+                "distance": 39.270902156852515
+              },
+              {
+                "series_index": 4,
+                "distance": 37.015035286781846
+              }
+            ],
+            "nearest": {
+              "series_index": 4,
+              "distance": 37.015035286781846
+            }
+          }
+        },
+        "pairwise_distance:{\"method\": \"dtw\"}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "method": "dtw",
+            "distances": [
+              {
+                "series_index": 2,
+                "distance": 2528.361786295625
+              },
+              {
+                "series_index": 3,
+                "distance": 2385.119661128137
+              },
+              {
+                "series_index": 4,
+                "distance": 2318.713529157924
+              }
+            ],
+            "nearest": {
+              "series_index": 4,
+              "distance": 2318.713529157924
+            }
+          }
+        },
+        "subsequence_locate:{}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "best_start": 0,
+            "distance": 38.41377962038118,
+            "query_len": 720
+          }
+        },
+        "lag_corr:{\"lag\": 1}": {
+          "success": true,
+          "error": null,
+          "data": {
+            "mode": "cross",
+            "lag": 1,
+            "corr": -0.02594364562954097
+          }
+        }
+      }
+    }
+  ]
+}

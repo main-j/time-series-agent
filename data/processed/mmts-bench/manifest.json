@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "n_samples": 2424,
+  "source_fingerprints": {
+    "Benchmark/Base/synthtic_qa_700.csv": "b73ff4f901319f285befa17c948409acb7d73779d1f6e08b45b57fcf7e2883ba",
+    "Benchmark/InWild/tsqa_1084.csv": "e940bfe937d79946de5828726c7a31b906d32784440f9d3ad43e200f3ca75a27",
+    "Benchmark/Match/qats_400.csv": "ab5b51a821a7257b5613b9811c7401975d57230c0144d6340af07d0813af5dd5",
+    "Benchmark/Align/ts2caption_qa_120.csv": "08789446250462d689381205ea492e8c760fac614e74ab2185eb4128354836b0",
+    "Benchmark/Align/caption2ts_qa_120.csv": "5e544fabeac9328b7d1d88f5aa23b60e9aee7d8c502d27de81cd6643e3ace7bd"
+  },
+  "subsets": [
+    "Align",
+    "Base",
+    "InWild",
+    "Match"
+  ],
+  "storage": "index_plus_raw_lazy"
+}

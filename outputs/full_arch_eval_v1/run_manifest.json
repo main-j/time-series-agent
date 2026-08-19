@@ -1,0 +1,21 @@
+{
+  "exp_name": "full_arch_eval_v1",
+  "index_file": "/root/autodl-tmp/time-series-agent/data/processed/mmts-bench/index.jsonl",
+  "total": 2424,
+  "already_done": 1782,
+  "pending": 642,
+  "resume": true,
+  "limit": null,
+  "started_at": "2026-08-08T12:27:11",
+  "policy": "skip_sample_on_tool_issue; accuracy excludes skipped",
+  "stats_layers": [
+    "subset",
+    "taxonomy_task",
+    "dimension"
+  ],
+  "finished_at": "2026-08-09T19:49:29",
+  "completed_rows": 2424,
+  "scored": 2222,
+  "skipped": 202,
+  "architecture_correct": 1211
+}

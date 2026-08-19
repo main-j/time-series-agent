@@ -1,0 +1,21 @@
+{
+  "n_total": 8,
+  "n_success": 8,
+  "valid_output_rate": 1.0,
+  "choice_accuracy": 0.375,
+  "n_choice": 8,
+  "numerical_metrics": null,
+  "subset_choice_accuracy": {
+    "Align": 0.0,
+    "Base": 0.5,
+    "InWild": 0.5,
+    "Match": 0.5
+  },
+  "avg_latency_sec": 0.00014480948448181152,
+  "avg_model_calls": 1.0,
+  "avg_tool_calls": 0.0,
+  "avg_prompt_tokens": 950.5,
+  "avg_completion_tokens": 24.0,
+  "total_prompt_tokens": 7604,
+  "total_completion_tokens": 192
+}

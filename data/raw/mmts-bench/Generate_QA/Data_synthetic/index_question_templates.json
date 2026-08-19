@@ -1,0 +1,44 @@
+[
+    {
+        "question_template": "Here is a list of values in a time series. Based on provided time series, where does the maximum value of the series occur?",
+        "task_type": ["index"],
+        "qa_type": "numerical",
+        "answer": ""
+    },
+    {
+        "question_template": "Here is a list of values in a time series. Based on provided time series, where does the minimum value of the series occur?",
+        "task_type": ["index"],
+        "qa_type": "numerical",
+        "answer": ""
+    },
+    {
+        "question_template": "Here is a list of values in a time series. Based on provided time series, how many intervals show an upward trend?",
+        "task_type": ["index"],
+        "qa_type": "numerical",
+        "answer": ""
+    },
+    {
+        "question_template": "Here is a list of values in a time series. Based on provided time series, how many intervals show a downward trend?",
+        "task_type": ["index"],
+        "qa_type": "numerical",
+        "answer": ""
+    },
+    {
+        "question_template": "Here is a list of values in a time series. Based on provided time series, what is the trend in the segment from index {start_index} to index {end_index}?",
+        "task_type": ["index"],
+        "qa_type": "a binary choice question",
+        "answer": "A) Upward\nB) Downward"
+    },
+    {
+        "question_template": "Here is a list of values in a time series. Based on provided time series, does point {point_index} present a maximum or minimum value or neither?",
+        "task_type": ["index"],
+        "qa_type": "a multiple choice question",
+        "answer": "A) Max\nB) Min\nC) Neither"
+    },
+    {
+        "question_template": "Here is a list of values in a time series. Based on provided time series, how many peaks occur?",
+        "task_type": ["index"],
+        "qa_type": "numerical",
+        "answer": ""
+    }
+]

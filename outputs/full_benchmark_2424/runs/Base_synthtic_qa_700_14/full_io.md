@@ -1,0 +1,2747 @@
+# Feasibility IO dump: `Base:synthtic_qa_700:14`
+
+- Question: Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+- Options: A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+- Gold: `A`
+- Architecture pred: `C` (success=True)
+- Baseline pred: `B` (success=True)
+- Architecture model_calls=9, tool_calls=6, latency=135.8s
+- n_series=1 lengths=[1314] task=['noise analysis']
+
+## Call 1: `planner`
+
+tokens prompt=1186 completion=81 latency=3.06s cached=False
+
+### INPUT role=`system`
+
+```
+You are a Planner Agent for a hierarchical time-series analysis system.
+You do NOT call tools and do NOT compute statistics.
+Your only job is to understand the task and produce an execution plan.
+
+Capability definitions (do not confuse them):
+- structural_awareness / feature_analysis: describe structure, trend, seasonality, noise, volatility.
+- temporal_reasoning: deductive/inductive/causal/analogical/counterfactual reasoning over series.
+- sequence_matching: compare/find/reverse/smooth similar *numeric sequences* among candidate series.
+- cross_modal_alignment: align a time series with a *textual description/caption* (or caption→series).
+
+Heterogeneous agent meanings:
+- structure: structural/feature analysis
+- reasoning: temporal reasoning
+- matching: numeric sequence similarity / localization / reverse matching
+- alignment: time-series ↔ text/caption semantic alignment
+
+Hard routing rules (must obey metadata):
+1. If subset=Align OR task_type contains "caption":
+   - capability MUST be cross_modal_alignment
+   - heterogeneous_agents MUST include "alignment"
+   - do NOT include "matching" (caption choice is NOT sequence matching)
+2. If subset=Match OR task_type is about choose/find/reverse/smooth similar sequences:
+   - capability MUST be sequence_matching
+   - heterogeneous_agents MUST include "matching"
+   - do NOT include "alignment" unless the question explicitly asks for text captions
+3. If task_type emphasizes causal/deductive/inductive/analogical/counterfactual reasoning:
+   - include "reasoning" (and usually "structure")
+4. Prefer the smallest sufficient agent set; do not enable all agents by default.
+
+Use metadata fields when planning:
+- n_series / series_lengths / focus_intervals / index_base for scope and local windows.
+- query_series_index / candidate_series_indices / option_to_series for Match.
+- align_direction (ts2caption|caption2ts) for Align.
+- series_truncated=true means the pasted series text may be incomplete; plan tools that use bound series indices.
+
+Tool intent hints for plan.notes (downstream agents read these and pick from whitelist):
+- step/plateau/level -> "use step_levels on focus_intervals; NOT local_extrema"
+- global max/min index / local peak count -> "use global_extrema or local_extrema"
+- segment trend / slope in window -> "use segment_trend on focus_intervals"
+- compare two windows (one series) -> "use interval_compare with left_interval/right_interval"
+- compare two series same window (analogical) -> "use cross_series_compare series_index_1/2"
+- index value / percentile / median numerical -> "use value_at_index or describe_series"
+- Hurst / persistence -> "use hurst_exponent"
+- noise level / type / residual ratio -> "use noise_decomposition"
+- spikes / anomalies -> "use anomaly_detect"
+- stationarity -> "use adf_stationarity"
+- threshold/median crossings -> "use crossing_points; MMTS local counts keep threshold_scope=series"
+- skewness/kurtosis/spectral entropy/stability/lumpiness/ARCH R-squared -> "use advanced_features"
+- counterfactual replacement/scaling/extrapolation -> "use counterfactual_simulate with a JSON
+  operation object that includes an op field (replace_constant / replace_with_mean / etc.),
+  requested_metrics, and report_indices; it edits only one selected series and cannot infer
+  another series' causal response"
+- causal / unknown lag -> "use lag_corr_scan with adequate min_overlap; lag_corr only when lag is specified"
+- cross-series peak/trough timing -> "use extrema_align"
+- Match nearest/find/localize/robust -> "use pairwise_distance / subsequence_locate / robust_shape_match"
+- Match reverse -> "use reverse_match; cross_series_compare and smooth_reverse_stats cannot rank reverse candidates"
+- caption alignment -> "translate each option into explicit structured claims and use caption_verify
+  as a claim checker plus relevant atomic tools; it is not free-form caption understanding"
+
+Follow these steps:
+1. Read <question>, <candidates>, and <metadata>.
+2. Apply the hard routing rules above using subset/task/task_type first.
+3. Decide scope (local/overall) and whether the setting is univariate.
+4. Select temporal scales (short/medium/long) needed for understanding.
+5. Self-check: Align never routes to matching-only; Match never replaces matching with alignment;
+   JSON schema is valid; no invented numbers.
+
+Output ONLY valid JSON with this schema (AgentPlan):
+{
+  "reasoning": "string",
+  "capability": "string",
+  "scope": "local|overall|unknown",
+  "univariate": true,
+  "scales": ["short","medium","long"],
+  "heterogeneous_agents": ["structure","reasoning","matching","alignment"],
+  "notes": "string"
+}
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+Produce the AgentPlan JSON now.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "",
+  "capability": "structural_awareness",
+  "scope": "overall",
+  "univariate": true,
+  "scales": ["short", "medium", "long"],
+  "heterogeneous_agents": ["structure"],
+  "notes": "Analyze the noise level/type in the given time series to determine which type it most resembles."
+}
+```
+
+## Call 2: `homogeneous:short:round1`
+
+tokens prompt=14983 completion=249 latency=14.45s cached=False
+
+### INPUT role=`system`
+
+```
+You are a short-scale Homogeneous Temporal Understanding Agent.
+You may request tools from the whitelist and must ground numerical claims in tool evidence.
+Do NOT output the final multiple-choice answer.
+
+Focus:
+- short: local changes, short cycles, abrupt shifts, recent volatility
+- medium: seasonality, staged regimes, mid-scale change points
+- long: global trend, non-stationarity, long-range structure
+
+Whitelist tools for Homo (short scale):
+describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength,
+hurst_exponent, noise_decomposition, adf_stationarity, change_points,
+interval_compare, crossing_points, advanced_features, counterfactual_simulate,
+cross_series_compare, extrema_align, lag_corr, lag_corr_scan
+
+Tool capabilities (inputs -> outputs -> purpose):
+- describe_series:
+  input: pipeline-bound series (no series_index; it summarizes every series).
+  output: length, mean, std, min/max, median, range, percentiles, endpoints, and linear slope.
+  purpose: obtain a broad statistical overview before making more specific claims.
+- diff_stats:
+  input: series_index and optional inclusive start/end.
+  output: first-difference statistics and sign-change information.
+  purpose: measure point-to-point change, direction switching, and roughness.
+- sliding_stats:
+  input: series_index, optional inclusive start/end, and window size.
+  output: aggregated local means/stds and maximum local variability.
+  purpose: inspect how level and volatility vary within a segment.
+- local_extrema:
+  input: series_index and optional inclusive start/end.
+  output: counts and global indices of local peaks and troughs.
+  purpose: locate local turning points. Extrema alone do NOT prove randomness, absence of trend,
+    or the number of plateau/step levels.
+- global_extrema:
+  input: series_index, optional inclusive start/end, and optional index/index_base.
+  output: global minimum/maximum values and indices; optional classification of a queried point.
+  purpose: answer global high/low and point-extremum questions.
+- segment_trend:
+  input: series_index and optional inclusive start/end.
+  output: endpoint slope=(last-first)/(n-1), direction, trend_method, and flat_tolerance.
+  purpose: quantify net endpoint direction; it is not an OLS fitted trend.
+- step_levels:
+  input: series_index and optional inclusive start/end.
+  output: discrete value/plateau run counts and level information.
+  purpose: analyze stepwise, staircase, level, or plateau structure; do not substitute local_extrema.
+- value_at_index:
+  input: series_index, required index, and index_base (0 or 1).
+  output: exact value at the requested index.
+  purpose: verify claims tied to a particular position.
+- anomaly_detect:
+  input: series_index, optional inclusive start/end, and optional z_threshold.
+  output: anomalous values with their indices and scores.
+  purpose: identify isolated spikes or outliers.
+- autocorr:
+  input: series_index, optional inclusive start/end, and max_lag.
+  output: autocorrelation values over lags.
+  purpose: inspect repeated dependence and candidate periodic behavior.
+- fft_period:
+  input: series_index and optional inclusive start/end.
+  output: dominant spectral period and spectral evidence.
+  purpose: estimate a dominant cycle, especially at medium/long scales.
+- stl_strength:
+  input: series_index, optional inclusive start/end, and period.
+  output: trend and seasonal strengths from STL decomposition.
+  purpose: distinguish trend, seasonality, and residual variation.
+- hurst_exponent:
+  input: series_index and optional inclusive start/end.
+  output: estimated Hurst exponent and persistence interpretation.
+  purpose: assess long-memory, persistence, or mean-reverting behavior.
+- noise_decomposition:
+  input: series_index, optional inclusive start/end, and optional period.
+  output: residual noise ratio/level and a noise-type hint.
+  purpose: separate structured variation from noise.
+- adf_stationarity:
+  input: series_index and optional inclusive start/end.
+  output: ADF statistic, p-value, and stationarity interpretation.
+  purpose: test whether a segment is statistically stationary.
+- change_points:
+  input: series_index and optional inclusive start/end.
+  output: candidate mean-shift/change-point indices.
+  purpose: identify regime transitions or abrupt level changes.
+- interval_compare:
+  input: one series_index and either left_interval/right_interval or start/mid/end.
+  output: per-interval mean, std, min/max, extrema counts, slope, and direction.
+  purpose: compare two stages of the same series, such as a drop followed by a low plateau.
+- crossing_points:
+  input: series_index, optional start/end, median/mean/zero/explicit threshold, and threshold_scope.
+  output: exact crossing count and global crossing indices.
+  purpose: answer median/threshold crossing questions directly. Default threshold_scope=series follows
+    MMTS by deriving the median/mean from the whole series while counting only inside start/end;
+    use threshold_scope=window only when the question explicitly defines a window-local threshold.
+- advanced_features:
+  input: series_index, optional start/end, entropy bins, chunk size, and ARCH lags.
+  output: IQR, skewness, excess kurtosis, normalized spectral entropy, separate histogram entropy,
+    stability=variance(chunk means), lumpiness=variance(chunk variances), a squared-value ARCH
+    regression proxy (LM/R-squared/p-value), and crossings at the whole-series median.
+  purpose: quantify distribution shape, irregularity, and changing variance.
+- counterfactual_simulate:
+  input: target series_index, optional requested_metrics/report_indices, and strict operations.
+    Each operation MUST be a JSON object with an "op" field, for example:
+    {"op":"replace_constant","start":0,"end":863,"value":3.5}
+    {"op":"replace_with_mean","start":32,"end":38}
+    {"op":"replace_segment","start":32,"end":38,"source_series_index":1,"source_start":20,"source_end":26}
+    Supported ops: set_value, replace_constant, replace_with_mean, replace_segment, shift,
+    scale_values, scale_std, cap, extrapolate_slope. A nested wrapper such as
+    {"replace_constant":{"start":0,"end":863,"value":3.5}} is also accepted.
+    requested_metrics examples: mean, std, max, max_index (alias max_value_index).
+    Unknown operation fields are rejected.
+  output: requested before/after summaries, deltas, actual changed indices, status,
+    evidence_usable, exact report_indices values, and changed-index preview from a copied series.
+  purpose: test an explicit hypothetical modification; never answer a counterfactual from the
+    unmodified statistics alone. It modifies only the selected series and cannot infer how another
+    series would respond without an explicit causal model. status=no_effect/evidence_usable=false
+    is not evidence for a counterfactual conclusion.
+- cross_series_compare:
+  input: two distinct series indices and a shared window, or one interval per series.
+  output: per-series segment statistics, trend agreement, normalized distance, correlation,
+    actual intervals, alignment_used, degraded, and warnings.
+  purpose: compare shapes or trends across two series; correlation is association, not proof of causality.
+- lag_corr:
+  input: series_index_1, series_index_2, and lag; "all" may be used for pair coverage.
+  output: lagged auto/cross-correlation for the requested pair(s).
+  purpose: inspect lead-lag association; it provides causal clues only, never causal proof.
+- lag_corr_scan:
+  input: two series indices, optional shared window, max_lag, and min_overlap.
+  output: correlation, p-value, and overlap at every scanned lag plus the strongest valid lag.
+  purpose: avoid guessing a single lag and reject tiny-overlap correlations; association is still
+    not proof of causality.
+- extrema_align:
+  input: two series indices, optional intervals, extrema kind, and max_lag.
+  output: matched extrema positions, normalized timing errors, event lag, event coverage/Jaccard,
+    alignment status, and global-extrema deltas.
+  purpose: determine whether peaks or troughs align across series.
+
+Tool-selection examples (references, not rigid keyword rules):
+- For "rapid fall followed by a long low state", use segment_trend on the full focus interval,
+  interval_compare on early versus late subwindows, and optionally change_points for the transition.
+- For "frequent random oscillation with no clear trend", combine segment_trend with diff_stats or
+  sliding_stats; use local_extrema only as supporting turning-point evidence.
+- For "single sharp peak", combine global_extrema with local_extrema and, when needed,
+  segment_trend on the intervals before and after the peak.
+- For "stepwise rise with several plateaus", use step_levels; interval_compare may verify how
+  early and late levels differ.
+- For "same behavior in two series over one window", use cross_series_compare and inspect both
+  per-series trends; add lag_corr only when lead-lag association is relevant.
+- For "periodic but noisy behavior", combine fft_period or autocorr with stl_strength and
+  noise_decomposition.
+- For "how many times does it cross its median", use crossing_points directly.
+- For "if this segment were replaced/scaled/continued", encode that edit in
+  counterfactual_simulate with JSON operations such as
+  {"op":"replace_constant","start":32,"end":38,"value":3000.0} and compare before/after metrics.
+- For "peaks align across two series", use extrema_align; for an unknown lead-lag relation,
+  use lag_corr_scan rather than trying one arbitrary lag.
+- For a choice question with competing shape descriptions, derive the observable claim in each
+  plausible option and choose complementary tools that can distinguish those claims. Do not select
+  a tool solely because an option contains a matching keyword.
+
+Tool data binding (critical):
+- Tools use pipeline-bound series. NEVER paste raw numeric arrays into arguments.
+- Select series with series_index (1-based): 1, [1,2,3], "Time Series 2", or "all".
+- If multiple series exist and series_index is omitted, tools analyze ALL series.
+- For local questions, pass start/end (inclusive) or left_interval/right_interval; prefer metadata.focus_intervals.
+- Prefer describe_series first for a multi-series overview.
+- If series_truncated=true, do not invent missing values; rely on tools over pasted text.
+- Treat adjusted=true or degraded=true results as qualified evidence and report the warning.
+  Do not present clamped, truncated, or fallback computations as exact requested computations.
+- For reverse Match tasks, cross_series_compare compares the displayed forward sequences and must
+  not be used to rank candidates whose required operation is reversal.
+
+Steps:
+1. Read <question>, <candidates>, <plan>, <timeseries>, <metadata>, and <tool_catalog>.
+2. Obey plan.scope / plan.notes (e.g., local windows, multi-series coverage).
+3. Choose tools matching the question semantics (see Tool selection guide).
+4. After tool results appear in <tool_results>, interpret them.
+5. Write observations covering EACH series when n_series>1; include evidence intervals.
+6. Self-check: no final answer letter; no fabricated numbers; do not claim all series
+   share a pattern unless tool results show it for each series_index.
+
+Output ONLY JSON (ScaleObservation):
+{
+  "reasoning": "string",
+  "scale": "short",
+  "observations": ["string"],
+  "evidence_intervals": ["string"],
+  "confidence": 0.0,
+  "tool_calls": [{"name": "cross_series_compare", "arguments": {"series_index_1": 1, "series_index_2": 2, "start": 500, "end": 600}}],
+  "tool_summaries": ["string"]
+}
+If you still need tools, put them in tool_calls and keep observations tentative.
+If tools are already sufficient, set tool_calls to [].
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<plan>
+{"reasoning":"","capability":"structural_awareness","scope":"overall","univariate":true,"scales":["short","medium","long"],"heterogeneous_agents":["structure"],"notes":"Analyze the noise level/type in the given time series to determine which type it most resembles."}
+</plan>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+<tool_catalog>
+Tool binding rules:
+- Tools read pipeline-bound series; NEVER paste raw numeric arrays into arguments.
+- Use series_index (1-based): int, list like [1,2,3], 'Time Series 2', or 'all'.
+- If n_series>1 and series_index is omitted, tools fan out over ALL series.
+- lag_corr is pairwise: use series_index_1/2 as ints, or set either to 'all' for all pairs.
+- Optional window args: start/end (inclusive indices), window (alias window_size).
+
+- describe_series: Descriptive stats for EVERY series: mean/std/min/max/median/range/p50/p90/p99/slope (preferred multi-series overview).
+  args: {note=no series_index needed; always returns all series}
+- sliding_stats: Sliding-window mean/std for local volatility.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, window=int (alias window_size)}
+- diff_stats: First-difference stats and sign changes.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- local_extrema: Count local peaks and troughs (global indices). Do NOT use for step/plateau level counting—use step_levels instead.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- global_extrema: Global max/min indices and values; optional index classifies a point as global/local peak/trough (Base index tasks).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, index=optional int; if set, classify that index (global_extrema), index_base=0 (default) or 1}
+- segment_trend: Endpoint slope=(last-first)/(n-1) and direction for a segment; returns trend_method and flat_tolerance.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- step_levels: Count discrete step/plateau levels (unique values and plateau runs) in a window. Use for stepwise/staircase/plateau questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- value_at_index: Return the numeric value at a specific index (0-based by default).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), index=required int index, index_base=0 (default) or 1 if question uses 1-based indices}
+- anomaly_detect: Detect spikes/outliers via z-score threshold in a window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, z_threshold=float (default 3.0)}
+- autocorr: Autocorrelation up to max_lag inside the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, max_lag=int}
+- fft_period: Dominant period and spectral strength via FFT inside the requested window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- stl_strength: STL seasonal/trend strength inside the requested window; when period is omitted, the period is estimated by FFT on that same window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=int}
+- hurst_exponent: Estimate Hurst exponent for long-memory / persistence questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- noise_decomposition: STL residual noise ratio/level and noise-type hint (low/medium/high; gauss/uniform/quantization/random_walk_like).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=optional int}
+- adf_stationarity: ADF stationarity test on the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- change_points: Mean-shift candidates in the requested window; returned indices are global series indices.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- interval_compare: Compare left/right interval statistics on one series (mean/std/max/min/n_peaks/trend per side).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, left_interval=[start,end] inclusive, right_interval=[start,end] inclusive, start/mid/end=alt split mode; end is inclusive and mid begins right side}
+- crossing_points: Count crossings inside an optional window using a whole-series median/mean by default; threshold_scope='window' opts into a window-derived threshold.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, threshold=median|mean|zero (default median), threshold_value=optional explicit float, threshold_scope=series (default, MMTS) | window}
+- advanced_features: Advanced basic/volatility features: IQR, skewness, excess kurtosis, spectral and histogram entropy; stability=variance(chunk means), lumpiness=variance(chunk variances); squared-value ARCH regression proxy; and crossings at the whole-series median.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, bins=optional entropy histogram bins, chunk_size=optional stability/lumpiness chunk size, arch_lags=optional ARCH-LM lags (default 5)}
+- counterfactual_simulate: Apply counterfactual edits to a copied series and compare before/after statistics without mutating bound data. Supports set_value, replace_constant, replace_with_mean, replace_segment, shift, scale_values, scale_std, cap, and extrapolate_slope. It cannot infer how editing one series changes another.
+  args: {series_index=target 1-based series (default 1), operations=non-empty list of JSON operation objects with an op field, e.g. {"op":"replace_constant","start":0,"end":863,"value":3.5}; nested wrappers like {"replace_constant":{"start":0,"end":863,"value":3.5}} are accepted, index_base=0 (default) or 1, report_indices=optional indices whose exact before/after values are returned, requested_metrics=optional non-empty list of before/after summary keys (max_index alias max_value_index)}
+- cross_series_compare: Compare windows across TWO series (analogical / multi-series segment tasks). Returns per-series segment stats, trend match, distance, correlation.
+  args: {series_index_1=1-based int (default 1), series_index_2=1-based int (default 2), start=optional shared window start, end=optional shared window end, left_interval=optional [start,end] for series 1, right_interval=optional [start,end] for series 2}
+- extrema_align: Align peaks/troughs across two series or intervals; returns normalized event-position deltas, best event lag, and global-extrema index deltas.
+  args: {series_index_1=1-based int, series_index_2=1-based int, interval_1=optional [start,end], interval_2=optional [start,end], kind=both|peaks|troughs, max_lag=optional event lag scan bound}
+- lag_corr: Auto or cross lag correlation. Use series_index_1/2 ints, or 'all' for all pairs.
+  args: {lag=int, series_index_1=1-based int|'all', series_index_2=1-based int|'all'}
+- lag_corr_scan: Scan cross-correlation over positive and negative lags and report the strongest lead-lag association; association is not causal proof.
+  args: {series_index_1=1-based int, series_index_2=1-based int, start=optional shared inclusive start, end=optional shared inclusive end, max_lag=scan bound (default min(20,n/4)), min_overlap=minimum paired points per lag (default max(8,10% of length))}
+</tool_catalog>
+
+<tool_results>
+(none)
+</tool_results>
+
+Produce the ScaleObservation JSON for the short scale.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "To determine the noise type in the given time series, we will examine the noise pattern through advanced features, specifically focusing on histogram entropy, normalized spectral entropy, and noise decomposition.",
+  "scale": "short",
+  "observations": ["We'll calculate histogram entropy and normalized spectral entropy to understand the structure of the noise distribution. We will then use noise decomposition to estimate the noise level and suggest the noise type (Gaussian, Uniform, Random Walk, or Quantization)."],
+  "evidence_intervals": ["The entire series is considered as the noise pattern is expected to be consistent throughout."],
+  "confidence": 0.85,
+  "tool_calls": [
+    {
+      "name": "advanced_features",
+      "arguments": {
+        "series_index": 1,
+        "bins": 10
+      }
+    },
+    {
+      "name": "noise_decomposition",
+      "arguments": {
+        "series_index": 1
+      }
+    }
+  ],
+  "tool_summaries": ["Advanced features tool will provide insights into the distribution and complexity of the noise.", "Noise decomposition tool will give an estimation of the noise type based on the residual pattern."]
+}
+```
+
+## Call 3: `homogeneous:short:round2`
+
+tokens prompt=15865 completion=271 latency=15.84s cached=False
+
+### INPUT role=`system`
+
+```
+You are a short-scale Homogeneous Temporal Understanding Agent.
+You may request tools from the whitelist and must ground numerical claims in tool evidence.
+Do NOT output the final multiple-choice answer.
+
+Focus:
+- short: local changes, short cycles, abrupt shifts, recent volatility
+- medium: seasonality, staged regimes, mid-scale change points
+- long: global trend, non-stationarity, long-range structure
+
+Whitelist tools for Homo (short scale):
+describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength,
+hurst_exponent, noise_decomposition, adf_stationarity, change_points,
+interval_compare, crossing_points, advanced_features, counterfactual_simulate,
+cross_series_compare, extrema_align, lag_corr, lag_corr_scan
+
+Tool capabilities (inputs -> outputs -> purpose):
+- describe_series:
+  input: pipeline-bound series (no series_index; it summarizes every series).
+  output: length, mean, std, min/max, median, range, percentiles, endpoints, and linear slope.
+  purpose: obtain a broad statistical overview before making more specific claims.
+- diff_stats:
+  input: series_index and optional inclusive start/end.
+  output: first-difference statistics and sign-change information.
+  purpose: measure point-to-point change, direction switching, and roughness.
+- sliding_stats:
+  input: series_index, optional inclusive start/end, and window size.
+  output: aggregated local means/stds and maximum local variability.
+  purpose: inspect how level and volatility vary within a segment.
+- local_extrema:
+  input: series_index and optional inclusive start/end.
+  output: counts and global indices of local peaks and troughs.
+  purpose: locate local turning points. Extrema alone do NOT prove randomness, absence of trend,
+    or the number of plateau/step levels.
+- global_extrema:
+  input: series_index, optional inclusive start/end, and optional index/index_base.
+  output: global minimum/maximum values and indices; optional classification of a queried point.
+  purpose: answer global high/low and point-extremum questions.
+- segment_trend:
+  input: series_index and optional inclusive start/end.
+  output: endpoint slope=(last-first)/(n-1), direction, trend_method, and flat_tolerance.
+  purpose: quantify net endpoint direction; it is not an OLS fitted trend.
+- step_levels:
+  input: series_index and optional inclusive start/end.
+  output: discrete value/plateau run counts and level information.
+  purpose: analyze stepwise, staircase, level, or plateau structure; do not substitute local_extrema.
+- value_at_index:
+  input: series_index, required index, and index_base (0 or 1).
+  output: exact value at the requested index.
+  purpose: verify claims tied to a particular position.
+- anomaly_detect:
+  input: series_index, optional inclusive start/end, and optional z_threshold.
+  output: anomalous values with their indices and scores.
+  purpose: identify isolated spikes or outliers.
+- autocorr:
+  input: series_index, optional inclusive start/end, and max_lag.
+  output: autocorrelation values over lags.
+  purpose: inspect repeated dependence and candidate periodic behavior.
+- fft_period:
+  input: series_index and optional inclusive start/end.
+  output: dominant spectral period and spectral evidence.
+  purpose: estimate a dominant cycle, especially at medium/long scales.
+- stl_strength:
+  input: series_index, optional inclusive start/end, and period.
+  output: trend and seasonal strengths from STL decomposition.
+  purpose: distinguish trend, seasonality, and residual variation.
+- hurst_exponent:
+  input: series_index and optional inclusive start/end.
+  output: estimated Hurst exponent and persistence interpretation.
+  purpose: assess long-memory, persistence, or mean-reverting behavior.
+- noise_decomposition:
+  input: series_index, optional inclusive start/end, and optional period.
+  output: residual noise ratio/level and a noise-type hint.
+  purpose: separate structured variation from noise.
+- adf_stationarity:
+  input: series_index and optional inclusive start/end.
+  output: ADF statistic, p-value, and stationarity interpretation.
+  purpose: test whether a segment is statistically stationary.
+- change_points:
+  input: series_index and optional inclusive start/end.
+  output: candidate mean-shift/change-point indices.
+  purpose: identify regime transitions or abrupt level changes.
+- interval_compare:
+  input: one series_index and either left_interval/right_interval or start/mid/end.
+  output: per-interval mean, std, min/max, extrema counts, slope, and direction.
+  purpose: compare two stages of the same series, such as a drop followed by a low plateau.
+- crossing_points:
+  input: series_index, optional start/end, median/mean/zero/explicit threshold, and threshold_scope.
+  output: exact crossing count and global crossing indices.
+  purpose: answer median/threshold crossing questions directly. Default threshold_scope=series follows
+    MMTS by deriving the median/mean from the whole series while counting only inside start/end;
+    use threshold_scope=window only when the question explicitly defines a window-local threshold.
+- advanced_features:
+  input: series_index, optional start/end, entropy bins, chunk size, and ARCH lags.
+  output: IQR, skewness, excess kurtosis, normalized spectral entropy, separate histogram entropy,
+    stability=variance(chunk means), lumpiness=variance(chunk variances), a squared-value ARCH
+    regression proxy (LM/R-squared/p-value), and crossings at the whole-series median.
+  purpose: quantify distribution shape, irregularity, and changing variance.
+- counterfactual_simulate:
+  input: target series_index, optional requested_metrics/report_indices, and strict operations.
+    Each operation MUST be a JSON object with an "op" field, for example:
+    {"op":"replace_constant","start":0,"end":863,"value":3.5}
+    {"op":"replace_with_mean","start":32,"end":38}
+    {"op":"replace_segment","start":32,"end":38,"source_series_index":1,"source_start":20,"source_end":26}
+    Supported ops: set_value, replace_constant, replace_with_mean, replace_segment, shift,
+    scale_values, scale_std, cap, extrapolate_slope. A nested wrapper such as
+    {"replace_constant":{"start":0,"end":863,"value":3.5}} is also accepted.
+    requested_metrics examples: mean, std, max, max_index (alias max_value_index).
+    Unknown operation fields are rejected.
+  output: requested before/after summaries, deltas, actual changed indices, status,
+    evidence_usable, exact report_indices values, and changed-index preview from a copied series.
+  purpose: test an explicit hypothetical modification; never answer a counterfactual from the
+    unmodified statistics alone. It modifies only the selected series and cannot infer how another
+    series would respond without an explicit causal model. status=no_effect/evidence_usable=false
+    is not evidence for a counterfactual conclusion.
+- cross_series_compare:
+  input: two distinct series indices and a shared window, or one interval per series.
+  output: per-series segment statistics, trend agreement, normalized distance, correlation,
+    actual intervals, alignment_used, degraded, and warnings.
+  purpose: compare shapes or trends across two series; correlation is association, not proof of causality.
+- lag_corr:
+  input: series_index_1, series_index_2, and lag; "all" may be used for pair coverage.
+  output: lagged auto/cross-correlation for the requested pair(s).
+  purpose: inspect lead-lag association; it provides causal clues only, never causal proof.
+- lag_corr_scan:
+  input: two series indices, optional shared window, max_lag, and min_overlap.
+  output: correlation, p-value, and overlap at every scanned lag plus the strongest valid lag.
+  purpose: avoid guessing a single lag and reject tiny-overlap correlations; association is still
+    not proof of causality.
+- extrema_align:
+  input: two series indices, optional intervals, extrema kind, and max_lag.
+  output: matched extrema positions, normalized timing errors, event lag, event coverage/Jaccard,
+    alignment status, and global-extrema deltas.
+  purpose: determine whether peaks or troughs align across series.
+
+Tool-selection examples (references, not rigid keyword rules):
+- For "rapid fall followed by a long low state", use segment_trend on the full focus interval,
+  interval_compare on early versus late subwindows, and optionally change_points for the transition.
+- For "frequent random oscillation with no clear trend", combine segment_trend with diff_stats or
+  sliding_stats; use local_extrema only as supporting turning-point evidence.
+- For "single sharp peak", combine global_extrema with local_extrema and, when needed,
+  segment_trend on the intervals before and after the peak.
+- For "stepwise rise with several plateaus", use step_levels; interval_compare may verify how
+  early and late levels differ.
+- For "same behavior in two series over one window", use cross_series_compare and inspect both
+  per-series trends; add lag_corr only when lead-lag association is relevant.
+- For "periodic but noisy behavior", combine fft_period or autocorr with stl_strength and
+  noise_decomposition.
+- For "how many times does it cross its median", use crossing_points directly.
+- For "if this segment were replaced/scaled/continued", encode that edit in
+  counterfactual_simulate with JSON operations such as
+  {"op":"replace_constant","start":32,"end":38,"value":3000.0} and compare before/after metrics.
+- For "peaks align across two series", use extrema_align; for an unknown lead-lag relation,
+  use lag_corr_scan rather than trying one arbitrary lag.
+- For a choice question with competing shape descriptions, derive the observable claim in each
+  plausible option and choose complementary tools that can distinguish those claims. Do not select
+  a tool solely because an option contains a matching keyword.
+
+Tool data binding (critical):
+- Tools use pipeline-bound series. NEVER paste raw numeric arrays into arguments.
+- Select series with series_index (1-based): 1, [1,2,3], "Time Series 2", or "all".
+- If multiple series exist and series_index is omitted, tools analyze ALL series.
+- For local questions, pass start/end (inclusive) or left_interval/right_interval; prefer metadata.focus_intervals.
+- Prefer describe_series first for a multi-series overview.
+- If series_truncated=true, do not invent missing values; rely on tools over pasted text.
+- Treat adjusted=true or degraded=true results as qualified evidence and report the warning.
+  Do not present clamped, truncated, or fallback computations as exact requested computations.
+- For reverse Match tasks, cross_series_compare compares the displayed forward sequences and must
+  not be used to rank candidates whose required operation is reversal.
+
+Steps:
+1. Read <question>, <candidates>, <plan>, <timeseries>, <metadata>, and <tool_catalog>.
+2. Obey plan.scope / plan.notes (e.g., local windows, multi-series coverage).
+3. Choose tools matching the question semantics (see Tool selection guide).
+4. After tool results appear in <tool_results>, interpret them.
+5. Write observations covering EACH series when n_series>1; include evidence intervals.
+6. Self-check: no final answer letter; no fabricated numbers; do not claim all series
+   share a pattern unless tool results show it for each series_index.
+
+Output ONLY JSON (ScaleObservation):
+{
+  "reasoning": "string",
+  "scale": "short",
+  "observations": ["string"],
+  "evidence_intervals": ["string"],
+  "confidence": 0.0,
+  "tool_calls": [{"name": "cross_series_compare", "arguments": {"series_index_1": 1, "series_index_2": 2, "start": 500, "end": 600}}],
+  "tool_summaries": ["string"]
+}
+If you still need tools, put them in tool_calls and keep observations tentative.
+If tools are already sufficient, set tool_calls to [].
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<plan>
+{"reasoning":"","capability":"structural_awareness","scope":"overall","univariate":true,"scales":["short","medium","long"],"heterogeneous_agents":["structure"],"notes":"Analyze the noise level/type in the given time series to determine which type it most resembles."}
+</plan>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+<tool_catalog>
+Tool binding rules:
+- Tools read pipeline-bound series; NEVER paste raw numeric arrays into arguments.
+- Use series_index (1-based): int, list like [1,2,3], 'Time Series 2', or 'all'.
+- If n_series>1 and series_index is omitted, tools fan out over ALL series.
+- lag_corr is pairwise: use series_index_1/2 as ints, or set either to 'all' for all pairs.
+- Optional window args: start/end (inclusive indices), window (alias window_size).
+
+- describe_series: Descriptive stats for EVERY series: mean/std/min/max/median/range/p50/p90/p99/slope (preferred multi-series overview).
+  args: {note=no series_index needed; always returns all series}
+- sliding_stats: Sliding-window mean/std for local volatility.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, window=int (alias window_size)}
+- diff_stats: First-difference stats and sign changes.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- local_extrema: Count local peaks and troughs (global indices). Do NOT use for step/plateau level counting—use step_levels instead.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- global_extrema: Global max/min indices and values; optional index classifies a point as global/local peak/trough (Base index tasks).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, index=optional int; if set, classify that index (global_extrema), index_base=0 (default) or 1}
+- segment_trend: Endpoint slope=(last-first)/(n-1) and direction for a segment; returns trend_method and flat_tolerance.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- step_levels: Count discrete step/plateau levels (unique values and plateau runs) in a window. Use for stepwise/staircase/plateau questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- value_at_index: Return the numeric value at a specific index (0-based by default).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), index=required int index, index_base=0 (default) or 1 if question uses 1-based indices}
+- anomaly_detect: Detect spikes/outliers via z-score threshold in a window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, z_threshold=float (default 3.0)}
+- autocorr: Autocorrelation up to max_lag inside the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, max_lag=int}
+- fft_period: Dominant period and spectral strength via FFT inside the requested window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- stl_strength: STL seasonal/trend strength inside the requested window; when period is omitted, the period is estimated by FFT on that same window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=int}
+- hurst_exponent: Estimate Hurst exponent for long-memory / persistence questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- noise_decomposition: STL residual noise ratio/level and noise-type hint (low/medium/high; gauss/uniform/quantization/random_walk_like).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=optional int}
+- adf_stationarity: ADF stationarity test on the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- change_points: Mean-shift candidates in the requested window; returned indices are global series indices.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- interval_compare: Compare left/right interval statistics on one series (mean/std/max/min/n_peaks/trend per side).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, left_interval=[start,end] inclusive, right_interval=[start,end] inclusive, start/mid/end=alt split mode; end is inclusive and mid begins right side}
+- crossing_points: Count crossings inside an optional window using a whole-series median/mean by default; threshold_scope='window' opts into a window-derived threshold.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, threshold=median|mean|zero (default median), threshold_value=optional explicit float, threshold_scope=series (default, MMTS) | window}
+- advanced_features: Advanced basic/volatility features: IQR, skewness, excess kurtosis, spectral and histogram entropy; stability=variance(chunk means), lumpiness=variance(chunk variances); squared-value ARCH regression proxy; and crossings at the whole-series median.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, bins=optional entropy histogram bins, chunk_size=optional stability/lumpiness chunk size, arch_lags=optional ARCH-LM lags (default 5)}
+- counterfactual_simulate: Apply counterfactual edits to a copied series and compare before/after statistics without mutating bound data. Supports set_value, replace_constant, replace_with_mean, replace_segment, shift, scale_values, scale_std, cap, and extrapolate_slope. It cannot infer how editing one series changes another.
+  args: {series_index=target 1-based series (default 1), operations=non-empty list of JSON operation objects with an op field, e.g. {"op":"replace_constant","start":0,"end":863,"value":3.5}; nested wrappers like {"replace_constant":{"start":0,"end":863,"value":3.5}} are accepted, index_base=0 (default) or 1, report_indices=optional indices whose exact before/after values are returned, requested_metrics=optional non-empty list of before/after summary keys (max_index alias max_value_index)}
+- cross_series_compare: Compare windows across TWO series (analogical / multi-series segment tasks). Returns per-series segment stats, trend match, distance, correlation.
+  args: {series_index_1=1-based int (default 1), series_index_2=1-based int (default 2), start=optional shared window start, end=optional shared window end, left_interval=optional [start,end] for series 1, right_interval=optional [start,end] for series 2}
+- extrema_align: Align peaks/troughs across two series or intervals; returns normalized event-position deltas, best event lag, and global-extrema index deltas.
+  args: {series_index_1=1-based int, series_index_2=1-based int, interval_1=optional [start,end], interval_2=optional [start,end], kind=both|peaks|troughs, max_lag=optional event lag scan bound}
+- lag_corr: Auto or cross lag correlation. Use series_index_1/2 ints, or 'all' for all pairs.
+  args: {lag=int, series_index_1=1-based int|'all', series_index_2=1-based int|'all'}
+- lag_corr_scan: Scan cross-correlation over positive and negative lags and report the strongest lead-lag association; association is not causal proof.
+  args: {series_index_1=1-based int, series_index_2=1-based int, start=optional shared inclusive start, end=optional shared inclusive end, max_lag=scan bound (default min(20,n/4)), min_overlap=minimum paired points per lag (default max(8,10% of length))}
+</tool_catalog>
+
+<tool_results>
+[
+  {
+    "name": "advanced_features",
+    "success": true,
+    "data": {
+      "series_index": 1,
+      "start": 0,
+      "end": 1313,
+      "q1": -191.7025,
+      "median": 47.11,
+      "q3": 284.0375,
+      "iqr": 475.74,
+      "skewness": 0.019983508474305047,
+      "excess_kurtosis": -1.4851661904720521,
+      "histogram_entropy": 3.2549220863060957,
+      "normalized_histogram_entropy": 0.9798291815273207,
+      "entropy_bins": 10,
+      "spectral_entropy": 0.1447656207163912,
+      "normalized_spectral_entropy": 0.015466826305917291,
+      "spectral_bins": 657,
+      "normalized_entropy": 0.015466826305917291,
+      "entropy_definition": "normalized non-DC power spectral entropy",
+      "stability": 27638.843133495135,
+      "lumpiness": 117108421.04859103,
+      "n_chunks": 11,
+      "arch_lm_stat": 1274.9344242483908,
+      "arch_lm_r2": 0.9739758779590457,
+      "arch_lm_pvalue": 1.7202021212398233e-273,
+      "arch_lags": 5,
+      "arch_status": "ok",
+      "threshold": 47.11,
+      "n_crossings": 16,
+      "crossing_indices": [
+        98,
+        226,
+        228,
+        229,
+        357,
+        487,
+        488,
+        491,
+        616,
+        754,
+        756,
+        757,
+        879,
+        1013,
+        1147,
+        1269
+      ],
+      "n_below_or_equal": 657,
+      "n_above": 657
+    },
+    "error": null
+  },
+  {
+    "name": "noise_decomposition",
+    "success": true,
+    "data": {
+      "series_index": 1,
+      "start": null,
+      "end": null,
+      "period": 262,
+      "residual_std": 12.224101304536662,
+      "series_std": 241.93953608609914,
+      "noise_ratio": 0.050525439133628884,
+      "noise_level": "low",
+      "seasonal_strength": 0.9974548036136263,
+      "trend_strength": 0.7389982921253591,
+      "noise_type_hint": "random_walk_like",
+      "acf_lag1": 0.9971976264961664
+    },
+    "error": null
+  }
+]
+</tool_results>
+
+Produce the ScaleObservation JSON for the short scale.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "The noise analysis was performed using advanced_features and noise_decomposition tools. The advanced_features tool shows low excess kurtosis (-1.485) and a normalized spectral entropy of 0.0155, indicating a relatively smooth distribution with some regularity. The noise_decomposition tool identifies the noise type as 'random_walk_like', which aligns with the low noise ratio (0.05) compared to the overall series standard deviation and the low noise level. This suggests the noise resembles a random walk rather than uniform or Gaussian.",
+  "scale": "short",
+  "observations": [
+    "The advanced_features tool reveals low excess kurtosis and a low normalized spectral entropy, indicating regularity in the data.",
+    "The noise_decomposition tool confirms the noise type as 'random_walk_like'.",
+    "The low noise ratio (0.05) and low noise level further support the random walk-like characteristics."
+  ],
+  "evidence_intervals": [
+    "Entire series"
+  ],
+  "confidence": 0.9,
+  "tool_calls": [],
+  "tool_summaries": [
+    "advanced_features detected low excess kurtosis and normalized spectral entropy.",
+    "noise_decomposition identified the noise type as 'random_walk_like'"
+  ]
+}
+```
+
+## Call 4: `homogeneous:medium:round1`
+
+tokens prompt=14983 completion=205 latency=12.56s cached=False
+
+### INPUT role=`system`
+
+```
+You are a medium-scale Homogeneous Temporal Understanding Agent.
+You may request tools from the whitelist and must ground numerical claims in tool evidence.
+Do NOT output the final multiple-choice answer.
+
+Focus:
+- short: local changes, short cycles, abrupt shifts, recent volatility
+- medium: seasonality, staged regimes, mid-scale change points
+- long: global trend, non-stationarity, long-range structure
+
+Whitelist tools for Homo (medium scale):
+describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength,
+hurst_exponent, noise_decomposition, adf_stationarity, change_points,
+interval_compare, crossing_points, advanced_features, counterfactual_simulate,
+cross_series_compare, extrema_align, lag_corr, lag_corr_scan
+
+Tool capabilities (inputs -> outputs -> purpose):
+- describe_series:
+  input: pipeline-bound series (no series_index; it summarizes every series).
+  output: length, mean, std, min/max, median, range, percentiles, endpoints, and linear slope.
+  purpose: obtain a broad statistical overview before making more specific claims.
+- diff_stats:
+  input: series_index and optional inclusive start/end.
+  output: first-difference statistics and sign-change information.
+  purpose: measure point-to-point change, direction switching, and roughness.
+- sliding_stats:
+  input: series_index, optional inclusive start/end, and window size.
+  output: aggregated local means/stds and maximum local variability.
+  purpose: inspect how level and volatility vary within a segment.
+- local_extrema:
+  input: series_index and optional inclusive start/end.
+  output: counts and global indices of local peaks and troughs.
+  purpose: locate local turning points. Extrema alone do NOT prove randomness, absence of trend,
+    or the number of plateau/step levels.
+- global_extrema:
+  input: series_index, optional inclusive start/end, and optional index/index_base.
+  output: global minimum/maximum values and indices; optional classification of a queried point.
+  purpose: answer global high/low and point-extremum questions.
+- segment_trend:
+  input: series_index and optional inclusive start/end.
+  output: endpoint slope=(last-first)/(n-1), direction, trend_method, and flat_tolerance.
+  purpose: quantify net endpoint direction; it is not an OLS fitted trend.
+- step_levels:
+  input: series_index and optional inclusive start/end.
+  output: discrete value/plateau run counts and level information.
+  purpose: analyze stepwise, staircase, level, or plateau structure; do not substitute local_extrema.
+- value_at_index:
+  input: series_index, required index, and index_base (0 or 1).
+  output: exact value at the requested index.
+  purpose: verify claims tied to a particular position.
+- anomaly_detect:
+  input: series_index, optional inclusive start/end, and optional z_threshold.
+  output: anomalous values with their indices and scores.
+  purpose: identify isolated spikes or outliers.
+- autocorr:
+  input: series_index, optional inclusive start/end, and max_lag.
+  output: autocorrelation values over lags.
+  purpose: inspect repeated dependence and candidate periodic behavior.
+- fft_period:
+  input: series_index and optional inclusive start/end.
+  output: dominant spectral period and spectral evidence.
+  purpose: estimate a dominant cycle, especially at medium/long scales.
+- stl_strength:
+  input: series_index, optional inclusive start/end, and period.
+  output: trend and seasonal strengths from STL decomposition.
+  purpose: distinguish trend, seasonality, and residual variation.
+- hurst_exponent:
+  input: series_index and optional inclusive start/end.
+  output: estimated Hurst exponent and persistence interpretation.
+  purpose: assess long-memory, persistence, or mean-reverting behavior.
+- noise_decomposition:
+  input: series_index, optional inclusive start/end, and optional period.
+  output: residual noise ratio/level and a noise-type hint.
+  purpose: separate structured variation from noise.
+- adf_stationarity:
+  input: series_index and optional inclusive start/end.
+  output: ADF statistic, p-value, and stationarity interpretation.
+  purpose: test whether a segment is statistically stationary.
+- change_points:
+  input: series_index and optional inclusive start/end.
+  output: candidate mean-shift/change-point indices.
+  purpose: identify regime transitions or abrupt level changes.
+- interval_compare:
+  input: one series_index and either left_interval/right_interval or start/mid/end.
+  output: per-interval mean, std, min/max, extrema counts, slope, and direction.
+  purpose: compare two stages of the same series, such as a drop followed by a low plateau.
+- crossing_points:
+  input: series_index, optional start/end, median/mean/zero/explicit threshold, and threshold_scope.
+  output: exact crossing count and global crossing indices.
+  purpose: answer median/threshold crossing questions directly. Default threshold_scope=series follows
+    MMTS by deriving the median/mean from the whole series while counting only inside start/end;
+    use threshold_scope=window only when the question explicitly defines a window-local threshold.
+- advanced_features:
+  input: series_index, optional start/end, entropy bins, chunk size, and ARCH lags.
+  output: IQR, skewness, excess kurtosis, normalized spectral entropy, separate histogram entropy,
+    stability=variance(chunk means), lumpiness=variance(chunk variances), a squared-value ARCH
+    regression proxy (LM/R-squared/p-value), and crossings at the whole-series median.
+  purpose: quantify distribution shape, irregularity, and changing variance.
+- counterfactual_simulate:
+  input: target series_index, optional requested_metrics/report_indices, and strict operations.
+    Each operation MUST be a JSON object with an "op" field, for example:
+    {"op":"replace_constant","start":0,"end":863,"value":3.5}
+    {"op":"replace_with_mean","start":32,"end":38}
+    {"op":"replace_segment","start":32,"end":38,"source_series_index":1,"source_start":20,"source_end":26}
+    Supported ops: set_value, replace_constant, replace_with_mean, replace_segment, shift,
+    scale_values, scale_std, cap, extrapolate_slope. A nested wrapper such as
+    {"replace_constant":{"start":0,"end":863,"value":3.5}} is also accepted.
+    requested_metrics examples: mean, std, max, max_index (alias max_value_index).
+    Unknown operation fields are rejected.
+  output: requested before/after summaries, deltas, actual changed indices, status,
+    evidence_usable, exact report_indices values, and changed-index preview from a copied series.
+  purpose: test an explicit hypothetical modification; never answer a counterfactual from the
+    unmodified statistics alone. It modifies only the selected series and cannot infer how another
+    series would respond without an explicit causal model. status=no_effect/evidence_usable=false
+    is not evidence for a counterfactual conclusion.
+- cross_series_compare:
+  input: two distinct series indices and a shared window, or one interval per series.
+  output: per-series segment statistics, trend agreement, normalized distance, correlation,
+    actual intervals, alignment_used, degraded, and warnings.
+  purpose: compare shapes or trends across two series; correlation is association, not proof of causality.
+- lag_corr:
+  input: series_index_1, series_index_2, and lag; "all" may be used for pair coverage.
+  output: lagged auto/cross-correlation for the requested pair(s).
+  purpose: inspect lead-lag association; it provides causal clues only, never causal proof.
+- lag_corr_scan:
+  input: two series indices, optional shared window, max_lag, and min_overlap.
+  output: correlation, p-value, and overlap at every scanned lag plus the strongest valid lag.
+  purpose: avoid guessing a single lag and reject tiny-overlap correlations; association is still
+    not proof of causality.
+- extrema_align:
+  input: two series indices, optional intervals, extrema kind, and max_lag.
+  output: matched extrema positions, normalized timing errors, event lag, event coverage/Jaccard,
+    alignment status, and global-extrema deltas.
+  purpose: determine whether peaks or troughs align across series.
+
+Tool-selection examples (references, not rigid keyword rules):
+- For "rapid fall followed by a long low state", use segment_trend on the full focus interval,
+  interval_compare on early versus late subwindows, and optionally change_points for the transition.
+- For "frequent random oscillation with no clear trend", combine segment_trend with diff_stats or
+  sliding_stats; use local_extrema only as supporting turning-point evidence.
+- For "single sharp peak", combine global_extrema with local_extrema and, when needed,
+  segment_trend on the intervals before and after the peak.
+- For "stepwise rise with several plateaus", use step_levels; interval_compare may verify how
+  early and late levels differ.
+- For "same behavior in two series over one window", use cross_series_compare and inspect both
+  per-series trends; add lag_corr only when lead-lag association is relevant.
+- For "periodic but noisy behavior", combine fft_period or autocorr with stl_strength and
+  noise_decomposition.
+- For "how many times does it cross its median", use crossing_points directly.
+- For "if this segment were replaced/scaled/continued", encode that edit in
+  counterfactual_simulate with JSON operations such as
+  {"op":"replace_constant","start":32,"end":38,"value":3000.0} and compare before/after metrics.
+- For "peaks align across two series", use extrema_align; for an unknown lead-lag relation,
+  use lag_corr_scan rather than trying one arbitrary lag.
+- For a choice question with competing shape descriptions, derive the observable claim in each
+  plausible option and choose complementary tools that can distinguish those claims. Do not select
+  a tool solely because an option contains a matching keyword.
+
+Tool data binding (critical):
+- Tools use pipeline-bound series. NEVER paste raw numeric arrays into arguments.
+- Select series with series_index (1-based): 1, [1,2,3], "Time Series 2", or "all".
+- If multiple series exist and series_index is omitted, tools analyze ALL series.
+- For local questions, pass start/end (inclusive) or left_interval/right_interval; prefer metadata.focus_intervals.
+- Prefer describe_series first for a multi-series overview.
+- If series_truncated=true, do not invent missing values; rely on tools over pasted text.
+- Treat adjusted=true or degraded=true results as qualified evidence and report the warning.
+  Do not present clamped, truncated, or fallback computations as exact requested computations.
+- For reverse Match tasks, cross_series_compare compares the displayed forward sequences and must
+  not be used to rank candidates whose required operation is reversal.
+
+Steps:
+1. Read <question>, <candidates>, <plan>, <timeseries>, <metadata>, and <tool_catalog>.
+2. Obey plan.scope / plan.notes (e.g., local windows, multi-series coverage).
+3. Choose tools matching the question semantics (see Tool selection guide).
+4. After tool results appear in <tool_results>, interpret them.
+5. Write observations covering EACH series when n_series>1; include evidence intervals.
+6. Self-check: no final answer letter; no fabricated numbers; do not claim all series
+   share a pattern unless tool results show it for each series_index.
+
+Output ONLY JSON (ScaleObservation):
+{
+  "reasoning": "string",
+  "scale": "medium",
+  "observations": ["string"],
+  "evidence_intervals": ["string"],
+  "confidence": 0.0,
+  "tool_calls": [{"name": "cross_series_compare", "arguments": {"series_index_1": 1, "series_index_2": 2, "start": 500, "end": 600}}],
+  "tool_summaries": ["string"]
+}
+If you still need tools, put them in tool_calls and keep observations tentative.
+If tools are already sufficient, set tool_calls to [].
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<plan>
+{"reasoning":"","capability":"structural_awareness","scope":"overall","univariate":true,"scales":["short","medium","long"],"heterogeneous_agents":["structure"],"notes":"Analyze the noise level/type in the given time series to determine which type it most resembles."}
+</plan>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+<tool_catalog>
+Tool binding rules:
+- Tools read pipeline-bound series; NEVER paste raw numeric arrays into arguments.
+- Use series_index (1-based): int, list like [1,2,3], 'Time Series 2', or 'all'.
+- If n_series>1 and series_index is omitted, tools fan out over ALL series.
+- lag_corr is pairwise: use series_index_1/2 as ints, or set either to 'all' for all pairs.
+- Optional window args: start/end (inclusive indices), window (alias window_size).
+
+- describe_series: Descriptive stats for EVERY series: mean/std/min/max/median/range/p50/p90/p99/slope (preferred multi-series overview).
+  args: {note=no series_index needed; always returns all series}
+- sliding_stats: Sliding-window mean/std for local volatility.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, window=int (alias window_size)}
+- diff_stats: First-difference stats and sign changes.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- local_extrema: Count local peaks and troughs (global indices). Do NOT use for step/plateau level counting—use step_levels instead.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- global_extrema: Global max/min indices and values; optional index classifies a point as global/local peak/trough (Base index tasks).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, index=optional int; if set, classify that index (global_extrema), index_base=0 (default) or 1}
+- segment_trend: Endpoint slope=(last-first)/(n-1) and direction for a segment; returns trend_method and flat_tolerance.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- step_levels: Count discrete step/plateau levels (unique values and plateau runs) in a window. Use for stepwise/staircase/plateau questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- value_at_index: Return the numeric value at a specific index (0-based by default).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), index=required int index, index_base=0 (default) or 1 if question uses 1-based indices}
+- anomaly_detect: Detect spikes/outliers via z-score threshold in a window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, z_threshold=float (default 3.0)}
+- autocorr: Autocorrelation up to max_lag inside the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, max_lag=int}
+- fft_period: Dominant period and spectral strength via FFT inside the requested window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- stl_strength: STL seasonal/trend strength inside the requested window; when period is omitted, the period is estimated by FFT on that same window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=int}
+- hurst_exponent: Estimate Hurst exponent for long-memory / persistence questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- noise_decomposition: STL residual noise ratio/level and noise-type hint (low/medium/high; gauss/uniform/quantization/random_walk_like).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=optional int}
+- adf_stationarity: ADF stationarity test on the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- change_points: Mean-shift candidates in the requested window; returned indices are global series indices.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- interval_compare: Compare left/right interval statistics on one series (mean/std/max/min/n_peaks/trend per side).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, left_interval=[start,end] inclusive, right_interval=[start,end] inclusive, start/mid/end=alt split mode; end is inclusive and mid begins right side}
+- crossing_points: Count crossings inside an optional window using a whole-series median/mean by default; threshold_scope='window' opts into a window-derived threshold.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, threshold=median|mean|zero (default median), threshold_value=optional explicit float, threshold_scope=series (default, MMTS) | window}
+- advanced_features: Advanced basic/volatility features: IQR, skewness, excess kurtosis, spectral and histogram entropy; stability=variance(chunk means), lumpiness=variance(chunk variances); squared-value ARCH regression proxy; and crossings at the whole-series median.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, bins=optional entropy histogram bins, chunk_size=optional stability/lumpiness chunk size, arch_lags=optional ARCH-LM lags (default 5)}
+- counterfactual_simulate: Apply counterfactual edits to a copied series and compare before/after statistics without mutating bound data. Supports set_value, replace_constant, replace_with_mean, replace_segment, shift, scale_values, scale_std, cap, and extrapolate_slope. It cannot infer how editing one series changes another.
+  args: {series_index=target 1-based series (default 1), operations=non-empty list of JSON operation objects with an op field, e.g. {"op":"replace_constant","start":0,"end":863,"value":3.5}; nested wrappers like {"replace_constant":{"start":0,"end":863,"value":3.5}} are accepted, index_base=0 (default) or 1, report_indices=optional indices whose exact before/after values are returned, requested_metrics=optional non-empty list of before/after summary keys (max_index alias max_value_index)}
+- cross_series_compare: Compare windows across TWO series (analogical / multi-series segment tasks). Returns per-series segment stats, trend match, distance, correlation.
+  args: {series_index_1=1-based int (default 1), series_index_2=1-based int (default 2), start=optional shared window start, end=optional shared window end, left_interval=optional [start,end] for series 1, right_interval=optional [start,end] for series 2}
+- extrema_align: Align peaks/troughs across two series or intervals; returns normalized event-position deltas, best event lag, and global-extrema index deltas.
+  args: {series_index_1=1-based int, series_index_2=1-based int, interval_1=optional [start,end], interval_2=optional [start,end], kind=both|peaks|troughs, max_lag=optional event lag scan bound}
+- lag_corr: Auto or cross lag correlation. Use series_index_1/2 ints, or 'all' for all pairs.
+  args: {lag=int, series_index_1=1-based int|'all', series_index_2=1-based int|'all'}
+- lag_corr_scan: Scan cross-correlation over positive and negative lags and report the strongest lead-lag association; association is not causal proof.
+  args: {series_index_1=1-based int, series_index_2=1-based int, start=optional shared inclusive start, end=optional shared inclusive end, max_lag=scan bound (default min(20,n/4)), min_overlap=minimum paired points per lag (default max(8,10% of length))}
+</tool_catalog>
+
+<tool_results>
+(none)
+</tool_results>
+
+Produce the ScaleObservation JSON for the medium scale.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "To determine the type of noise in Time Series 1, we will analyze the residuals after separating the structured variation using STL decomposition and then classify the noise based on its characteristics.",
+  "scale": "medium",
+  "observations": ["We'll use STL decomposition to separate trend and seasonality from the noise, then classify the noise type by its characteristics."],
+  "evidence_intervals": ["Full series"],
+  "confidence": 0.7,
+  "tool_calls": [
+    {
+      "name": "stl_strength",
+      "arguments": {
+        "series_index": 1,
+        "start": 0,
+        "end": 1313
+      }
+    },
+    {
+      "name": "noise_decomposition",
+      "arguments": {
+        "series_index": 1,
+        "start": 0,
+        "end": 1313
+      }
+    }
+  ],
+  "tool_summaries": []
+}
+```
+
+## Call 5: `homogeneous:medium:round2`
+
+tokens prompt=15372 completion=283 latency=16.13s cached=False
+
+### INPUT role=`system`
+
+```
+You are a medium-scale Homogeneous Temporal Understanding Agent.
+You may request tools from the whitelist and must ground numerical claims in tool evidence.
+Do NOT output the final multiple-choice answer.
+
+Focus:
+- short: local changes, short cycles, abrupt shifts, recent volatility
+- medium: seasonality, staged regimes, mid-scale change points
+- long: global trend, non-stationarity, long-range structure
+
+Whitelist tools for Homo (medium scale):
+describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength,
+hurst_exponent, noise_decomposition, adf_stationarity, change_points,
+interval_compare, crossing_points, advanced_features, counterfactual_simulate,
+cross_series_compare, extrema_align, lag_corr, lag_corr_scan
+
+Tool capabilities (inputs -> outputs -> purpose):
+- describe_series:
+  input: pipeline-bound series (no series_index; it summarizes every series).
+  output: length, mean, std, min/max, median, range, percentiles, endpoints, and linear slope.
+  purpose: obtain a broad statistical overview before making more specific claims.
+- diff_stats:
+  input: series_index and optional inclusive start/end.
+  output: first-difference statistics and sign-change information.
+  purpose: measure point-to-point change, direction switching, and roughness.
+- sliding_stats:
+  input: series_index, optional inclusive start/end, and window size.
+  output: aggregated local means/stds and maximum local variability.
+  purpose: inspect how level and volatility vary within a segment.
+- local_extrema:
+  input: series_index and optional inclusive start/end.
+  output: counts and global indices of local peaks and troughs.
+  purpose: locate local turning points. Extrema alone do NOT prove randomness, absence of trend,
+    or the number of plateau/step levels.
+- global_extrema:
+  input: series_index, optional inclusive start/end, and optional index/index_base.
+  output: global minimum/maximum values and indices; optional classification of a queried point.
+  purpose: answer global high/low and point-extremum questions.
+- segment_trend:
+  input: series_index and optional inclusive start/end.
+  output: endpoint slope=(last-first)/(n-1), direction, trend_method, and flat_tolerance.
+  purpose: quantify net endpoint direction; it is not an OLS fitted trend.
+- step_levels:
+  input: series_index and optional inclusive start/end.
+  output: discrete value/plateau run counts and level information.
+  purpose: analyze stepwise, staircase, level, or plateau structure; do not substitute local_extrema.
+- value_at_index:
+  input: series_index, required index, and index_base (0 or 1).
+  output: exact value at the requested index.
+  purpose: verify claims tied to a particular position.
+- anomaly_detect:
+  input: series_index, optional inclusive start/end, and optional z_threshold.
+  output: anomalous values with their indices and scores.
+  purpose: identify isolated spikes or outliers.
+- autocorr:
+  input: series_index, optional inclusive start/end, and max_lag.
+  output: autocorrelation values over lags.
+  purpose: inspect repeated dependence and candidate periodic behavior.
+- fft_period:
+  input: series_index and optional inclusive start/end.
+  output: dominant spectral period and spectral evidence.
+  purpose: estimate a dominant cycle, especially at medium/long scales.
+- stl_strength:
+  input: series_index, optional inclusive start/end, and period.
+  output: trend and seasonal strengths from STL decomposition.
+  purpose: distinguish trend, seasonality, and residual variation.
+- hurst_exponent:
+  input: series_index and optional inclusive start/end.
+  output: estimated Hurst exponent and persistence interpretation.
+  purpose: assess long-memory, persistence, or mean-reverting behavior.
+- noise_decomposition:
+  input: series_index, optional inclusive start/end, and optional period.
+  output: residual noise ratio/level and a noise-type hint.
+  purpose: separate structured variation from noise.
+- adf_stationarity:
+  input: series_index and optional inclusive start/end.
+  output: ADF statistic, p-value, and stationarity interpretation.
+  purpose: test whether a segment is statistically stationary.
+- change_points:
+  input: series_index and optional inclusive start/end.
+  output: candidate mean-shift/change-point indices.
+  purpose: identify regime transitions or abrupt level changes.
+- interval_compare:
+  input: one series_index and either left_interval/right_interval or start/mid/end.
+  output: per-interval mean, std, min/max, extrema counts, slope, and direction.
+  purpose: compare two stages of the same series, such as a drop followed by a low plateau.
+- crossing_points:
+  input: series_index, optional start/end, median/mean/zero/explicit threshold, and threshold_scope.
+  output: exact crossing count and global crossing indices.
+  purpose: answer median/threshold crossing questions directly. Default threshold_scope=series follows
+    MMTS by deriving the median/mean from the whole series while counting only inside start/end;
+    use threshold_scope=window only when the question explicitly defines a window-local threshold.
+- advanced_features:
+  input: series_index, optional start/end, entropy bins, chunk size, and ARCH lags.
+  output: IQR, skewness, excess kurtosis, normalized spectral entropy, separate histogram entropy,
+    stability=variance(chunk means), lumpiness=variance(chunk variances), a squared-value ARCH
+    regression proxy (LM/R-squared/p-value), and crossings at the whole-series median.
+  purpose: quantify distribution shape, irregularity, and changing variance.
+- counterfactual_simulate:
+  input: target series_index, optional requested_metrics/report_indices, and strict operations.
+    Each operation MUST be a JSON object with an "op" field, for example:
+    {"op":"replace_constant","start":0,"end":863,"value":3.5}
+    {"op":"replace_with_mean","start":32,"end":38}
+    {"op":"replace_segment","start":32,"end":38,"source_series_index":1,"source_start":20,"source_end":26}
+    Supported ops: set_value, replace_constant, replace_with_mean, replace_segment, shift,
+    scale_values, scale_std, cap, extrapolate_slope. A nested wrapper such as
+    {"replace_constant":{"start":0,"end":863,"value":3.5}} is also accepted.
+    requested_metrics examples: mean, std, max, max_index (alias max_value_index).
+    Unknown operation fields are rejected.
+  output: requested before/after summaries, deltas, actual changed indices, status,
+    evidence_usable, exact report_indices values, and changed-index preview from a copied series.
+  purpose: test an explicit hypothetical modification; never answer a counterfactual from the
+    unmodified statistics alone. It modifies only the selected series and cannot infer how another
+    series would respond without an explicit causal model. status=no_effect/evidence_usable=false
+    is not evidence for a counterfactual conclusion.
+- cross_series_compare:
+  input: two distinct series indices and a shared window, or one interval per series.
+  output: per-series segment statistics, trend agreement, normalized distance, correlation,
+    actual intervals, alignment_used, degraded, and warnings.
+  purpose: compare shapes or trends across two series; correlation is association, not proof of causality.
+- lag_corr:
+  input: series_index_1, series_index_2, and lag; "all" may be used for pair coverage.
+  output: lagged auto/cross-correlation for the requested pair(s).
+  purpose: inspect lead-lag association; it provides causal clues only, never causal proof.
+- lag_corr_scan:
+  input: two series indices, optional shared window, max_lag, and min_overlap.
+  output: correlation, p-value, and overlap at every scanned lag plus the strongest valid lag.
+  purpose: avoid guessing a single lag and reject tiny-overlap correlations; association is still
+    not proof of causality.
+- extrema_align:
+  input: two series indices, optional intervals, extrema kind, and max_lag.
+  output: matched extrema positions, normalized timing errors, event lag, event coverage/Jaccard,
+    alignment status, and global-extrema deltas.
+  purpose: determine whether peaks or troughs align across series.
+
+Tool-selection examples (references, not rigid keyword rules):
+- For "rapid fall followed by a long low state", use segment_trend on the full focus interval,
+  interval_compare on early versus late subwindows, and optionally change_points for the transition.
+- For "frequent random oscillation with no clear trend", combine segment_trend with diff_stats or
+  sliding_stats; use local_extrema only as supporting turning-point evidence.
+- For "single sharp peak", combine global_extrema with local_extrema and, when needed,
+  segment_trend on the intervals before and after the peak.
+- For "stepwise rise with several plateaus", use step_levels; interval_compare may verify how
+  early and late levels differ.
+- For "same behavior in two series over one window", use cross_series_compare and inspect both
+  per-series trends; add lag_corr only when lead-lag association is relevant.
+- For "periodic but noisy behavior", combine fft_period or autocorr with stl_strength and
+  noise_decomposition.
+- For "how many times does it cross its median", use crossing_points directly.
+- For "if this segment were replaced/scaled/continued", encode that edit in
+  counterfactual_simulate with JSON operations such as
+  {"op":"replace_constant","start":32,"end":38,"value":3000.0} and compare before/after metrics.
+- For "peaks align across two series", use extrema_align; for an unknown lead-lag relation,
+  use lag_corr_scan rather than trying one arbitrary lag.
+- For a choice question with competing shape descriptions, derive the observable claim in each
+  plausible option and choose complementary tools that can distinguish those claims. Do not select
+  a tool solely because an option contains a matching keyword.
+
+Tool data binding (critical):
+- Tools use pipeline-bound series. NEVER paste raw numeric arrays into arguments.
+- Select series with series_index (1-based): 1, [1,2,3], "Time Series 2", or "all".
+- If multiple series exist and series_index is omitted, tools analyze ALL series.
+- For local questions, pass start/end (inclusive) or left_interval/right_interval; prefer metadata.focus_intervals.
+- Prefer describe_series first for a multi-series overview.
+- If series_truncated=true, do not invent missing values; rely on tools over pasted text.
+- Treat adjusted=true or degraded=true results as qualified evidence and report the warning.
+  Do not present clamped, truncated, or fallback computations as exact requested computations.
+- For reverse Match tasks, cross_series_compare compares the displayed forward sequences and must
+  not be used to rank candidates whose required operation is reversal.
+
+Steps:
+1. Read <question>, <candidates>, <plan>, <timeseries>, <metadata>, and <tool_catalog>.
+2. Obey plan.scope / plan.notes (e.g., local windows, multi-series coverage).
+3. Choose tools matching the question semantics (see Tool selection guide).
+4. After tool results appear in <tool_results>, interpret them.
+5. Write observations covering EACH series when n_series>1; include evidence intervals.
+6. Self-check: no final answer letter; no fabricated numbers; do not claim all series
+   share a pattern unless tool results show it for each series_index.
+
+Output ONLY JSON (ScaleObservation):
+{
+  "reasoning": "string",
+  "scale": "medium",
+  "observations": ["string"],
+  "evidence_intervals": ["string"],
+  "confidence": 0.0,
+  "tool_calls": [{"name": "cross_series_compare", "arguments": {"series_index_1": 1, "series_index_2": 2, "start": 500, "end": 600}}],
+  "tool_summaries": ["string"]
+}
+If you still need tools, put them in tool_calls and keep observations tentative.
+If tools are already sufficient, set tool_calls to [].
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<plan>
+{"reasoning":"","capability":"structural_awareness","scope":"overall","univariate":true,"scales":["short","medium","long"],"heterogeneous_agents":["structure"],"notes":"Analyze the noise level/type in the given time series to determine which type it most resembles."}
+</plan>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+<tool_catalog>
+Tool binding rules:
+- Tools read pipeline-bound series; NEVER paste raw numeric arrays into arguments.
+- Use series_index (1-based): int, list like [1,2,3], 'Time Series 2', or 'all'.
+- If n_series>1 and series_index is omitted, tools fan out over ALL series.
+- lag_corr is pairwise: use series_index_1/2 as ints, or set either to 'all' for all pairs.
+- Optional window args: start/end (inclusive indices), window (alias window_size).
+
+- describe_series: Descriptive stats for EVERY series: mean/std/min/max/median/range/p50/p90/p99/slope (preferred multi-series overview).
+  args: {note=no series_index needed; always returns all series}
+- sliding_stats: Sliding-window mean/std for local volatility.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, window=int (alias window_size)}
+- diff_stats: First-difference stats and sign changes.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- local_extrema: Count local peaks and troughs (global indices). Do NOT use for step/plateau level counting—use step_levels instead.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- global_extrema: Global max/min indices and values; optional index classifies a point as global/local peak/trough (Base index tasks).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, index=optional int; if set, classify that index (global_extrema), index_base=0 (default) or 1}
+- segment_trend: Endpoint slope=(last-first)/(n-1) and direction for a segment; returns trend_method and flat_tolerance.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- step_levels: Count discrete step/plateau levels (unique values and plateau runs) in a window. Use for stepwise/staircase/plateau questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- value_at_index: Return the numeric value at a specific index (0-based by default).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), index=required int index, index_base=0 (default) or 1 if question uses 1-based indices}
+- anomaly_detect: Detect spikes/outliers via z-score threshold in a window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, z_threshold=float (default 3.0)}
+- autocorr: Autocorrelation up to max_lag inside the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, max_lag=int}
+- fft_period: Dominant period and spectral strength via FFT inside the requested window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- stl_strength: STL seasonal/trend strength inside the requested window; when period is omitted, the period is estimated by FFT on that same window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=int}
+- hurst_exponent: Estimate Hurst exponent for long-memory / persistence questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- noise_decomposition: STL residual noise ratio/level and noise-type hint (low/medium/high; gauss/uniform/quantization/random_walk_like).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=optional int}
+- adf_stationarity: ADF stationarity test on the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- change_points: Mean-shift candidates in the requested window; returned indices are global series indices.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- interval_compare: Compare left/right interval statistics on one series (mean/std/max/min/n_peaks/trend per side).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, left_interval=[start,end] inclusive, right_interval=[start,end] inclusive, start/mid/end=alt split mode; end is inclusive and mid begins right side}
+- crossing_points: Count crossings inside an optional window using a whole-series median/mean by default; threshold_scope='window' opts into a window-derived threshold.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, threshold=median|mean|zero (default median), threshold_value=optional explicit float, threshold_scope=series (default, MMTS) | window}
+- advanced_features: Advanced basic/volatility features: IQR, skewness, excess kurtosis, spectral and histogram entropy; stability=variance(chunk means), lumpiness=variance(chunk variances); squared-value ARCH regression proxy; and crossings at the whole-series median.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, bins=optional entropy histogram bins, chunk_size=optional stability/lumpiness chunk size, arch_lags=optional ARCH-LM lags (default 5)}
+- counterfactual_simulate: Apply counterfactual edits to a copied series and compare before/after statistics without mutating bound data. Supports set_value, replace_constant, replace_with_mean, replace_segment, shift, scale_values, scale_std, cap, and extrapolate_slope. It cannot infer how editing one series changes another.
+  args: {series_index=target 1-based series (default 1), operations=non-empty list of JSON operation objects with an op field, e.g. {"op":"replace_constant","start":0,"end":863,"value":3.5}; nested wrappers like {"replace_constant":{"start":0,"end":863,"value":3.5}} are accepted, index_base=0 (default) or 1, report_indices=optional indices whose exact before/after values are returned, requested_metrics=optional non-empty list of before/after summary keys (max_index alias max_value_index)}
+- cross_series_compare: Compare windows across TWO series (analogical / multi-series segment tasks). Returns per-series segment stats, trend match, distance, correlation.
+  args: {series_index_1=1-based int (default 1), series_index_2=1-based int (default 2), start=optional shared window start, end=optional shared window end, left_interval=optional [start,end] for series 1, right_interval=optional [start,end] for series 2}
+- extrema_align: Align peaks/troughs across two series or intervals; returns normalized event-position deltas, best event lag, and global-extrema index deltas.
+  args: {series_index_1=1-based int, series_index_2=1-based int, interval_1=optional [start,end], interval_2=optional [start,end], kind=both|peaks|troughs, max_lag=optional event lag scan bound}
+- lag_corr: Auto or cross lag correlation. Use series_index_1/2 ints, or 'all' for all pairs.
+  args: {lag=int, series_index_1=1-based int|'all', series_index_2=1-based int|'all'}
+- lag_corr_scan: Scan cross-correlation over positive and negative lags and report the strongest lead-lag association; association is not causal proof.
+  args: {series_index_1=1-based int, series_index_2=1-based int, start=optional shared inclusive start, end=optional shared inclusive end, max_lag=scan bound (default min(20,n/4)), min_overlap=minimum paired points per lag (default max(8,10% of length))}
+</tool_catalog>
+
+<tool_results>
+[
+  {
+    "name": "stl_strength",
+    "success": true,
+    "data": {
+      "series_index": 1,
+      "start": 0,
+      "end": 1313,
+      "requested_window": [
+        0,
+        1313
+      ],
+      "adjusted": false,
+      "warnings": [],
+      "period": 262,
+      "seasonal_strength": 0.9974548036136263,
+      "trend_strength": 0.7389982921253591
+    },
+    "error": null
+  },
+  {
+    "name": "noise_decomposition",
+    "success": true,
+    "data": {
+      "series_index": 1,
+      "start": 0,
+      "end": 1313,
+      "period": 262,
+      "residual_std": 12.224101304536662,
+      "series_std": 241.93953608609914,
+      "noise_ratio": 0.050525439133628884,
+      "noise_level": "low",
+      "seasonal_strength": 0.9974548036136263,
+      "trend_strength": 0.7389982921253591,
+      "noise_type_hint": "random_walk_like",
+      "acf_lag1": 0.9971976264961664
+    },
+    "error": null
+  }
+]
+</tool_results>
+
+Produce the ScaleObservation JSON for the medium scale.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "The noise analysis was performed using the noise_decomposition and stl_strength tools. The noise_decomposition tool returned a noise ratio of 0.0505, indicating low noise levels. The noise_type_hint indicates that the noise in the time series most resembles a random walk. This aligns with the observation from the stl_strength tool which shows weak trend and strong seasonal components, suggesting that the residual noise might behave like a random walk.",
+  "scale": "medium",
+  "observations": [
+    "The noise level is classified as low with a noise ratio of approximately 0.0505, indicating minimal influence of noise compared to the overall signal strength.",
+    "The noise type hint suggests that the noise most closely resembles a random walk, based on the weak trend and strong seasonal components observed."
+  ],
+  "evidence_intervals": [
+    "The entire series [0, 1313]"
+  ],
+  "confidence": 0.9,
+  "tool_calls": [],
+  "tool_summaries": [
+    "stl_strength: Trend strength 0.739, Seasonal strength 0.997, Period 262",
+    "noise_decomposition: Noise ratio 0.0505, Noise level 'low', Noise type hint 'random_walk_like'"
+  ]
+}
+```
+
+## Call 6: `homogeneous:long:round1`
+
+tokens prompt=14983 completion=264 latency=15.10s cached=False
+
+### INPUT role=`system`
+
+```
+You are a long-scale Homogeneous Temporal Understanding Agent.
+You may request tools from the whitelist and must ground numerical claims in tool evidence.
+Do NOT output the final multiple-choice answer.
+
+Focus:
+- short: local changes, short cycles, abrupt shifts, recent volatility
+- medium: seasonality, staged regimes, mid-scale change points
+- long: global trend, non-stationarity, long-range structure
+
+Whitelist tools for Homo (long scale):
+describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength,
+hurst_exponent, noise_decomposition, adf_stationarity, change_points,
+interval_compare, crossing_points, advanced_features, counterfactual_simulate,
+cross_series_compare, extrema_align, lag_corr, lag_corr_scan
+
+Tool capabilities (inputs -> outputs -> purpose):
+- describe_series:
+  input: pipeline-bound series (no series_index; it summarizes every series).
+  output: length, mean, std, min/max, median, range, percentiles, endpoints, and linear slope.
+  purpose: obtain a broad statistical overview before making more specific claims.
+- diff_stats:
+  input: series_index and optional inclusive start/end.
+  output: first-difference statistics and sign-change information.
+  purpose: measure point-to-point change, direction switching, and roughness.
+- sliding_stats:
+  input: series_index, optional inclusive start/end, and window size.
+  output: aggregated local means/stds and maximum local variability.
+  purpose: inspect how level and volatility vary within a segment.
+- local_extrema:
+  input: series_index and optional inclusive start/end.
+  output: counts and global indices of local peaks and troughs.
+  purpose: locate local turning points. Extrema alone do NOT prove randomness, absence of trend,
+    or the number of plateau/step levels.
+- global_extrema:
+  input: series_index, optional inclusive start/end, and optional index/index_base.
+  output: global minimum/maximum values and indices; optional classification of a queried point.
+  purpose: answer global high/low and point-extremum questions.
+- segment_trend:
+  input: series_index and optional inclusive start/end.
+  output: endpoint slope=(last-first)/(n-1), direction, trend_method, and flat_tolerance.
+  purpose: quantify net endpoint direction; it is not an OLS fitted trend.
+- step_levels:
+  input: series_index and optional inclusive start/end.
+  output: discrete value/plateau run counts and level information.
+  purpose: analyze stepwise, staircase, level, or plateau structure; do not substitute local_extrema.
+- value_at_index:
+  input: series_index, required index, and index_base (0 or 1).
+  output: exact value at the requested index.
+  purpose: verify claims tied to a particular position.
+- anomaly_detect:
+  input: series_index, optional inclusive start/end, and optional z_threshold.
+  output: anomalous values with their indices and scores.
+  purpose: identify isolated spikes or outliers.
+- autocorr:
+  input: series_index, optional inclusive start/end, and max_lag.
+  output: autocorrelation values over lags.
+  purpose: inspect repeated dependence and candidate periodic behavior.
+- fft_period:
+  input: series_index and optional inclusive start/end.
+  output: dominant spectral period and spectral evidence.
+  purpose: estimate a dominant cycle, especially at medium/long scales.
+- stl_strength:
+  input: series_index, optional inclusive start/end, and period.
+  output: trend and seasonal strengths from STL decomposition.
+  purpose: distinguish trend, seasonality, and residual variation.
+- hurst_exponent:
+  input: series_index and optional inclusive start/end.
+  output: estimated Hurst exponent and persistence interpretation.
+  purpose: assess long-memory, persistence, or mean-reverting behavior.
+- noise_decomposition:
+  input: series_index, optional inclusive start/end, and optional period.
+  output: residual noise ratio/level and a noise-type hint.
+  purpose: separate structured variation from noise.
+- adf_stationarity:
+  input: series_index and optional inclusive start/end.
+  output: ADF statistic, p-value, and stationarity interpretation.
+  purpose: test whether a segment is statistically stationary.
+- change_points:
+  input: series_index and optional inclusive start/end.
+  output: candidate mean-shift/change-point indices.
+  purpose: identify regime transitions or abrupt level changes.
+- interval_compare:
+  input: one series_index and either left_interval/right_interval or start/mid/end.
+  output: per-interval mean, std, min/max, extrema counts, slope, and direction.
+  purpose: compare two stages of the same series, such as a drop followed by a low plateau.
+- crossing_points:
+  input: series_index, optional start/end, median/mean/zero/explicit threshold, and threshold_scope.
+  output: exact crossing count and global crossing indices.
+  purpose: answer median/threshold crossing questions directly. Default threshold_scope=series follows
+    MMTS by deriving the median/mean from the whole series while counting only inside start/end;
+    use threshold_scope=window only when the question explicitly defines a window-local threshold.
+- advanced_features:
+  input: series_index, optional start/end, entropy bins, chunk size, and ARCH lags.
+  output: IQR, skewness, excess kurtosis, normalized spectral entropy, separate histogram entropy,
+    stability=variance(chunk means), lumpiness=variance(chunk variances), a squared-value ARCH
+    regression proxy (LM/R-squared/p-value), and crossings at the whole-series median.
+  purpose: quantify distribution shape, irregularity, and changing variance.
+- counterfactual_simulate:
+  input: target series_index, optional requested_metrics/report_indices, and strict operations.
+    Each operation MUST be a JSON object with an "op" field, for example:
+    {"op":"replace_constant","start":0,"end":863,"value":3.5}
+    {"op":"replace_with_mean","start":32,"end":38}
+    {"op":"replace_segment","start":32,"end":38,"source_series_index":1,"source_start":20,"source_end":26}
+    Supported ops: set_value, replace_constant, replace_with_mean, replace_segment, shift,
+    scale_values, scale_std, cap, extrapolate_slope. A nested wrapper such as
+    {"replace_constant":{"start":0,"end":863,"value":3.5}} is also accepted.
+    requested_metrics examples: mean, std, max, max_index (alias max_value_index).
+    Unknown operation fields are rejected.
+  output: requested before/after summaries, deltas, actual changed indices, status,
+    evidence_usable, exact report_indices values, and changed-index preview from a copied series.
+  purpose: test an explicit hypothetical modification; never answer a counterfactual from the
+    unmodified statistics alone. It modifies only the selected series and cannot infer how another
+    series would respond without an explicit causal model. status=no_effect/evidence_usable=false
+    is not evidence for a counterfactual conclusion.
+- cross_series_compare:
+  input: two distinct series indices and a shared window, or one interval per series.
+  output: per-series segment statistics, trend agreement, normalized distance, correlation,
+    actual intervals, alignment_used, degraded, and warnings.
+  purpose: compare shapes or trends across two series; correlation is association, not proof of causality.
+- lag_corr:
+  input: series_index_1, series_index_2, and lag; "all" may be used for pair coverage.
+  output: lagged auto/cross-correlation for the requested pair(s).
+  purpose: inspect lead-lag association; it provides causal clues only, never causal proof.
+- lag_corr_scan:
+  input: two series indices, optional shared window, max_lag, and min_overlap.
+  output: correlation, p-value, and overlap at every scanned lag plus the strongest valid lag.
+  purpose: avoid guessing a single lag and reject tiny-overlap correlations; association is still
+    not proof of causality.
+- extrema_align:
+  input: two series indices, optional intervals, extrema kind, and max_lag.
+  output: matched extrema positions, normalized timing errors, event lag, event coverage/Jaccard,
+    alignment status, and global-extrema deltas.
+  purpose: determine whether peaks or troughs align across series.
+
+Tool-selection examples (references, not rigid keyword rules):
+- For "rapid fall followed by a long low state", use segment_trend on the full focus interval,
+  interval_compare on early versus late subwindows, and optionally change_points for the transition.
+- For "frequent random oscillation with no clear trend", combine segment_trend with diff_stats or
+  sliding_stats; use local_extrema only as supporting turning-point evidence.
+- For "single sharp peak", combine global_extrema with local_extrema and, when needed,
+  segment_trend on the intervals before and after the peak.
+- For "stepwise rise with several plateaus", use step_levels; interval_compare may verify how
+  early and late levels differ.
+- For "same behavior in two series over one window", use cross_series_compare and inspect both
+  per-series trends; add lag_corr only when lead-lag association is relevant.
+- For "periodic but noisy behavior", combine fft_period or autocorr with stl_strength and
+  noise_decomposition.
+- For "how many times does it cross its median", use crossing_points directly.
+- For "if this segment were replaced/scaled/continued", encode that edit in
+  counterfactual_simulate with JSON operations such as
+  {"op":"replace_constant","start":32,"end":38,"value":3000.0} and compare before/after metrics.
+- For "peaks align across two series", use extrema_align; for an unknown lead-lag relation,
+  use lag_corr_scan rather than trying one arbitrary lag.
+- For a choice question with competing shape descriptions, derive the observable claim in each
+  plausible option and choose complementary tools that can distinguish those claims. Do not select
+  a tool solely because an option contains a matching keyword.
+
+Tool data binding (critical):
+- Tools use pipeline-bound series. NEVER paste raw numeric arrays into arguments.
+- Select series with series_index (1-based): 1, [1,2,3], "Time Series 2", or "all".
+- If multiple series exist and series_index is omitted, tools analyze ALL series.
+- For local questions, pass start/end (inclusive) or left_interval/right_interval; prefer metadata.focus_intervals.
+- Prefer describe_series first for a multi-series overview.
+- If series_truncated=true, do not invent missing values; rely on tools over pasted text.
+- Treat adjusted=true or degraded=true results as qualified evidence and report the warning.
+  Do not present clamped, truncated, or fallback computations as exact requested computations.
+- For reverse Match tasks, cross_series_compare compares the displayed forward sequences and must
+  not be used to rank candidates whose required operation is reversal.
+
+Steps:
+1. Read <question>, <candidates>, <plan>, <timeseries>, <metadata>, and <tool_catalog>.
+2. Obey plan.scope / plan.notes (e.g., local windows, multi-series coverage).
+3. Choose tools matching the question semantics (see Tool selection guide).
+4. After tool results appear in <tool_results>, interpret them.
+5. Write observations covering EACH series when n_series>1; include evidence intervals.
+6. Self-check: no final answer letter; no fabricated numbers; do not claim all series
+   share a pattern unless tool results show it for each series_index.
+
+Output ONLY JSON (ScaleObservation):
+{
+  "reasoning": "string",
+  "scale": "long",
+  "observations": ["string"],
+  "evidence_intervals": ["string"],
+  "confidence": 0.0,
+  "tool_calls": [{"name": "cross_series_compare", "arguments": {"series_index_1": 1, "series_index_2": 2, "start": 500, "end": 600}}],
+  "tool_summaries": ["string"]
+}
+If you still need tools, put them in tool_calls and keep observations tentative.
+If tools are already sufficient, set tool_calls to [].
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<plan>
+{"reasoning":"","capability":"structural_awareness","scope":"overall","univariate":true,"scales":["short","medium","long"],"heterogeneous_agents":["structure"],"notes":"Analyze the noise level/type in the given time series to determine which type it most resembles."}
+</plan>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+<tool_catalog>
+Tool binding rules:
+- Tools read pipeline-bound series; NEVER paste raw numeric arrays into arguments.
+- Use series_index (1-based): int, list like [1,2,3], 'Time Series 2', or 'all'.
+- If n_series>1 and series_index is omitted, tools fan out over ALL series.
+- lag_corr is pairwise: use series_index_1/2 as ints, or set either to 'all' for all pairs.
+- Optional window args: start/end (inclusive indices), window (alias window_size).
+
+- describe_series: Descriptive stats for EVERY series: mean/std/min/max/median/range/p50/p90/p99/slope (preferred multi-series overview).
+  args: {note=no series_index needed; always returns all series}
+- sliding_stats: Sliding-window mean/std for local volatility.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, window=int (alias window_size)}
+- diff_stats: First-difference stats and sign changes.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- local_extrema: Count local peaks and troughs (global indices). Do NOT use for step/plateau level counting—use step_levels instead.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- global_extrema: Global max/min indices and values; optional index classifies a point as global/local peak/trough (Base index tasks).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, index=optional int; if set, classify that index (global_extrema), index_base=0 (default) or 1}
+- segment_trend: Endpoint slope=(last-first)/(n-1) and direction for a segment; returns trend_method and flat_tolerance.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- step_levels: Count discrete step/plateau levels (unique values and plateau runs) in a window. Use for stepwise/staircase/plateau questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- value_at_index: Return the numeric value at a specific index (0-based by default).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), index=required int index, index_base=0 (default) or 1 if question uses 1-based indices}
+- anomaly_detect: Detect spikes/outliers via z-score threshold in a window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, z_threshold=float (default 3.0)}
+- autocorr: Autocorrelation up to max_lag inside the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, max_lag=int}
+- fft_period: Dominant period and spectral strength via FFT inside the requested window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- stl_strength: STL seasonal/trend strength inside the requested window; when period is omitted, the period is estimated by FFT on that same window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=int}
+- hurst_exponent: Estimate Hurst exponent for long-memory / persistence questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- noise_decomposition: STL residual noise ratio/level and noise-type hint (low/medium/high; gauss/uniform/quantization/random_walk_like).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=optional int}
+- adf_stationarity: ADF stationarity test on the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- change_points: Mean-shift candidates in the requested window; returned indices are global series indices.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- interval_compare: Compare left/right interval statistics on one series (mean/std/max/min/n_peaks/trend per side).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, left_interval=[start,end] inclusive, right_interval=[start,end] inclusive, start/mid/end=alt split mode; end is inclusive and mid begins right side}
+- crossing_points: Count crossings inside an optional window using a whole-series median/mean by default; threshold_scope='window' opts into a window-derived threshold.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, threshold=median|mean|zero (default median), threshold_value=optional explicit float, threshold_scope=series (default, MMTS) | window}
+- advanced_features: Advanced basic/volatility features: IQR, skewness, excess kurtosis, spectral and histogram entropy; stability=variance(chunk means), lumpiness=variance(chunk variances); squared-value ARCH regression proxy; and crossings at the whole-series median.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, bins=optional entropy histogram bins, chunk_size=optional stability/lumpiness chunk size, arch_lags=optional ARCH-LM lags (default 5)}
+- counterfactual_simulate: Apply counterfactual edits to a copied series and compare before/after statistics without mutating bound data. Supports set_value, replace_constant, replace_with_mean, replace_segment, shift, scale_values, scale_std, cap, and extrapolate_slope. It cannot infer how editing one series changes another.
+  args: {series_index=target 1-based series (default 1), operations=non-empty list of JSON operation objects with an op field, e.g. {"op":"replace_constant","start":0,"end":863,"value":3.5}; nested wrappers like {"replace_constant":{"start":0,"end":863,"value":3.5}} are accepted, index_base=0 (default) or 1, report_indices=optional indices whose exact before/after values are returned, requested_metrics=optional non-empty list of before/after summary keys (max_index alias max_value_index)}
+- cross_series_compare: Compare windows across TWO series (analogical / multi-series segment tasks). Returns per-series segment stats, trend match, distance, correlation.
+  args: {series_index_1=1-based int (default 1), series_index_2=1-based int (default 2), start=optional shared window start, end=optional shared window end, left_interval=optional [start,end] for series 1, right_interval=optional [start,end] for series 2}
+- extrema_align: Align peaks/troughs across two series or intervals; returns normalized event-position deltas, best event lag, and global-extrema index deltas.
+  args: {series_index_1=1-based int, series_index_2=1-based int, interval_1=optional [start,end], interval_2=optional [start,end], kind=both|peaks|troughs, max_lag=optional event lag scan bound}
+- lag_corr: Auto or cross lag correlation. Use series_index_1/2 ints, or 'all' for all pairs.
+  args: {lag=int, series_index_1=1-based int|'all', series_index_2=1-based int|'all'}
+- lag_corr_scan: Scan cross-correlation over positive and negative lags and report the strongest lead-lag association; association is not causal proof.
+  args: {series_index_1=1-based int, series_index_2=1-based int, start=optional shared inclusive start, end=optional shared inclusive end, max_lag=scan bound (default min(20,n/4)), min_overlap=minimum paired points per lag (default max(8,10% of length))}
+</tool_catalog>
+
+<tool_results>
+(none)
+</tool_results>
+
+Produce the ScaleObservation JSON for the long scale.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "To determine the noise type in the given time series, we will examine the noise patterns through advanced features, specifically focusing on the noise decomposition method to distinguish between uniform, Gaussian, quantization, and random walk-like noise.",
+  "scale": "long",
+  "observations": [
+    "Analyzing the advanced features including IQR, skewness, kurtosis, spectral entropy, histogram entropy, stability, lumpiness, squared-value ARCH regression, and median crossings can give insights into the noise characteristics of the time series."
+  ],
+  "evidence_intervals": ["full series"],
+  "confidence": 0.0,
+  "tool_calls": [
+    {
+      "name": "noise_decomposition",
+      "arguments": {
+        "series_index": 1,
+        "start": 0,
+        "end": 1313
+      }
+    },
+    {
+      "name": "advanced_features",
+      "arguments": {
+        "series_index": 1,
+        "start": 0,
+        "end": 1313,
+        "bins": 5,
+        "chunk_size": 50,
+        "arch_lags": 5
+      }
+    }
+  ],
+  "tool_summaries": []
+}
+```
+
+## Call 7: `homogeneous:long:round2`
+
+tokens prompt=15867 completion=319 latency=17.97s cached=False
+
+### INPUT role=`system`
+
+```
+You are a long-scale Homogeneous Temporal Understanding Agent.
+You may request tools from the whitelist and must ground numerical claims in tool evidence.
+Do NOT output the final multiple-choice answer.
+
+Focus:
+- short: local changes, short cycles, abrupt shifts, recent volatility
+- medium: seasonality, staged regimes, mid-scale change points
+- long: global trend, non-stationarity, long-range structure
+
+Whitelist tools for Homo (long scale):
+describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength,
+hurst_exponent, noise_decomposition, adf_stationarity, change_points,
+interval_compare, crossing_points, advanced_features, counterfactual_simulate,
+cross_series_compare, extrema_align, lag_corr, lag_corr_scan
+
+Tool capabilities (inputs -> outputs -> purpose):
+- describe_series:
+  input: pipeline-bound series (no series_index; it summarizes every series).
+  output: length, mean, std, min/max, median, range, percentiles, endpoints, and linear slope.
+  purpose: obtain a broad statistical overview before making more specific claims.
+- diff_stats:
+  input: series_index and optional inclusive start/end.
+  output: first-difference statistics and sign-change information.
+  purpose: measure point-to-point change, direction switching, and roughness.
+- sliding_stats:
+  input: series_index, optional inclusive start/end, and window size.
+  output: aggregated local means/stds and maximum local variability.
+  purpose: inspect how level and volatility vary within a segment.
+- local_extrema:
+  input: series_index and optional inclusive start/end.
+  output: counts and global indices of local peaks and troughs.
+  purpose: locate local turning points. Extrema alone do NOT prove randomness, absence of trend,
+    or the number of plateau/step levels.
+- global_extrema:
+  input: series_index, optional inclusive start/end, and optional index/index_base.
+  output: global minimum/maximum values and indices; optional classification of a queried point.
+  purpose: answer global high/low and point-extremum questions.
+- segment_trend:
+  input: series_index and optional inclusive start/end.
+  output: endpoint slope=(last-first)/(n-1), direction, trend_method, and flat_tolerance.
+  purpose: quantify net endpoint direction; it is not an OLS fitted trend.
+- step_levels:
+  input: series_index and optional inclusive start/end.
+  output: discrete value/plateau run counts and level information.
+  purpose: analyze stepwise, staircase, level, or plateau structure; do not substitute local_extrema.
+- value_at_index:
+  input: series_index, required index, and index_base (0 or 1).
+  output: exact value at the requested index.
+  purpose: verify claims tied to a particular position.
+- anomaly_detect:
+  input: series_index, optional inclusive start/end, and optional z_threshold.
+  output: anomalous values with their indices and scores.
+  purpose: identify isolated spikes or outliers.
+- autocorr:
+  input: series_index, optional inclusive start/end, and max_lag.
+  output: autocorrelation values over lags.
+  purpose: inspect repeated dependence and candidate periodic behavior.
+- fft_period:
+  input: series_index and optional inclusive start/end.
+  output: dominant spectral period and spectral evidence.
+  purpose: estimate a dominant cycle, especially at medium/long scales.
+- stl_strength:
+  input: series_index, optional inclusive start/end, and period.
+  output: trend and seasonal strengths from STL decomposition.
+  purpose: distinguish trend, seasonality, and residual variation.
+- hurst_exponent:
+  input: series_index and optional inclusive start/end.
+  output: estimated Hurst exponent and persistence interpretation.
+  purpose: assess long-memory, persistence, or mean-reverting behavior.
+- noise_decomposition:
+  input: series_index, optional inclusive start/end, and optional period.
+  output: residual noise ratio/level and a noise-type hint.
+  purpose: separate structured variation from noise.
+- adf_stationarity:
+  input: series_index and optional inclusive start/end.
+  output: ADF statistic, p-value, and stationarity interpretation.
+  purpose: test whether a segment is statistically stationary.
+- change_points:
+  input: series_index and optional inclusive start/end.
+  output: candidate mean-shift/change-point indices.
+  purpose: identify regime transitions or abrupt level changes.
+- interval_compare:
+  input: one series_index and either left_interval/right_interval or start/mid/end.
+  output: per-interval mean, std, min/max, extrema counts, slope, and direction.
+  purpose: compare two stages of the same series, such as a drop followed by a low plateau.
+- crossing_points:
+  input: series_index, optional start/end, median/mean/zero/explicit threshold, and threshold_scope.
+  output: exact crossing count and global crossing indices.
+  purpose: answer median/threshold crossing questions directly. Default threshold_scope=series follows
+    MMTS by deriving the median/mean from the whole series while counting only inside start/end;
+    use threshold_scope=window only when the question explicitly defines a window-local threshold.
+- advanced_features:
+  input: series_index, optional start/end, entropy bins, chunk size, and ARCH lags.
+  output: IQR, skewness, excess kurtosis, normalized spectral entropy, separate histogram entropy,
+    stability=variance(chunk means), lumpiness=variance(chunk variances), a squared-value ARCH
+    regression proxy (LM/R-squared/p-value), and crossings at the whole-series median.
+  purpose: quantify distribution shape, irregularity, and changing variance.
+- counterfactual_simulate:
+  input: target series_index, optional requested_metrics/report_indices, and strict operations.
+    Each operation MUST be a JSON object with an "op" field, for example:
+    {"op":"replace_constant","start":0,"end":863,"value":3.5}
+    {"op":"replace_with_mean","start":32,"end":38}
+    {"op":"replace_segment","start":32,"end":38,"source_series_index":1,"source_start":20,"source_end":26}
+    Supported ops: set_value, replace_constant, replace_with_mean, replace_segment, shift,
+    scale_values, scale_std, cap, extrapolate_slope. A nested wrapper such as
+    {"replace_constant":{"start":0,"end":863,"value":3.5}} is also accepted.
+    requested_metrics examples: mean, std, max, max_index (alias max_value_index).
+    Unknown operation fields are rejected.
+  output: requested before/after summaries, deltas, actual changed indices, status,
+    evidence_usable, exact report_indices values, and changed-index preview from a copied series.
+  purpose: test an explicit hypothetical modification; never answer a counterfactual from the
+    unmodified statistics alone. It modifies only the selected series and cannot infer how another
+    series would respond without an explicit causal model. status=no_effect/evidence_usable=false
+    is not evidence for a counterfactual conclusion.
+- cross_series_compare:
+  input: two distinct series indices and a shared window, or one interval per series.
+  output: per-series segment statistics, trend agreement, normalized distance, correlation,
+    actual intervals, alignment_used, degraded, and warnings.
+  purpose: compare shapes or trends across two series; correlation is association, not proof of causality.
+- lag_corr:
+  input: series_index_1, series_index_2, and lag; "all" may be used for pair coverage.
+  output: lagged auto/cross-correlation for the requested pair(s).
+  purpose: inspect lead-lag association; it provides causal clues only, never causal proof.
+- lag_corr_scan:
+  input: two series indices, optional shared window, max_lag, and min_overlap.
+  output: correlation, p-value, and overlap at every scanned lag plus the strongest valid lag.
+  purpose: avoid guessing a single lag and reject tiny-overlap correlations; association is still
+    not proof of causality.
+- extrema_align:
+  input: two series indices, optional intervals, extrema kind, and max_lag.
+  output: matched extrema positions, normalized timing errors, event lag, event coverage/Jaccard,
+    alignment status, and global-extrema deltas.
+  purpose: determine whether peaks or troughs align across series.
+
+Tool-selection examples (references, not rigid keyword rules):
+- For "rapid fall followed by a long low state", use segment_trend on the full focus interval,
+  interval_compare on early versus late subwindows, and optionally change_points for the transition.
+- For "frequent random oscillation with no clear trend", combine segment_trend with diff_stats or
+  sliding_stats; use local_extrema only as supporting turning-point evidence.
+- For "single sharp peak", combine global_extrema with local_extrema and, when needed,
+  segment_trend on the intervals before and after the peak.
+- For "stepwise rise with several plateaus", use step_levels; interval_compare may verify how
+  early and late levels differ.
+- For "same behavior in two series over one window", use cross_series_compare and inspect both
+  per-series trends; add lag_corr only when lead-lag association is relevant.
+- For "periodic but noisy behavior", combine fft_period or autocorr with stl_strength and
+  noise_decomposition.
+- For "how many times does it cross its median", use crossing_points directly.
+- For "if this segment were replaced/scaled/continued", encode that edit in
+  counterfactual_simulate with JSON operations such as
+  {"op":"replace_constant","start":32,"end":38,"value":3000.0} and compare before/after metrics.
+- For "peaks align across two series", use extrema_align; for an unknown lead-lag relation,
+  use lag_corr_scan rather than trying one arbitrary lag.
+- For a choice question with competing shape descriptions, derive the observable claim in each
+  plausible option and choose complementary tools that can distinguish those claims. Do not select
+  a tool solely because an option contains a matching keyword.
+
+Tool data binding (critical):
+- Tools use pipeline-bound series. NEVER paste raw numeric arrays into arguments.
+- Select series with series_index (1-based): 1, [1,2,3], "Time Series 2", or "all".
+- If multiple series exist and series_index is omitted, tools analyze ALL series.
+- For local questions, pass start/end (inclusive) or left_interval/right_interval; prefer metadata.focus_intervals.
+- Prefer describe_series first for a multi-series overview.
+- If series_truncated=true, do not invent missing values; rely on tools over pasted text.
+- Treat adjusted=true or degraded=true results as qualified evidence and report the warning.
+  Do not present clamped, truncated, or fallback computations as exact requested computations.
+- For reverse Match tasks, cross_series_compare compares the displayed forward sequences and must
+  not be used to rank candidates whose required operation is reversal.
+
+Steps:
+1. Read <question>, <candidates>, <plan>, <timeseries>, <metadata>, and <tool_catalog>.
+2. Obey plan.scope / plan.notes (e.g., local windows, multi-series coverage).
+3. Choose tools matching the question semantics (see Tool selection guide).
+4. After tool results appear in <tool_results>, interpret them.
+5. Write observations covering EACH series when n_series>1; include evidence intervals.
+6. Self-check: no final answer letter; no fabricated numbers; do not claim all series
+   share a pattern unless tool results show it for each series_index.
+
+Output ONLY JSON (ScaleObservation):
+{
+  "reasoning": "string",
+  "scale": "long",
+  "observations": ["string"],
+  "evidence_intervals": ["string"],
+  "confidence": 0.0,
+  "tool_calls": [{"name": "cross_series_compare", "arguments": {"series_index_1": 1, "series_index_2": 2, "start": 500, "end": 600}}],
+  "tool_summaries": ["string"]
+}
+If you still need tools, put them in tool_calls and keep observations tentative.
+If tools are already sufficient, set tool_calls to [].
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<plan>
+{"reasoning":"","capability":"structural_awareness","scope":"overall","univariate":true,"scales":["short","medium","long"],"heterogeneous_agents":["structure"],"notes":"Analyze the noise level/type in the given time series to determine which type it most resembles."}
+</plan>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+<tool_catalog>
+Tool binding rules:
+- Tools read pipeline-bound series; NEVER paste raw numeric arrays into arguments.
+- Use series_index (1-based): int, list like [1,2,3], 'Time Series 2', or 'all'.
+- If n_series>1 and series_index is omitted, tools fan out over ALL series.
+- lag_corr is pairwise: use series_index_1/2 as ints, or set either to 'all' for all pairs.
+- Optional window args: start/end (inclusive indices), window (alias window_size).
+
+- describe_series: Descriptive stats for EVERY series: mean/std/min/max/median/range/p50/p90/p99/slope (preferred multi-series overview).
+  args: {note=no series_index needed; always returns all series}
+- sliding_stats: Sliding-window mean/std for local volatility.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, window=int (alias window_size)}
+- diff_stats: First-difference stats and sign changes.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- local_extrema: Count local peaks and troughs (global indices). Do NOT use for step/plateau level counting—use step_levels instead.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- global_extrema: Global max/min indices and values; optional index classifies a point as global/local peak/trough (Base index tasks).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, index=optional int; if set, classify that index (global_extrema), index_base=0 (default) or 1}
+- segment_trend: Endpoint slope=(last-first)/(n-1) and direction for a segment; returns trend_method and flat_tolerance.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- step_levels: Count discrete step/plateau levels (unique values and plateau runs) in a window. Use for stepwise/staircase/plateau questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- value_at_index: Return the numeric value at a specific index (0-based by default).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), index=required int index, index_base=0 (default) or 1 if question uses 1-based indices}
+- anomaly_detect: Detect spikes/outliers via z-score threshold in a window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, z_threshold=float (default 3.0)}
+- autocorr: Autocorrelation up to max_lag inside the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, max_lag=int}
+- fft_period: Dominant period and spectral strength via FFT inside the requested window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- stl_strength: STL seasonal/trend strength inside the requested window; when period is omitted, the period is estimated by FFT on that same window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=int}
+- hurst_exponent: Estimate Hurst exponent for long-memory / persistence questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- noise_decomposition: STL residual noise ratio/level and noise-type hint (low/medium/high; gauss/uniform/quantization/random_walk_like).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=optional int}
+- adf_stationarity: ADF stationarity test on the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- change_points: Mean-shift candidates in the requested window; returned indices are global series indices.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- interval_compare: Compare left/right interval statistics on one series (mean/std/max/min/n_peaks/trend per side).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, left_interval=[start,end] inclusive, right_interval=[start,end] inclusive, start/mid/end=alt split mode; end is inclusive and mid begins right side}
+- crossing_points: Count crossings inside an optional window using a whole-series median/mean by default; threshold_scope='window' opts into a window-derived threshold.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, threshold=median|mean|zero (default median), threshold_value=optional explicit float, threshold_scope=series (default, MMTS) | window}
+- advanced_features: Advanced basic/volatility features: IQR, skewness, excess kurtosis, spectral and histogram entropy; stability=variance(chunk means), lumpiness=variance(chunk variances); squared-value ARCH regression proxy; and crossings at the whole-series median.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, bins=optional entropy histogram bins, chunk_size=optional stability/lumpiness chunk size, arch_lags=optional ARCH-LM lags (default 5)}
+- counterfactual_simulate: Apply counterfactual edits to a copied series and compare before/after statistics without mutating bound data. Supports set_value, replace_constant, replace_with_mean, replace_segment, shift, scale_values, scale_std, cap, and extrapolate_slope. It cannot infer how editing one series changes another.
+  args: {series_index=target 1-based series (default 1), operations=non-empty list of JSON operation objects with an op field, e.g. {"op":"replace_constant","start":0,"end":863,"value":3.5}; nested wrappers like {"replace_constant":{"start":0,"end":863,"value":3.5}} are accepted, index_base=0 (default) or 1, report_indices=optional indices whose exact before/after values are returned, requested_metrics=optional non-empty list of before/after summary keys (max_index alias max_value_index)}
+- cross_series_compare: Compare windows across TWO series (analogical / multi-series segment tasks). Returns per-series segment stats, trend match, distance, correlation.
+  args: {series_index_1=1-based int (default 1), series_index_2=1-based int (default 2), start=optional shared window start, end=optional shared window end, left_interval=optional [start,end] for series 1, right_interval=optional [start,end] for series 2}
+- extrema_align: Align peaks/troughs across two series or intervals; returns normalized event-position deltas, best event lag, and global-extrema index deltas.
+  args: {series_index_1=1-based int, series_index_2=1-based int, interval_1=optional [start,end], interval_2=optional [start,end], kind=both|peaks|troughs, max_lag=optional event lag scan bound}
+- lag_corr: Auto or cross lag correlation. Use series_index_1/2 ints, or 'all' for all pairs.
+  args: {lag=int, series_index_1=1-based int|'all', series_index_2=1-based int|'all'}
+- lag_corr_scan: Scan cross-correlation over positive and negative lags and report the strongest lead-lag association; association is not causal proof.
+  args: {series_index_1=1-based int, series_index_2=1-based int, start=optional shared inclusive start, end=optional shared inclusive end, max_lag=scan bound (default min(20,n/4)), min_overlap=minimum paired points per lag (default max(8,10% of length))}
+</tool_catalog>
+
+<tool_results>
+[
+  {
+    "name": "noise_decomposition",
+    "success": true,
+    "data": {
+      "series_index": 1,
+      "start": 0,
+      "end": 1313,
+      "period": 262,
+      "residual_std": 12.224101304536662,
+      "series_std": 241.93953608609914,
+      "noise_ratio": 0.050525439133628884,
+      "noise_level": "low",
+      "seasonal_strength": 0.9974548036136263,
+      "trend_strength": 0.7389982921253591,
+      "noise_type_hint": "random_walk_like",
+      "acf_lag1": 0.9971976264961664
+    },
+    "error": null
+  },
+  {
+    "name": "advanced_features",
+    "success": true,
+    "data": {
+      "series_index": 1,
+      "start": 0,
+      "end": 1313,
+      "q1": -191.7025,
+      "median": 47.11,
+      "q3": 284.0375,
+      "iqr": 475.74,
+      "skewness": 0.019983508474305047,
+      "excess_kurtosis": -1.4851661904720521,
+      "histogram_entropy": 2.2618203943327244,
+      "normalized_histogram_entropy": 0.9741130224114224,
+      "entropy_bins": 5,
+      "spectral_entropy": 0.1447656207163912,
+      "normalized_spectral_entropy": 0.015466826305917291,
+      "spectral_bins": 657,
+      "normalized_entropy": 0.015466826305917291,
+      "entropy_definition": "normalized non-DC power spectral entropy",
+      "stability": 52714.94745142362,
+      "lumpiness": 21038401.57826314,
+      "n_chunks": 27,
+      "arch_lm_stat": 1274.9344242483908,
+      "arch_lm_r2": 0.9739758779590457,
+      "arch_lm_pvalue": 1.7202021212398233e-273,
+      "arch_lags": 5,
+      "arch_status": "ok",
+      "threshold": 47.11,
+      "n_crossings": 16,
+      "crossing_indices": [
+        98,
+        226,
+        228,
+        229,
+        357,
+        487,
+        488,
+        491,
+        616,
+        754,
+        756,
+        757,
+        879,
+        1013,
+        1147,
+        1269
+      ],
+      "n_below_or_equal": 657,
+      "n_above": 657
+    },
+    "error": null
+  }
+]
+</tool_results>
+
+Produce the ScaleObservation JSON for the long scale.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "The noise_decomposition tool identified a noise_ratio of 0.050525439133628884, indicating low noise relative to the overall signal. The tool also suggested a noise_type_hint of 'random_walk_like'. Additionally, the advanced_features tool showed an ARCH-LM R-squared of 0.9739758779590457, implying significant autoregressive conditional heteroskedasticity, which is consistent with a random walk-like process. Both findings support option C) Random walk.",
+  "scale": "long",
+  "observations": ["Based on the noise_decomposition tool, the noise ratio is very low at approximately 0.0505, indicating a predominantly deterministic signal with little noise interference. Additionally, the tool indicates the noise type as 'random_walk_like'. Furthermore, the advanced_features tool's ARCH-LM result shows a very strong R-squared value of around 0.974, suggesting significant heteroskedasticity and confirming a random walk-like characteristic in the series."],
+  "evidence_intervals": ["Full series (index 0 to 1313)"],
+  "confidence": 0.95,
+  "tool_calls": [],
+  "tool_summaries": ["The noise_decomposition tool indicated a noise_type_hint of 'random_walk_like'. The advanced_features tool reported a high ARCH-LM R-squared, further supporting a random walk-like process."]
+}
+```
+
+## Call 8: `heterogeneous:structure:round1`
+
+tokens prompt=18798 completion=277 latency=17.63s cached=False
+
+### INPUT role=`system`
+
+```
+You are a Heterogeneous Task Agent with role=structure.
+You solve a specialized time-series task using the Temporal Profile and whitelist tools.
+You do NOT make the final irrevocable answer for the whole system, but you may propose a candidate_preference.
+
+Role focus:
+- structure: structural awareness and feature analysis
+- reasoning: temporal reasoning (deductive/inductive/causal/analogical/counterfactual). Causal claims must be statistical clues only.
+- matching: sequence similarity / localization / reverse / robust matching.
+  Use metadata.query_series_index vs candidate_series_indices / option_to_series.
+- alignment: time-series <-> semantic description alignment.
+  Obey metadata.align_direction (ts2caption|caption2ts) and option_to_series when present.
+
+Whitelist tools by role (only call tools in <tool_catalog> for role=structure):
+- structure: describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+  step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength, hurst_exponent,
+  noise_decomposition, adf_stationarity, change_points, interval_compare, cross_series_compare,
+  crossing_points, advanced_features, counterfactual_simulate, extrema_align, lag_corr, lag_corr_scan,
+  pairwise_distance, reverse_match, robust_shape_match, smooth_reverse_stats, subsequence_locate
+- reasoning: describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+  step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength, hurst_exponent,
+  noise_decomposition, adf_stationarity, change_points, interval_compare, cross_series_compare,
+  crossing_points, advanced_features, counterfactual_simulate, extrema_align, lag_corr, lag_corr_scan,
+  pairwise_distance, reverse_match, robust_shape_match
+- matching: describe_series, local_extrema, global_extrema, fft_period,
+  pairwise_distance, reverse_match, robust_shape_match, smooth_reverse_stats, subsequence_locate
+- alignment: describe_series, diff_stats, sliding_stats, local_extrema, global_extrema, segment_trend,
+  step_levels, value_at_index, anomaly_detect, autocorr, fft_period, stl_strength, hurst_exponent,
+  noise_decomposition, adf_stationarity, change_points, interval_compare, crossing_points,
+  advanced_features, pairwise_distance, caption_verify
+
+Tool selection guide (critical):
+- step / plateau / level counting -> step_levels (NOT local_extrema)
+- global max/min / classify index point -> global_extrema
+- segment trend / slope -> segment_trend
+- local peaks/troughs -> local_extrema; global extrema -> global_extrema
+- value at index -> value_at_index
+- spikes/outliers -> anomaly_detect
+- mean/median/percentile -> describe_series
+- two-window comparison (one series) -> interval_compare
+- cross-series segment comparison (analogical) -> cross_series_compare
+- causal/lag / multi-series lead-lag -> lag_corr
+- unknown causal lag -> lag_corr_scan with adequate min_overlap; aligned peaks/troughs ->
+  extrema_align, but require nonzero event coverage
+- explicit hypothetical edit -> counterfactual_simulate and compare before/after; request
+  report_indices for exact values and requested_metrics for the needed summaries. Each operation
+  must be a JSON object with "op", for example {"op":"replace_constant","start":0,"end":863,"value":3.5}.
+  Use only the documented operation fields from <tool_catalog>. The tool modifies only its selected
+  series; it cannot infer another series' response without an explicit causal model.
+- median/threshold crossings -> crossing_points; default threshold_scope=series for MMTS local windows
+- spectral entropy/skewness/excess kurtosis/stability/lumpiness/ARCH R-squared -> advanced_features
+- choose nearest candidate series -> pairwise_distance (matching/structure/reasoning)
+- find subsequence in longer series -> subsequence_locate (matching/structure)
+- exact reverse candidate ranking -> reverse_match (mandatory for "reverse it"); noise/outlier-resistant
+  ranking -> robust_shape_match. cross_series_compare on displayed forward sequences is not reverse evidence.
+- reverse/smooth direction summary -> smooth_reverse_stats (matching/structure) as auxiliary evidence only;
+  it does not compare candidates and cannot support a winner by itself.
+- structured caption claims across candidates -> caption_verify (alignment); this is a structured claim
+  checker, not free-form caption understanding. Use explicit boolean values, exact/min/max semantics,
+  and optional weight/required for important claims.
+- caption seasonality/trend/volatility/step/plateau -> fft_period, stl_strength, sliding_stats,
+  segment_trend, step_levels, local_extrema, anomaly_detect, hurst_exponent, adf_stationarity
+- persistence/Hurst -> hurst_exponent
+- noise level/type/residual ratio -> noise_decomposition
+- stationarity -> adf_stationarity
+- regime shifts -> change_points
+
+Tool data binding (critical):
+- Tools use pipeline-bound series. NEVER paste raw numeric arrays into arguments.
+- For most tools, series_index may be int / list / "all".
+- lag_corr is PAIRWISE: series_index_1/2 as ints, or "all" for all pairs.
+- cross_series_compare requires series_index_1 != series_index_2.
+- interval_compare pair mode: left_interval + right_interval (inclusive).
+- Only call tools listed in <tool_catalog> for your role (whitelist).
+- For local index questions, pass start/end or intervals; prefer metadata.focus_intervals and index_base.
+- If plan.notes mention step levels, MUST call step_levels or interval_compare before setting preference.
+- alignment role: verify EVERY caption claim with at least one quantitative tool; do not guess.
+- counterfactual questions: call counterfactual_simulate; original-series evidence is not sufficient.
+- counterfactual results with evidence_usable=false or status=no_effect cannot support a preference.
+- adjusted=true or degraded=true means bounds, lengths, or methods differed from the request.
+  State the limitation and do not give degraded evidence the same weight as an exact result.
+
+Candidate mapping (critical):
+- candidate_preference is an OPTION LETTER from <candidates>, never a series index.
+- When a tool identifies a winning series_index, invert metadata.option_to_series exactly:
+  choose the unique letter L for which option_to_series[L] == winning series_index.
+- Never convert a series index directly to a letter by ordinal position. Series indices include the
+  query series and therefore are generally offset from option letters.
+- Example: if option_to_series={"A": 2, "B": 3, "C": 4, "D": 5} and a tool returns
+  nearest.series_index=3, candidate_preference MUST be "B", not "C".
+- Before emitting a non-null preference, verify the round trip:
+  option_to_series[candidate_preference] == winning series_index. If it fails, correct the letter.
+
+Steps:
+1. Read <question>, <candidates>, <plan>, <timeseries>, <temporal_profile>,
+   <prior_task_evidence>, <metadata>, <tool_catalog>.
+2. Use <plan> notes/scope; do not blindly copy peer evidence—verify with your own tools when feasible.
+3. Choose tools matching question semantics and role=structure (see guides above).
+4. Interpret <tool_results> and Temporal Profile per series_index.
+5. Produce task evidence and map quantitative facts onto candidates (set preference). When a
+   successful tool result supports the preference, cite its exact system-provided call_id in
+   cited_tool_call_ids. Never invent, copy, or alter a call_id.
+6. Self-check: do not invent values; after successful tool_results, do NOT leave candidate_preference null when an option fits.
+   For Match/Align choices, explicitly check that candidate_preference maps back to the tool-selected
+   series through metadata.option_to_series.
+
+Evidence provenance (critical):
+- <tool_results> entries are system-owned execution records. Only successful entries with a call_id
+  may be cited as tool evidence.
+- tool_summaries and executed_tools are system-owned output fields. Always emit them as [].
+- A Temporal Profile or peer summary is contextual evidence, not a tool execution by this role.
+  Do not cite an upstream or peer tool as if you executed it.
+- Failed tool results must not support candidate_preference.
+- A successful call with data.evidence_usable=false is also not usable evidence.
+- If every counterfactual_simulate attempt failed or returned evidence_usable=false, leave
+  candidate_preference null instead of claiming the simulation succeeded.
+
+Output ONLY JSON (TaskEvidence):
+{
+  "reasoning": "string",
+  "role": "structure",
+  "evidence": ["string"],
+  "candidate_preference": null,
+  "confidence": 0.0,
+  "tool_calls": [{"name": "cross_series_compare", "arguments": {"series_index_1": 1, "series_index_2": 2, "start": 500, "end": 600}}],
+  "cited_tool_call_ids": [],
+  "executed_tools": [],
+  "tool_summaries": []
+}
+While still gathering tools, candidate_preference may be null.
+Once <tool_results> contain decisive facts, set candidate_preference to a letter and set tool_calls to [].
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<plan>
+{"reasoning":"","capability":"structural_awareness","scope":"overall","univariate":true,"scales":["short","medium","long"],"heterogeneous_agents":["structure"],"notes":"Analyze the noise level/type in the given time series to determine which type it most resembles."}
+</plan>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<temporal_profile>
+{"short":{"reasoning":"The noise analysis was performed using advanced_features and noise_decomposition tools. The advanced_features tool shows low excess kurtosis (-1.485) and a normalized spectral entropy of 0.0155, indicating a relatively smooth distribution with some regularity. The noise_decomposition tool identifies the noise type as 'random_walk_like', which aligns with the low noise ratio (0.05) compared to the overall series standard deviation and the low noise level. This suggests the noise resembles a random walk rather than uniform or Gaussian.","scale":"short","observations":["The advanced_features tool reveals low excess kurtosis and a low normalized spectral entropy, indicating regularity in the data.","The noise_decomposition tool confirms the noise type as 'random_walk_like'.","The low noise ratio (0.05) and low noise level further support the random walk-like characteristics."],"evidence_intervals":["Entire series"],"confidence":0.9,"tool_calls":[],"tool_summaries":["{\"name\": \"advanced_features\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"q1\": -191.7025, \"median\": 47.11, \"q3\": 284.0375, \"iqr\": 475.74, \"skewness\": 0.019983508474305047, \"excess_kurtosis\": -1.4851661904720521, \"histogram_entropy\": 3.2549220863060957, \"normalized_histogram_entropy\": 0.9798291815273207, \"entropy_bins\": 10, \"spectral_entropy\": 0.1447656207163912, \"normalized_spectral_entropy\": 0.015466826305917291, \"spectral_bins\": 657, \"normalized_entropy\": 0.015466826305917291, \"entropy_definition\": \"normalized non-DC power spectral entropy\", \"stability\": 27638.843133495135, \"lumpiness\": 117108421.04859103, \"n_chunks\": 11, \"arch_lm_stat\": 1274.9344242483908, \"arch_lm_r2\": 0.9739758779590457, \"arch_lm_pvalue\": 1.7202021212398233e-273, \"arch_lags\": 5, \"arch_status\": \"ok\", \"threshold\": 47.11, \"n_crossings\": 16, \"crossing_indices\": [98, 226, 228, 229, 357, 487, 488, 491, 616, 754, 756, 757, 879, 1013, 1147, 1269], \"n_below_or_equal\": 657, \"n_above\": 657}, \"error\": null}","{\"name\": \"noise_decomposition\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": null, \"end\": null, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664}, \"error\": null}"]},"medium":{"reasoning":"The noise analysis was performed using the noise_decomposition and stl_strength tools. The noise_decomposition tool returned a noise ratio of 0.0505, indicating low noise levels. The noise_type_hint indicates that the noise in the time series most resembles a random walk. This aligns with the observation from the stl_strength tool which shows weak trend and strong seasonal components, suggesting that the residual noise might behave like a random walk.","scale":"medium","observations":["The noise level is classified as low with a noise ratio of approximately 0.0505, indicating minimal influence of noise compared to the overall signal strength.","The noise type hint suggests that the noise most closely resembles a random walk, based on the weak trend and strong seasonal components observed."],"evidence_intervals":["The entire series [0, 1313]"],"confidence":0.9,"tool_calls":[],"tool_summaries":["{\"name\": \"stl_strength\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"requested_window\": [0, 1313], \"adjusted\": false, \"warnings\": [], \"period\": 262, \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591}, \"error\": null}","{\"name\": \"noise_decomposition\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664}, \"error\": null}"]},"long":{"reasoning":"The noise_decomposition tool identified a noise_ratio of 0.050525439133628884, indicating low noise relative to the overall signal. The tool also suggested a noise_type_hint of 'random_walk_like'. Additionally, the advanced_features tool showed an ARCH-LM R-squared of 0.9739758779590457, implying significant autoregressive conditional heteroskedasticity, which is consistent with a random walk-like process. Both findings support option C) Random walk.","scale":"long","observations":["Based on the noise_decomposition tool, the noise ratio is very low at approximately 0.0505, indicating a predominantly deterministic signal with little noise interference. Additionally, the tool indicates the noise type as 'random_walk_like'. Furthermore, the advanced_features tool's ARCH-LM result shows a very strong R-squared value of around 0.974, suggesting significant heteroskedasticity and confirming a random walk-like characteristic in the series."],"evidence_intervals":["Full series (index 0 to 1313)"],"confidence":0.95,"tool_calls":[],"tool_summaries":["{\"name\": \"noise_decomposition\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664}, \"error\": null}","{\"name\": \"advanced_features\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"q1\": -191.7025, \"median\": 47.11, \"q3\": 284.0375, \"iqr\": 475.74, \"skewness\": 0.019983508474305047, \"excess_kurtosis\": -1.4851661904720521, \"histogram_entropy\": 2.2618203943327244, \"normalized_histogram_entropy\": 0.9741130224114224, \"entropy_bins\": 5, \"spectral_entropy\": 0.1447656207163912, \"normalized_spectral_entropy\": 0.015466826305917291, \"spectral_bins\": 657, \"normalized_entropy\": 0.015466826305917291, \"entropy_definition\": \"normalized non-DC power spectral entropy\", \"stability\": 52714.94745142362, \"lumpiness\": 21038401.57826314, \"n_chunks\": 27, \"arch_lm_stat\": 1274.9344242483908, \"arch_lm_r2\": 0.9739758779590457, \"arch_lm_pvalue\": 1.7202021212398233e-273, \"arch_lags\": 5, \"arch_status\": \"ok\", \"threshold\": 47.11, \"n_crossings\": 16, \"crossing_indices\": [98, 226, 228, 229, 357, 487, 488, 491, 616, 754, 756, 757, 879, 1013, 1147, 1269], \"n_below_or_equal\": 657, \"n_above\": 657}, \"error\": null}"]},"conflicts":[],"summary":"The advanced_features tool reveals low excess kurtosis and a low normalized spectral entropy, indicating regularity in the data. The noise_decomposition tool confirms the noise type as 'random_walk_like'. The low noise ratio (0.05) and low noise level further support the random walk-like characteristics. The noise level is classified as low with a noise ratio of approximately 0.0505, indicating minimal influence of noise compared to the overall signal strength. The noise type hint suggests that the noise most closely resembles a random walk, based on the weak trend and strong seasonal components observed. Based on the noise_decomposition tool, the noise ratio is very low at approximately 0.0505, indicating a predominantly deterministic signal with little noise interference. Additionally, the tool indicates the noise type as 'random_walk_like'. Furthermore, the advanced_features tool's ARCH-LM result shows a very strong R-squared value of around 0.974, suggesting significant heteroskedasticity and confirming a random walk-like characteristic in the series. advanced_features success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"q1\": -191.7025, \"median\": 47.11, \"q3\": 284.0375, \"iqr\": 475.74, \"skewness\": 0.019983508474305047, \"excess_kurtosis\": -1.4851661904720521, \"histogram_entropy\": 3.2549220863060957, \"normalized_histogram_entropy\": 0.9798291815273207, \"entropy_bins\": 10, \"spectral_entropy\": 0.1447656207163912, \"normalized_spectral_entropy\": 0.015466826305917291, \"spectral_ noise_decomposition success: {\"series_index\": 1, \"start\": null, \"end\": null, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664} stl_strength success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"requested_window\": [0, 1313], \"adjusted\": false, \"warnings\": [], \"period\": 262, \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591} noise_decomposition success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664} noise_decomposition success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664} advanced_features success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"q1\": -191.7025, \"median\": 47.11, \"q3\": 284.0375, \"iqr\": 475.74, \"skewness\": 0.019983508474305047, \"excess_kurtosis\": -1.4851661904720521, \"histogram_entropy\": 2.2618203943327244, \"normalized_histogram_entropy\": 0.9741130224114224, \"entropy_bins\": 5, \"spectral_entropy\": 0.1447656207163912, \"normalized_spectral_entropy\": 0.015466826305917291, \"spectral_b"}
+</temporal_profile>
+
+<prior_task_evidence>
+(none)
+</prior_task_evidence>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+<tool_catalog>
+Tool binding rules:
+- Tools read pipeline-bound series; NEVER paste raw numeric arrays into arguments.
+- Use series_index (1-based): int, list like [1,2,3], 'Time Series 2', or 'all'.
+- If n_series>1 and series_index is omitted, tools fan out over ALL series.
+- lag_corr is pairwise: use series_index_1/2 as ints, or set either to 'all' for all pairs.
+- Optional window args: start/end (inclusive indices), window (alias window_size).
+
+- describe_series: Descriptive stats for EVERY series: mean/std/min/max/median/range/p50/p90/p99/slope (preferred multi-series overview).
+  args: {note=no series_index needed; always returns all series}
+- sliding_stats: Sliding-window mean/std for local volatility.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, window=int (alias window_size)}
+- diff_stats: First-difference stats and sign changes.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- local_extrema: Count local peaks and troughs (global indices). Do NOT use for step/plateau level counting—use step_levels instead.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- global_extrema: Global max/min indices and values; optional index classifies a point as global/local peak/trough (Base index tasks).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, index=optional int; if set, classify that index (global_extrema), index_base=0 (default) or 1}
+- segment_trend: Endpoint slope=(last-first)/(n-1) and direction for a segment; returns trend_method and flat_tolerance.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- step_levels: Count discrete step/plateau levels (unique values and plateau runs) in a window. Use for stepwise/staircase/plateau questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- value_at_index: Return the numeric value at a specific index (0-based by default).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), index=required int index, index_base=0 (default) or 1 if question uses 1-based indices}
+- anomaly_detect: Detect spikes/outliers via z-score threshold in a window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, z_threshold=float (default 3.0)}
+- autocorr: Autocorrelation up to max_lag inside the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, max_lag=int}
+- fft_period: Dominant period and spectral strength via FFT inside the requested window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- stl_strength: STL seasonal/trend strength inside the requested window; when period is omitted, the period is estimated by FFT on that same window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=int}
+- hurst_exponent: Estimate Hurst exponent for long-memory / persistence questions.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- noise_decomposition: STL residual noise ratio/level and noise-type hint (low/medium/high; gauss/uniform/quantization/random_walk_like).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, period=optional int}
+- adf_stationarity: ADF stationarity test on the requested inclusive start/end window.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- change_points: Mean-shift candidates in the requested window; returned indices are global series indices.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index}
+- interval_compare: Compare left/right interval statistics on one series (mean/std/max/min/n_peaks/trend per side).
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, left_interval=[start,end] inclusive, right_interval=[start,end] inclusive, start/mid/end=alt split mode; end is inclusive and mid begins right side}
+- crossing_points: Count crossings inside an optional window using a whole-series median/mean by default; threshold_scope='window' opts into a window-derived threshold.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, threshold=median|mean|zero (default median), threshold_value=optional explicit float, threshold_scope=series (default, MMTS) | window}
+- advanced_features: Advanced basic/volatility features: IQR, skewness, excess kurtosis, spectral and histogram entropy; stability=variance(chunk means), lumpiness=variance(chunk variances); squared-value ARCH regression proxy; and crossings at the whole-series median.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, bins=optional entropy histogram bins, chunk_size=optional stability/lumpiness chunk size, arch_lags=optional ARCH-LM lags (default 5)}
+- counterfactual_simulate: Apply counterfactual edits to a copied series and compare before/after statistics without mutating bound data. Supports set_value, replace_constant, replace_with_mean, replace_segment, shift, scale_values, scale_std, cap, and extrapolate_slope. It cannot infer how editing one series changes another.
+  args: {series_index=target 1-based series (default 1), operations=non-empty list of JSON operation objects with an op field, e.g. {"op":"replace_constant","start":0,"end":863,"value":3.5}; nested wrappers like {"replace_constant":{"start":0,"end":863,"value":3.5}} are accepted, index_base=0 (default) or 1, report_indices=optional indices whose exact before/after values are returned, requested_metrics=optional non-empty list of before/after summary keys (max_index alias max_value_index)}
+- cross_series_compare: Compare windows across TWO series (analogical / multi-series segment tasks). Returns per-series segment stats, trend match, distance, correlation.
+  args: {series_index_1=1-based int (default 1), series_index_2=1-based int (default 2), start=optional shared window start, end=optional shared window end, left_interval=optional [start,end] for series 1, right_interval=optional [start,end] for series 2}
+- extrema_align: Align peaks/troughs across two series or intervals; returns normalized event-position deltas, best event lag, and global-extrema index deltas.
+  args: {series_index_1=1-based int, series_index_2=1-based int, interval_1=optional [start,end], interval_2=optional [start,end], kind=both|peaks|troughs, max_lag=optional event lag scan bound}
+- lag_corr: Auto or cross lag correlation. Use series_index_1/2 ints, or 'all' for all pairs.
+  args: {lag=int, series_index_1=1-based int|'all', series_index_2=1-based int|'all'}
+- lag_corr_scan: Scan cross-correlation over positive and negative lags and report the strongest lead-lag association; association is not causal proof.
+  args: {series_index_1=1-based int, series_index_2=1-based int, start=optional shared inclusive start, end=optional shared inclusive end, max_lag=scan bound (default min(20,n/4)), min_overlap=minimum paired points per lag (default max(8,10% of length))}
+- pairwise_distance: Rank selected candidates against a query. Legacy euclidean means z-normalized Euclidean; raw_euclidean is unnormalized. Reports truncation and DTW fallback.
+  args: {method=euclidean|z_euclidean|raw_euclidean|dtw, query_series_index=preferred 1-based query (default 1), candidate_series_indices=optional 1-based candidate list, series_index=legacy alias for query_series_index, ref_series_index=legacy alias for query_series_index}
+- reverse_match: Reverse each candidate series and rank candidates against the query using length-normalized z-DTW or Euclidean distance.
+  args: {query_series_index=1-based query (default 1), candidate_series_indices=optional 1-based list (default all others), method=dtw|euclidean}
+- robust_shape_match: Robust candidate ranking using winsorization, smoothing, z-distance, correlation distance, and DTW with an explicit winner margin.
+  args: {query_series_index=1-based query (default 1), candidate_series_indices=optional 1-based list (default all others), smooth_window=moving-average window (default 5), winsor_percentile=tail clipping percentile in [0,50) (default 2)}
+- smooth_reverse_stats: Auxiliary per-series smoothed mean and forward/reverse endpoint direction. Does not compare a query, rank candidates, or identify a winner.
+  args: {series_index=int|list|'all'|str (1-based; default=all if multi), start=optional inclusive start index, end=optional inclusive end index, window=int}
+- subsequence_locate: Locate best matching subsequence.
+  args: {query_series_index=1-based, long_series_index=1-based}
+</tool_catalog>
+
+<tool_results>
+(none)
+</tool_results>
+
+
+
+Produce the TaskEvidence JSON for role=structure.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "The noise analysis was performed using the noise_decomposition and advanced_features tools. The noise_decomposition tool identified a noise type hint of 'random_walk_like' with a low noise ratio of 0.0505, indicating minimal influence of noise compared to the overall signal strength. This aligns with the observation from the advanced_features tool which showed a normalized spectral entropy of 0.015466826305917291 and low excess kurtosis, indicating regularity in the data.",
+  "role": "structure",
+  "evidence": [
+    "The noise_decomposition tool identified the noise type as 'random_walk_like' with a noise ratio of 0.0505, indicating minimal influence of noise compared to the overall signal strength.",
+    "The advanced_features tool revealed low excess kurtosis (-1.485) and a normalized spectral entropy of 0.015466826305917291, indicating regularity in the data."
+  ],
+  "candidate_preference": "C",
+  "confidence": 0.95,
+  "tool_calls": [],
+  "cited_tool_call_ids": [],
+  "executed_tools": [],
+  "tool_summaries": []
+}
+```
+
+## Call 9: `integration`
+
+tokens prompt=16183 completion=302 latency=17.37s cached=False
+
+### INPUT role=`system`
+
+```
+You are the Integration Agent.
+You do NOT call tools.
+You fuse upstream Planner, Temporal Profile, Heterogeneous Agent evidence, and the raw series
+to answer the question.
+
+Tool evidence types downstream agents may cite (for arbitration):
+- step_levels: discrete plateau/step level counts (NOT the same as local_extrema)
+- global_extrema / local_extrema: global or local peak/trough facts
+- segment_trend: segment slope/direction
+- interval_compare: two-window stats on one series (mean/max/n_peaks/trend per side)
+- cross_series_compare: two-series window comparison (trend match, corr, distance)
+- describe_series: mean/min/max/median/percentile/slope
+- value_at_index: exact value at an index
+- crossing_points: exact window crossings using whole-series threshold by default
+- advanced_features: spectral/histogram entropy, explicitly defined stability/lumpiness, a
+  squared-value ARCH regression proxy, and distribution/volatility facts
+- counterfactual_simulate: before/after facts from an explicit edit to one selected series;
+  it does not model how another series responds
+- lag_corr / lag_corr_scan: lagged correlation (causal clues only); extrema_align: event timing
+- pairwise_distance / subsequence_locate / reverse_match / robust_shape_match: candidate-ranking Match tools
+- smooth_reverse_stats: auxiliary per-series direction summary only; it cannot rank candidates
+- caption_verify: structured per-claim checker and weighted candidate score, not free-form caption understanding
+- fft_period / stl_strength / autocorr: seasonality
+- hurst_exponent: persistence; noise_decomposition: noise level/type
+- adf_stationarity: stationarity; change_points: regime shifts; anomaly_detect: spikes
+
+Arbitration rules (critical):
+- Prefer verified tool-backed role preferences over roles that never called tools. A preference is
+  verified only when cited_tool_call_ids reference successful system-owned executed_tools records;
+  prose in tool_summaries alone is never proof of tool execution.
+- <preference_votes> and <tool_backed_majority> summarize this. Treat tool_backed_majority as a
+  strong prior only after checking that its option letter is consistent with the underlying
+  executed tool result and metadata.option_to_series.
+- If roles conflict, falsify options against quantitative tool facts first.
+- step/plateau claims must cite step_levels; reject if only local_extrema says "no peaks".
+- analogical claims must cite cross_series_compare or interval_compare + segment_trend.
+- global max/min/index classification must cite global_extrema or value_at_index.
+- Match/Align: use metadata.option_to_series / query_series_index / align_direction to map letters to series.
+  candidate_preference is an option letter, while tool fields such as series_index and
+  nearest.series_index are series IDs. Invert option_to_series exactly; never convert a series ID
+  directly to a letter by ordinal position.
+- Example: option_to_series={"A": 2, "B": 3, "C": 4, "D": 5} plus
+  nearest.series_index=3 means answer "B", not "C".
+- A verified call_id proves that a tool really ran; it does NOT prove that an upstream agent mapped
+  the tool's winning series to the correct option. If task_evidence/preference_votes disagree with
+  the executed tool result after applying option_to_series, correct the letter using the tool result.
+- Counterfactual claims require counterfactual_simulate evidence; original-series summaries cannot settle them.
+  A no-effect result (evidence_usable=false or status=no_effect) cannot settle them either. Never infer
+  how TS2 changes merely because counterfactual_simulate edited TS1.
+- Ignore upstream reasoning that claims a tool succeeded when preference_votes show tool_backed=false
+  or verified_tool_call_ids=[] for that role.
+- Treat degraded=true results as weaker evidence. Inspect warnings, requested_method/method_used,
+  used intervals, and alignment_used; a fallback or truncation is not equivalent to the exact request.
+- For "reverse it", candidate ranking must come from reverse_match (or a directly applicable robust
+  reverse-aware result). Forward cross_series_compare and smooth_reverse_stats cannot determine the winner.
+- For lag evidence, reject best lags supported only by inadequate overlap; for extrema alignment,
+  inspect event coverage as well as Jaccard.
+- Caption claims should cite caption_verify or every relevant atomic tool fact, not semantic intuition alone.
+- Local questions: verify claims only inside metadata.focus_intervals when present.
+
+Steps:
+1. Read <question>, <candidates>, <plan>, <timeseries>, <temporal_profile>,
+   <task_evidence>, <preference_votes>, <metadata>.
+2. Summarize agreeing and conflicting evidence. Prefer claims grounded in per-series tool facts.
+3. Use <timeseries> to verify regime/shape claims (rise/fall/plateau/step levels) when needed.
+4. Choose the best answer from candidates (or a single numeric value for numerical questions).
+5. Cite which evidence supported the decision.
+6. Self-check:
+   - answer must come from candidates for choice questions; do not invent unseen numbers.
+   - For Match/Align, identify the winning series_index from the strongest applicable tool result,
+     then verify metadata.option_to_series[answer] == winning series_index. If not, replace answer
+     with the unique option letter whose mapped series equals winning series_index.
+   - Ensure the series named in reasoning/explanation is the same series selected by answer.
+   - If one role says patterns differ across series and another claims a shared local extremum,
+     verify whether EVERY series actually shows that extremum; otherwise reject the shared-extremum option.
+   - True/False: if your reasoning concludes the statement is true, answer must be the True option
+     (usually A); if false, the False option (usually B). Never contradict your own conclusion.
+   - Causal multi-choice: falsify each option against task_evidence before choosing.
+   - Do not override a clear, correctly mapped tool_backed_majority without citing contradictory
+     tool facts. A mapping correction based on the same executed tool result is not an override.
+
+Output ONLY JSON (FinalAnswer):
+{
+  "reasoning": "string",
+  "answer": "",
+  "explanation": "string",
+  "confidence": 0.0,
+  "conflicts": ["string"],
+  "cited_evidence": ["string"]
+}
+For choice questions, set "answer" to a single letter from the candidates (do not default to A).
+For numerical questions, set "answer" to the computed number as a JSON string, for example "635.14".
+
+```
+
+### INPUT role=`user`
+
+```
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+<question_type>
+choice
+</question_type>
+
+<plan>
+{"reasoning":"","capability":"structural_awareness","scope":"overall","univariate":true,"scales":["short","medium","long"],"heterogeneous_agents":["structure"],"notes":"Analyze the noise level/type in the given time series to determine which type it most resembles."}
+</plan>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<temporal_profile>
+{"short":{"reasoning":"The noise analysis was performed using advanced_features and noise_decomposition tools. The advanced_features tool shows low excess kurtosis (-1.485) and a normalized spectral entropy of 0.0155, indicating a relatively smooth distribution with some regularity. The noise_decomposition tool identifies the noise type as 'random_walk_like', which aligns with the low noise ratio (0.05) compared to the overall series standard deviation and the low noise level. This suggests the noise resembles a random walk rather than uniform or Gaussian.","scale":"short","observations":["The advanced_features tool reveals low excess kurtosis and a low normalized spectral entropy, indicating regularity in the data.","The noise_decomposition tool confirms the noise type as 'random_walk_like'.","The low noise ratio (0.05) and low noise level further support the random walk-like characteristics."],"evidence_intervals":["Entire series"],"confidence":0.9,"tool_calls":[],"tool_summaries":["{\"name\": \"advanced_features\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"q1\": -191.7025, \"median\": 47.11, \"q3\": 284.0375, \"iqr\": 475.74, \"skewness\": 0.019983508474305047, \"excess_kurtosis\": -1.4851661904720521, \"histogram_entropy\": 3.2549220863060957, \"normalized_histogram_entropy\": 0.9798291815273207, \"entropy_bins\": 10, \"spectral_entropy\": 0.1447656207163912, \"normalized_spectral_entropy\": 0.015466826305917291, \"spectral_bins\": 657, \"normalized_entropy\": 0.015466826305917291, \"entropy_definition\": \"normalized non-DC power spectral entropy\", \"stability\": 27638.843133495135, \"lumpiness\": 117108421.04859103, \"n_chunks\": 11, \"arch_lm_stat\": 1274.9344242483908, \"arch_lm_r2\": 0.9739758779590457, \"arch_lm_pvalue\": 1.7202021212398233e-273, \"arch_lags\": 5, \"arch_status\": \"ok\", \"threshold\": 47.11, \"n_crossings\": 16, \"crossing_indices\": [98, 226, 228, 229, 357, 487, 488, 491, 616, 754, 756, 757, 879, 1013, 1147, 1269], \"n_below_or_equal\": 657, \"n_above\": 657}, \"error\": null}","{\"name\": \"noise_decomposition\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": null, \"end\": null, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664}, \"error\": null}"]},"medium":{"reasoning":"The noise analysis was performed using the noise_decomposition and stl_strength tools. The noise_decomposition tool returned a noise ratio of 0.0505, indicating low noise levels. The noise_type_hint indicates that the noise in the time series most resembles a random walk. This aligns with the observation from the stl_strength tool which shows weak trend and strong seasonal components, suggesting that the residual noise might behave like a random walk.","scale":"medium","observations":["The noise level is classified as low with a noise ratio of approximately 0.0505, indicating minimal influence of noise compared to the overall signal strength.","The noise type hint suggests that the noise most closely resembles a random walk, based on the weak trend and strong seasonal components observed."],"evidence_intervals":["The entire series [0, 1313]"],"confidence":0.9,"tool_calls":[],"tool_summaries":["{\"name\": \"stl_strength\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"requested_window\": [0, 1313], \"adjusted\": false, \"warnings\": [], \"period\": 262, \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591}, \"error\": null}","{\"name\": \"noise_decomposition\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664}, \"error\": null}"]},"long":{"reasoning":"The noise_decomposition tool identified a noise_ratio of 0.050525439133628884, indicating low noise relative to the overall signal. The tool also suggested a noise_type_hint of 'random_walk_like'. Additionally, the advanced_features tool showed an ARCH-LM R-squared of 0.9739758779590457, implying significant autoregressive conditional heteroskedasticity, which is consistent with a random walk-like process. Both findings support option C) Random walk.","scale":"long","observations":["Based on the noise_decomposition tool, the noise ratio is very low at approximately 0.0505, indicating a predominantly deterministic signal with little noise interference. Additionally, the tool indicates the noise type as 'random_walk_like'. Furthermore, the advanced_features tool's ARCH-LM result shows a very strong R-squared value of around 0.974, suggesting significant heteroskedasticity and confirming a random walk-like characteristic in the series."],"evidence_intervals":["Full series (index 0 to 1313)"],"confidence":0.95,"tool_calls":[],"tool_summaries":["{\"name\": \"noise_decomposition\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664}, \"error\": null}","{\"name\": \"advanced_features\", \"success\": true, \"data\": {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"q1\": -191.7025, \"median\": 47.11, \"q3\": 284.0375, \"iqr\": 475.74, \"skewness\": 0.019983508474305047, \"excess_kurtosis\": -1.4851661904720521, \"histogram_entropy\": 2.2618203943327244, \"normalized_histogram_entropy\": 0.9741130224114224, \"entropy_bins\": 5, \"spectral_entropy\": 0.1447656207163912, \"normalized_spectral_entropy\": 0.015466826305917291, \"spectral_bins\": 657, \"normalized_entropy\": 0.015466826305917291, \"entropy_definition\": \"normalized non-DC power spectral entropy\", \"stability\": 52714.94745142362, \"lumpiness\": 21038401.57826314, \"n_chunks\": 27, \"arch_lm_stat\": 1274.9344242483908, \"arch_lm_r2\": 0.9739758779590457, \"arch_lm_pvalue\": 1.7202021212398233e-273, \"arch_lags\": 5, \"arch_status\": \"ok\", \"threshold\": 47.11, \"n_crossings\": 16, \"crossing_indices\": [98, 226, 228, 229, 357, 487, 488, 491, 616, 754, 756, 757, 879, 1013, 1147, 1269], \"n_below_or_equal\": 657, \"n_above\": 657}, \"error\": null}"]},"conflicts":[],"summary":"The advanced_features tool reveals low excess kurtosis and a low normalized spectral entropy, indicating regularity in the data. The noise_decomposition tool confirms the noise type as 'random_walk_like'. The low noise ratio (0.05) and low noise level further support the random walk-like characteristics. The noise level is classified as low with a noise ratio of approximately 0.0505, indicating minimal influence of noise compared to the overall signal strength. The noise type hint suggests that the noise most closely resembles a random walk, based on the weak trend and strong seasonal components observed. Based on the noise_decomposition tool, the noise ratio is very low at approximately 0.0505, indicating a predominantly deterministic signal with little noise interference. Additionally, the tool indicates the noise type as 'random_walk_like'. Furthermore, the advanced_features tool's ARCH-LM result shows a very strong R-squared value of around 0.974, suggesting significant heteroskedasticity and confirming a random walk-like characteristic in the series. advanced_features success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"q1\": -191.7025, \"median\": 47.11, \"q3\": 284.0375, \"iqr\": 475.74, \"skewness\": 0.019983508474305047, \"excess_kurtosis\": -1.4851661904720521, \"histogram_entropy\": 3.2549220863060957, \"normalized_histogram_entropy\": 0.9798291815273207, \"entropy_bins\": 10, \"spectral_entropy\": 0.1447656207163912, \"normalized_spectral_entropy\": 0.015466826305917291, \"spectral_ noise_decomposition success: {\"series_index\": 1, \"start\": null, \"end\": null, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664} stl_strength success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"requested_window\": [0, 1313], \"adjusted\": false, \"warnings\": [], \"period\": 262, \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591} noise_decomposition success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664} noise_decomposition success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"period\": 262, \"residual_std\": 12.224101304536662, \"series_std\": 241.93953608609914, \"noise_ratio\": 0.050525439133628884, \"noise_level\": \"low\", \"seasonal_strength\": 0.9974548036136263, \"trend_strength\": 0.7389982921253591, \"noise_type_hint\": \"random_walk_like\", \"acf_lag1\": 0.9971976264961664} advanced_features success: {\"series_index\": 1, \"start\": 0, \"end\": 1313, \"q1\": -191.7025, \"median\": 47.11, \"q3\": 284.0375, \"iqr\": 475.74, \"skewness\": 0.019983508474305047, \"excess_kurtosis\": -1.4851661904720521, \"histogram_entropy\": 2.2618203943327244, \"normalized_histogram_entropy\": 0.9741130224114224, \"entropy_bins\": 5, \"spectral_entropy\": 0.1447656207163912, \"normalized_spectral_entropy\": 0.015466826305917291, \"spectral_b"}
+</temporal_profile>
+
+<task_evidence>
+[{"reasoning": "The noise analysis was performed using the noise_decomposition and advanced_features tools. The noise_decomposition tool identified a noise type hint of 'random_walk_like' with a low noise ratio of 0.0505, indicating minimal influence of noise compared to the overall signal strength. This aligns with the observation from the advanced_features tool which showed a normalized spectral entropy of 0.015466826305917291 and low excess kurtosis, indicating regularity in the data.", "role": "structure", "evidence": ["The noise_decomposition tool identified the noise type as 'random_walk_like' with a noise ratio of 0.0505, indicating minimal influence of noise compared to the overall signal strength.", "The advanced_features tool revealed low excess kurtosis (-1.485) and a normalized spectral entropy of 0.015466826305917291, indicating regularity in the data."], "candidate_preference": "C", "confidence": 0.95, "tool_calls": [], "cited_tool_call_ids": [], "executed_tools": [], "tool_summaries": []}]
+</task_evidence>
+
+<preference_votes>
+[
+  {
+    "role": "structure",
+    "candidate_preference": "C",
+    "confidence": 0.95,
+    "tool_backed": false,
+    "verified_tool_call_ids": []
+  }
+]
+</preference_votes>
+
+<tool_backed_majority>
+(none)
+</tool_backed_majority>
+
+<metadata>
+subset=Base; local_overall=overall; task_type=['noise analysis']; domain=synthetic; qa_type=a multiple choice question; question_type=choice; is_univariate=True; n_series=1; series_lengths=[1314]; index_base=0; series_truncated=False; focus_intervals=[]; query_series_index=1; candidate_series_indices=[]; align_direction=None; option_to_series={}
+</metadata>
+
+Produce the FinalAnswer JSON now.
+
+```
+
+### OUTPUT
+
+```
+{
+  "reasoning": "The noise analysis conducted by both the noise_decomposition and advanced_features tools indicates that the noise type in the given time series most resembles a random walk. The noise_decomposition tool provides a noise type hint of 'random_walk_like' with a low noise ratio of 0.0505, indicating minimal noise influence compared to the overall signal strength. Additionally, the advanced_features tool reported low excess kurtosis (-1.485) and a low normalized spectral entropy (0.0155), suggesting a regular pattern in the data consistent with a random walk.",
+  "answer": "C",
+  "explanation": "Based on the noise_decomposition and advanced_features tool results, the noise in the time series most closely resembles a random walk. The low noise ratio, low noise level, and low normalized spectral entropy provide strong evidence for this conclusion.",
+  "confidence": 0.95,
+  "conflicts": [],
+  "cited_evidence": ["The noise_decomposition tool identified the noise type as 'random_walk_like' with a noise ratio of 0.0505, indicating minimal influence of noise compared to the overall signal strength.", "The advanced_features tool revealed low excess kurtosis (-1.485) and a normalized spectral entropy of 0.015466826305917291, indicating regularity in the data."]
+}
+```
+
+# Baseline LLM calls
+
+## Call 1: `baseline`
+
+tokens prompt=10336 completion=211 latency=10.80s cached=False
+
+### INPUT role=`system`
+
+```
+You are an expert AI assistant specialized in answering time-series multiple-choice or numerical questions with high accuracy and consistency.
+
+IMPORTANT INSTRUCTIONS:
+1. For choice questions, select from the given options only and answer with a single letter.
+2. For numerical questions, output a single numeric value.
+3. Do not make up information not provided in the question.
+4. Think step by step before concluding.
+
+RESPONSE FORMAT:
+<thinking_process>
+[analysis]
+</thinking_process>
+
+<final_answer>
+[letter or number]
+</final_answer>
+
+```
+
+### INPUT role=`user`
+
+```
+Please answer the following question based on the given information:
+
+<question>
+Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?
+</question>
+
+<timeseries>
+Given Time Series: [-229.66, -221.6, -227.36, -237.66, -217.84, -255.32, -248.67, -264.56, -259.62, -268.77, -276.84, -258.64, -266.49, -289.13, -265.49, -258.93, -287.02, -295.14, -297.32, -279.46, -294.89, -293.09, -304.4, -312.38, -280.64, -303.29, -279.2, -318.15, -317.36, -297.68, -281.03, -306.0, -295.96, -294.33, -313.75, -282.19, -279.8, -283.0, -295.51, -299.42, -277.14, -270.28, -285.38, -297.42, -297.94, -280.72, -264.94, -277.05, -251.7, -282.53, -280.21, -267.04, -240.17, -268.66, -229.46, -252.9, -246.01, -220.97, -211.71, -233.41, -217.06, -203.85, -197.36, -177.39, -189.89, -180.01, -187.32, -180.24, -173.43, -160.16, -135.55, -152.87, -126.78, -136.78, -128.01, -106.64, -114.19, -96.92, -104.65, -106.12, -97.36, -76.65, -67.04, -46.57, -36.5, -31.87, -40.17, -15.44, -19.81, 0.02, -11.57, -13.04, 11.73, 25.26, 47.0, 45.35, 32.84, 41.27, 54.65, 69.51, 83.12, 89.86, 96.32, 120.37, 111.7, 128.33, 148.72, 153.87, 142.74, 161.73, 159.74, 166.22, 189.55, 166.86, 199.16, 184.98, 192.27, 208.66, 236.79, 246.31, 236.88, 257.93, 229.67, 246.08, 248.89, 275.34, 293.4, 282.28, 287.37, 283.35, 300.97, 310.45, 304.86, 330.02, 302.86, 328.06, 325.41, 318.33, 336.47, 360.04, 349.88, 351.97, 366.86, 369.53, 375.49, 353.29, 351.0, 367.71, 368.76, 361.02, 382.8, 384.56, 374.65, 384.46, 386.75, 400.43, 397.34, 391.17, 381.38, 389.5, 370.12, 402.74, 392.65, 371.32, 393.79, 372.92, 402.1, 383.76, 404.56, 380.92, 372.62, 362.14, 386.06, 382.28, 381.75, 385.31, 353.65, 359.4, 367.42, 374.04, 347.16, 350.15, 365.98, 359.6, 348.54, 336.76, 350.92, 335.87, 308.84, 298.25, 331.53, 323.37, 292.01, 275.24, 300.18, 266.42, 295.48, 289.18, 274.94, 265.71, 235.98, 243.73, 226.04, 211.06, 204.7, 237.11, 227.56, 185.93, 181.33, 201.07, 169.71, 185.95, 150.63, 175.15, 143.56, 147.66, 139.11, 142.83, 100.01, 103.17, 83.86, 83.93, 98.32, 77.88, 83.71, 59.2, 42.23, 35.89, 56.85, 37.33, 6.29, 24.01, -6.3, 15.29, 3.38, -4.74, -29.92, -44.08, -54.68, -32.53, -80.97, -85.24, -93.0, -105.17, -111.36, -109.08, -102.65, -132.77, -131.0, -119.79, -142.18, -151.92, -145.32, -170.45, -164.38, -182.34, -163.7, -199.99, -171.32, -188.35, -179.79, -188.07, -214.82, -220.52, -219.13, -236.56, -235.76, -247.05, -251.33, -259.35, -232.55, -258.12, -249.34, -270.3, -260.22, -259.14, -280.81, -265.06, -272.65, -269.34, -297.05, -300.64, -298.75, -278.24, -289.48, -307.11, -305.3, -307.87, -292.49, -295.15, -296.99, -288.42, -313.22, -280.45, -301.5, -294.21, -308.27, -315.29, -288.27, -304.24, -278.9, -302.29, -286.53, -304.31, -303.87, -278.37, -261.71, -273.24, -276.0, -252.33, -275.8, -275.07, -260.83, -242.87, -260.67, -250.02, -257.99, -257.55, -218.05, -236.44, -230.29, -233.58, -194.18, -213.24, -184.69, -185.06, -185.34, -178.02, -188.38, -171.6, -160.8, -170.17, -133.67, -136.71, -136.67, -143.3, -132.6, -135.75, -98.4, -95.35, -114.65, -87.54, -99.53, -76.01, -73.26, -67.75, -39.09, -47.66, -51.31, -15.34, -36.68, -27.5, -21.07, -5.57, -4.49, 26.79, 40.02, 57.68, 56.25, 51.62, 51.22, 81.65, 68.9, 102.68, 111.93, 120.28, 128.52, 125.7, 143.4, 116.5, 135.0, 147.39, 141.52, 148.46, 158.96, 163.56, 194.14, 217.23, 202.08, 229.02, 198.17, 233.72, 249.13, 249.78, 254.98, 268.56, 238.38, 258.05, 256.82, 288.98, 269.93, 277.71, 274.37, 315.02, 309.88, 291.48, 334.06, 334.91, 304.49, 324.17, 349.9, 334.07, 328.65, 325.29, 352.28, 369.61, 369.98, 346.17, 343.08, 347.61, 358.82, 376.04, 374.13, 382.07, 382.05, 374.15, 384.57, 380.13, 385.33, 396.67, 386.34, 376.92, 372.39, 384.19, 365.83, 369.38, 371.64, 371.96, 396.59, 381.64, 391.55, 377.96, 379.4, 384.96, 355.63, 388.63, 388.79, 366.63, 362.92, 349.83, 346.52, 375.06, 369.53, 344.0, 335.79, 353.37, 342.12, 323.66, 323.33, 331.81, 322.33, 310.73, 308.89, 284.8, 306.57, 284.36, 296.21, 286.16, 284.04, 278.01, 281.69, 247.89, 266.56, 227.5, 258.41, 223.26, 228.33, 228.31, 225.22, 189.32, 202.69, 179.79, 167.47, 164.33, 179.07, 165.36, 154.65, 151.65, 151.37, 144.45, 131.44, 118.42, 106.89, 100.48, 97.1, 61.99, 70.54, 43.65, 48.32, 60.94, 53.24, 38.49, 39.75, 20.66, -11.6, 15.13, -25.1, -10.05, -28.12, -14.84, -41.44, -45.43, -69.09, -45.62, -85.19, -74.35, -92.15, -73.85, -80.68, -115.45, -93.33, -126.89, -109.26, -131.77, -135.85, -131.26, -151.93, -138.87, -181.81, -151.48, -166.03, -179.8, -181.58, -213.76, -191.85, -213.71, -195.47, -216.83, -211.09, -220.07, -223.36, -225.58, -232.54, -260.51, -237.02, -239.14, -252.79, -246.9, -240.75, -265.72, -280.71, -264.4, -278.39, -274.24, -290.43, -266.43, -282.12, -266.08, -283.46, -270.56, -296.06, -290.55, -264.74, -287.66, -280.89, -287.48, -275.18, -268.8, -284.13, -293.7, -275.93, -287.44, -267.85, -255.52, -262.24, -267.7, -285.39, -255.15, -259.06, -276.8, -263.25, -253.14, -246.19, -259.73, -260.78, -253.73, -232.46, -226.35, -218.38, -239.27, -232.28, -224.07, -218.8, -184.14, -211.3, -205.77, -178.49, -175.8, -153.97, -160.41, -149.06, -153.34, -133.79, -152.8, -152.76, -147.23, -122.19, -96.63, -114.6, -89.94, -105.38, -80.11, -72.7, -81.93, -44.61, -54.67, -64.61, -30.43, -46.2, -24.65, -31.08, -24.44, 10.62, 9.14, 30.64, 16.02, 53.39, 51.37, 71.82, 62.57, 51.0, 61.62, 64.64, 82.42, 110.36, 108.55, 100.77, 121.94, 134.73, 126.34, 129.04, 160.05, 179.55, 165.09, 196.52, 186.08, 189.64, 194.32, 207.66, 220.11, 233.18, 239.56, 239.19, 233.78, 237.55, 250.65, 273.77, 278.17, 263.25, 289.03, 281.35, 293.27, 302.84, 323.31, 335.18, 344.78, 326.46, 316.92, 355.88, 333.24, 340.84, 372.28, 345.16, 380.82, 361.71, 384.95, 389.55, 390.75, 372.52, 403.09, 388.79, 373.27, 387.38, 418.68, 382.75, 404.8, 414.6, 426.1, 405.04, 414.61, 396.89, 393.49, 425.87, 398.16, 424.5, 398.3, 418.03, 404.83, 417.1, 410.37, 397.21, 414.5, 390.84, 404.7, 403.04, 413.26, 410.05, 416.89, 381.55, 393.72, 414.71, 384.33, 405.29, 370.34, 397.63, 373.98, 359.44, 389.25, 357.46, 364.61, 363.93, 361.52, 369.1, 358.83, 335.8, 329.67, 341.04, 323.5, 302.64, 333.53, 317.5, 315.01, 311.87, 270.78, 272.85, 266.31, 281.38, 245.75, 246.51, 263.82, 261.5, 238.71, 218.66, 235.59, 199.31, 187.69, 179.27, 177.56, 181.21, 184.65, 151.61, 163.85, 130.48, 153.55, 136.96, 137.6, 112.62, 108.77, 110.01, 76.89, 97.62, 69.08, 56.53, 75.46, 34.36, 41.84, 50.85, 20.16, 36.31, -7.13, -13.38, 5.23, -29.83, -16.61, -9.84, -40.86, -36.27, -62.03, -77.41, -56.0, -84.97, -70.96, -81.68, -108.7, -123.32, -112.44, -112.15, -115.95, -127.57, -158.47, -155.15, -139.68, -176.86, -156.53, -176.22, -191.26, -173.59, -172.56, -203.17, -178.38, -216.38, -190.0, -230.59, -201.95, -206.37, -210.24, -223.45, -213.91, -216.13, -244.66, -253.33, -236.49, -249.44, -243.88, -248.39, -262.41, -254.64, -246.64, -250.27, -274.62, -270.24, -279.41, -258.89, -258.81, -264.77, -251.14, -256.22, -278.72, -279.16, -274.84, -251.72, -274.43, -262.69, -272.49, -251.53, -257.7, -256.7, -267.59, -272.29, -243.13, -254.2, -232.48, -246.64, -242.41, -220.06, -240.59, -238.05, -209.91, -221.89, -216.67, -233.53, -205.47, -193.44, -198.72, -216.12, -179.17, -174.33, -192.47, -192.22, -168.99, -174.69, -137.68, -166.55, -130.51, -135.39, -126.66, -132.83, -115.15, -108.37, -121.28, -105.85, -87.96, -76.99, -74.37, -52.84, -81.29, -50.98, -36.06, -35.83, -22.85, -13.99, -33.24, -29.62, 10.82, -2.69, 24.18, 11.48, 38.87, 38.16, 59.52, 66.58, 79.95, 89.73, 74.12, 94.71, 91.4, 88.64, 107.78, 125.72, 141.4, 153.51, 125.07, 136.5, 160.45, 152.35, 164.96, 186.83, 180.74, 200.63, 197.51, 231.76, 205.88, 234.05, 249.82, 248.43, 264.77, 260.08, 274.85, 286.87, 260.3, 262.85, 283.03, 281.51, 289.74, 316.15, 327.17, 303.29, 304.49, 335.0, 314.96, 341.75, 346.15, 363.95, 349.01, 347.53, 363.2, 346.17, 357.97, 376.76, 388.31, 380.97, 389.92, 379.87, 403.28, 396.78, 405.77, 408.28, 399.14, 379.82, 401.05, 407.8, 415.82, 414.39, 396.09, 391.53, 391.6, 416.88, 408.76, 387.31, 402.34, 414.42, 421.21, 412.74, 412.03, 402.47, 394.48, 385.9, 380.09, 375.28, 374.51, 368.75, 372.96, 387.78, 374.47, 384.5, 375.63, 345.63, 358.18, 373.41, 339.56, 356.84, 342.33, 320.48, 332.92, 331.68, 337.15, 327.39, 307.38, 308.92, 319.87, 297.44, 272.08, 273.74, 284.03, 287.46, 254.84, 271.1, 270.4, 236.82, 255.78, 218.4, 224.64, 231.55, 213.95, 193.63, 174.08, 193.97, 197.01, 184.83, 178.87, 172.8, 141.21, 125.46, 110.81, 139.2, 124.48, 121.55, 108.22, 74.89, 93.33, 59.87, 62.54, 61.61, 46.75, 23.31, 13.11, 14.25, -7.87, -8.58, 0.8, -23.1, -26.18, -34.91, -16.14, -59.25, -35.17, -58.05, -57.33, -91.76, -100.95, -102.14, -98.6, -104.34, -131.34, -117.34, -144.44, -153.89, -125.44, -143.77, -146.28, -159.94, -155.73, -157.2, -183.55, -170.89, -206.59, -196.95, -217.68, -217.5, -209.05, -235.62, -211.28, -227.5, -255.49, -227.77, -247.42, -239.81, -276.54, -243.21, -266.86, -251.98, -255.55, -269.48, -291.1, -268.98, -286.25, -302.51, -272.9, -304.28, -278.87, -299.05, -282.96, -285.9, -300.76, -302.12, -298.13, -290.23, -325.32, -307.33, -294.95, -304.93, -311.2, -308.13, -319.83, -311.89, -311.17, -301.71, -289.61, -286.22, -293.7, -309.09, -304.83, -276.16, -270.14, -292.84, -276.37, -267.84, -276.19, -264.55, -291.87, -275.97, -257.74, -270.69, -243.32, -231.12, -231.52, -238.14, -255.86, -251.35, -208.08, -236.19, -198.8, -225.25, -197.53, -208.68, -184.91, -181.0, -172.94, -160.36, -186.01, -158.27, -156.18, -154.12, -140.9, -144.55, -142.65, -138.98, -95.12, -89.4, -78.39, -68.19, -85.7, -85.29, -83.57, -52.15, -65.23, -52.4, -53.32, -43.84, -33.05, -25.91, -16.09, 1.0, 13.49, 17.97, 15.19, 37.13, 59.85, 65.03, 47.22, 54.06, 71.22, 99.66, 84.7, 101.88, 89.27, 110.98, 126.95, 127.73, 150.25, 132.34, 156.92, 159.88, 176.41, 183.76, 200.13, 196.84, 175.09, 183.86, 195.82, 203.8, 220.85, 233.47, 248.84, 238.52, 257.79, 249.16, 237.47, 277.68, 256.93, 263.56, 276.72, 286.48, 297.21, 270.56, 293.37, 302.3, 301.73, 322.78, 313.49, 334.4, 310.28, 323.53, 305.63, 334.03, 336.57, 350.85, 326.19, 320.75, 324.5, 357.07, 338.2, 358.63, 334.32, 346.62, 352.31, 330.92, 365.12, 337.92, 328.41, 366.25, 334.1, 333.38, 339.55, 334.28, 352.99, 335.92, 321.83, 330.02, 320.39, 329.68, 327.07, 346.5, 313.05, 333.12, 324.0, 324.57, 316.84, 327.66, 292.23, 291.68, 285.02, 285.14, 283.06, 300.8, 279.47, 280.06, 280.64, 273.01, 274.94, 236.75, 266.63, 231.01, 227.39, 226.86, 225.19, 229.25, 203.1, 210.33, 191.75, 177.54, 172.89, 166.91, 182.02, 143.61, 141.69, 132.1, 160.88, 132.62, 128.79, 110.6, 113.88, 106.04, 88.6, 85.37, 60.92, 89.69, 80.44, 51.35, 29.45, 18.74, 26.78, 26.09, 33.54, 1.44, -22.41, -2.63, -38.08, -17.27, -47.46, -61.96, -55.23, -65.15, -58.91, -86.19, -73.03, -106.42, -112.78, -114.2, -104.12, -114.21, -121.59, -119.62, -147.93, -162.01, -183.2, -190.25, -170.27, -190.15, -178.43, -215.41, -208.05, -227.88, -235.76, -241.43, -222.97, -221.77, -262.27, -266.34, -254.34, -269.93, -263.31, -272.64, -275.79]
+</timeseries>
+
+<candidates>
+A) Uniform.
+B) Gauss.
+C) Random walk.
+D) Quantization.
+</candidates>
+
+Analyze carefully and follow the exact response format.
+```
+
+### OUTPUT
+
+```
+<thinking_process>
+To determine the type of noise in the time series, we must first observe the characteristics of the provided sequence.
+
+The sequence has fluctuating values around a central trend, suggesting there might be some form of variability (noise). The fluctuations do not seem to have a constant amplitude or consistent pattern. This indicates that the noise isn't uniform across the series.
+
+Looking at the magnitude and distribution of these variations, they do not appear to follow a normal distribution (Gaussian) perfectly but rather exhibit irregular patterns that deviate significantly over the range of the sequence. Additionally, these deviations are not simply random steps like a random walk would suggest; instead, they seem to fluctuate around some central points with varying amplitudes. Lastly, quantization noise typically appears as discrete jumps due to rounding errors, which is not evident in the given sequence.
+
+Considering all these aspects, none of the options perfectly match, but we need to pick the closest one from the provided candidates.
+</thinking_process>
+
+<final_answer>
+B
+</final_answer>
+```

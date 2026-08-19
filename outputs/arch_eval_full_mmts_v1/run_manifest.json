@@ -1,0 +1,16 @@
+{
+  "exp_name": "arch_eval_full_mmts_v1",
+  "index_file": "/root/autodl-tmp/time-series-agent/data/processed/mmts-bench/index.jsonl",
+  "checklist_file": null,
+  "total_universe": 2424,
+  "already_done": 0,
+  "pending": 2424,
+  "resume": true,
+  "limit": null,
+  "started_at": "2026-08-04T17:08:53",
+  "policy": "skip_sample_on_tool_issue",
+  "stats_levels": [
+    "subset",
+    "taxonomy_task"
+  ]
+}

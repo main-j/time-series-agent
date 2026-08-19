@@ -180,7 +180,26 @@ def test_hurst_and_noise_decomposition_smoke():
     n = reg.run("noise_decomposition", {"series_index": 1}, series)
     assert n.success
     assert "noise_ratio" in n.data
-    assert n.data["noise_level"] in {"low", "medium", "high"}
+    assert n.data["noise_level"] in {"none", "low", "medium", "high"}
+    assert "Var(residual)/Var(series)" in n.data["metric_definition"]
+
+
+def test_waveform_features_registered_for_core_roles():
+    reg = build_default_registry()
+    names = {s.name for s in reg.list_for_roles(["short", "structure"])}
+    assert "waveform_features" in names
+
+
+def test_fft_period_marks_near_length_untrusted():
+    reg = build_default_registry()
+    # Nearly monotonic: FFT often picks period ≈ length.
+    y = [float(i) + 0.01 * (i % 3) for i in range(64)]
+    res = reg.run("fft_period", {"series_index": 1}, [y])
+    assert res.success
+    assert "period_trusted" in res.data
+    if res.data.get("dominant_period") and float(res.data["dominant_period"]) >= 0.5 * 64:
+        assert res.data["period_trusted"] is False
+        assert any("length" in w for w in (res.data.get("warnings") or []))
 
 
 def test_alignment_role_has_new_tools():

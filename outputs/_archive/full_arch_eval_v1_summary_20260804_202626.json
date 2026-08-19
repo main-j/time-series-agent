@@ -1,0 +1,682 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:0",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      617
+    ],
+    "task_type": "['trend analysis']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 94.38695430755615,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_0",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Trend"
+    ],
+    "primary_task": "Feature/Trend",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:2",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      799
+    ],
+    "task_type": "['trend analysis']",
+    "gold": "C",
+    "arch_pred": "C",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 94.07740950584412,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_2",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Trend"
+    ],
+    "primary_task": "Feature/Trend",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 3,
+      "successes": 3,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:3",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      171
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "A",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 12,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 125.92773199081421,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_3",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Noise"
+    ],
+    "primary_task": "Feature/Noise",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:5",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1076
+    ],
+    "task_type": "['trend analysis']",
+    "gold": "C",
+    "arch_pred": "C",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 90.92211842536926,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_5",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Trend"
+    ],
+    "primary_task": "Feature/Trend",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 3,
+      "successes": 3,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:6",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      539
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "D",
+    "arch_pred": "D",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 20,
+    "arch_tool_calls": 6,
+    "arch_latency_sec": 254.10420536994934,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_6",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Noise"
+    ],
+    "primary_task": "Feature/Noise",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 6,
+      "successes": 6,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:1",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      860
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 82.03615880012512,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_1",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Season."
+    ],
+    "primary_task": "Feature/Season.",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:4",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      2028
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 93.35253357887268,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_4",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Season."
+    ],
+    "primary_task": "Feature/Season.",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 4,
+      "successes": 3,
+      "failed": 1,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:7",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      300
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 114.91921758651733,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_7",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Season."
+    ],
+    "primary_task": "Feature/Season.",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 3,
+      "successes": 3,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:8",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      544
+    ],
+    "task_type": "['trend analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 72.90508937835693,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_8",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Trend"
+    ],
+    "primary_task": "Feature/Trend",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 1,
+      "successes": 1,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:9",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1643
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "C",
+    "arch_pred": "D",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 125.91836857795715,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_9",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Noise"
+    ],
+    "primary_task": "Feature/Noise",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 3,
+      "successes": 3,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:10",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1556
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "D",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 88.65465021133423,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_10",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Season."
+    ],
+    "primary_task": "Feature/Season.",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:11",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1807
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 122.39055180549622,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_11",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Season."
+    ],
+    "primary_task": "Feature/Season.",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 4,
+      "successes": 4,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:12",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      860
+    ],
+    "task_type": "['trend analysis']",
+    "gold": "B",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 85.8883547782898,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_12",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Trend"
+    ],
+    "primary_task": "Feature/Trend",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:13",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1628
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "C",
+    "arch_pred": "C",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 22,
+    "arch_tool_calls": 21,
+    "arch_latency_sec": 370.9130313396454,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_13",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Noise"
+    ],
+    "primary_task": "Feature/Noise",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 21,
+      "successes": 21,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:14",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1314
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "A",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 18,
+    "arch_tool_calls": 8,
+    "arch_latency_sec": 377.99116015434265,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_14",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Noise"
+    ],
+    "primary_task": "Feature/Noise",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 8,
+      "successes": 8,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:15",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1013
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "B",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 88.24262022972107,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_15",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Season."
+    ],
+    "primary_task": "Feature/Season.",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:16",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      914
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "C",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 76.32118678092957,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_16",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Season."
+    ],
+    "primary_task": "Feature/Season.",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:17",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1138
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "D",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 81.86414170265198,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_17",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Season."
+    ],
+    "primary_task": "Feature/Season.",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:18",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      642
+    ],
+    "task_type": "['trend analysis']",
+    "gold": "A",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 99.10402250289917,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_18",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Trend"
+    ],
+    "primary_task": "Feature/Trend",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 2,
+      "successes": 2,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:19",
+    "subset": "Base",
+    "n_series": 1,
+    "series_lengths": [
+      1872
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "B",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 12,
+    "arch_tool_calls": 5,
+    "arch_latency_sec": 170.8616237640381,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/full_arch_eval_v1/runs/Base_synthtic_qa_700_19",
+    "taxonomy_tasks": [
+      "Structural/Uni.-Multi.",
+      "Feature/Noise"
+    ],
+    "primary_task": "Feature/Noise",
+    "tool_scan": {
+      "has_issue": false,
+      "reason": null,
+      "attempted": 5,
+      "successes": 5,
+      "failed": 0,
+      "issue_hits": 0,
+      "examples": [],
+      "arch_error": null
+    }
+  }
+]

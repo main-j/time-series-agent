@@ -1,0 +1,3925 @@
+{
+  "name": "weighted_mmts_regression_200",
+  "seed": 20260802,
+  "n_unique_samples": 200,
+  "selection_policy": {
+    "minimum_per_task": 6,
+    "weak_task_oversampling": "12-20 samples for high-error or below-baseline strata",
+    "historical_error_target": "approximately 70% per stratum when available",
+    "deduplication": "each physical sample assigned to exactly one primary stratum",
+    "diversity_fields": [
+      "qa_type",
+      "local_overall",
+      "is_univariate",
+      "domain",
+      "freq",
+      "answer"
+    ],
+    "history_source": "/root/autodl-tmp/ts-agent-paper-repro/results/mmts_full_agent.jsonl",
+    "recommended_run_chunks": "4 chunks × 50 samples for checkpointing",
+    "baseline_caveat": "Task-level architecture accuracy comes from the historical full TS-Agent run; baseline references are subset-level choice accuracies, so gaps are prioritization signals rather than paired significance estimates."
+  },
+  "task_stats": {
+    "CrossModal/Semantic→TS": {
+      "pool_size": 120,
+      "quota": 20,
+      "sample_rate": 0.16666666666666666,
+      "historical_architecture_accuracy": 0.225,
+      "baseline_subset_reference": 0.8458333333333333,
+      "architecture_minus_baseline_reference": -0.6208333333333333,
+      "historical_error_count": 93,
+      "selected_historical_errors": 14
+    },
+    "Structural/Non-Stationarity": {
+      "pool_size": 100,
+      "quota": 16,
+      "sample_rate": 0.16,
+      "historical_architecture_accuracy": 0.1,
+      "baseline_subset_reference": 0.37662337662337664,
+      "architecture_minus_baseline_reference": -0.27662337662337666,
+      "historical_error_count": 90,
+      "selected_historical_errors": 11
+    },
+    "CrossModal/TS→Semantic": {
+      "pool_size": 120,
+      "quota": 16,
+      "sample_rate": 0.13333333333333333,
+      "historical_architecture_accuracy": 0.4583333333333333,
+      "baseline_subset_reference": 0.8458333333333333,
+      "architecture_minus_baseline_reference": -0.3875,
+      "historical_error_count": 65,
+      "selected_historical_errors": 11
+    },
+    "Matching/Localization": {
+      "pool_size": 100,
+      "quota": 14,
+      "sample_rate": 0.14,
+      "historical_architecture_accuracy": 0.43,
+      "baseline_subset_reference": 0.5475,
+      "architecture_minus_baseline_reference": -0.1175,
+      "historical_error_count": 57,
+      "selected_historical_errors": 10
+    },
+    "Feature/Season.": {
+      "pool_size": 264,
+      "quota": 12,
+      "sample_rate": 0.045454545454545456,
+      "historical_architecture_accuracy": 0.3143939393939394,
+      "baseline_subset_reference": 0.46988557400331976,
+      "architecture_minus_baseline_reference": -0.15549163460938037,
+      "historical_error_count": 181,
+      "selected_historical_errors": 8
+    },
+    "Feature/Noise": {
+      "pool_size": 248,
+      "quota": 12,
+      "sample_rate": 0.04838709677419355,
+      "historical_architecture_accuracy": 0.3024193548387097,
+      "baseline_subset_reference": 0.46621672280820003,
+      "architecture_minus_baseline_reference": -0.16379736796949035,
+      "historical_error_count": 173,
+      "selected_historical_errors": 8
+    },
+    "Feature/Volat.": {
+      "pool_size": 183,
+      "quota": 12,
+      "sample_rate": 0.06557377049180328,
+      "historical_architecture_accuracy": 0.366120218579235,
+      "baseline_subset_reference": 0.5267527675276753,
+      "architecture_minus_baseline_reference": -0.1606325489484403,
+      "historical_error_count": 116,
+      "selected_historical_errors": 8
+    },
+    "Reasoning/Count.": {
+      "pool_size": 109,
+      "quota": 12,
+      "sample_rate": 0.11009174311926606,
+      "historical_architecture_accuracy": 0.3669724770642202,
+      "baseline_subset_reference": 0.5267527675276753,
+      "architecture_minus_baseline_reference": -0.1597802904634551,
+      "historical_error_count": 69,
+      "selected_historical_errors": 8
+    },
+    "Feature/Trend": {
+      "pool_size": 311,
+      "quota": 10,
+      "sample_rate": 0.03215434083601286,
+      "historical_architecture_accuracy": 0.4405144694533762,
+      "baseline_subset_reference": 0.478479651481277,
+      "architecture_minus_baseline_reference": -0.037965182027900835,
+      "historical_error_count": 174,
+      "selected_historical_errors": 7
+    },
+    "Reasoning/Ded.": {
+      "pool_size": 194,
+      "quota": 10,
+      "sample_rate": 0.05154639175257732,
+      "historical_architecture_accuracy": 0.41237113402061853,
+      "baseline_subset_reference": 0.5267527675276753,
+      "architecture_minus_baseline_reference": -0.11438163350705677,
+      "historical_error_count": 114,
+      "selected_historical_errors": 7
+    },
+    "Reasoning/Ind.": {
+      "pool_size": 180,
+      "quota": 10,
+      "sample_rate": 0.05555555555555555,
+      "historical_architecture_accuracy": 0.4111111111111111,
+      "baseline_subset_reference": 0.5267527675276753,
+      "architecture_minus_baseline_reference": -0.11564165641656421,
+      "historical_error_count": 106,
+      "selected_historical_errors": 7
+    },
+    "Reasoning/Analog.": {
+      "pool_size": 151,
+      "quota": 10,
+      "sample_rate": 0.06622516556291391,
+      "historical_architecture_accuracy": 0.4370860927152318,
+      "baseline_subset_reference": 0.5267527675276753,
+      "architecture_minus_baseline_reference": -0.0896666748124435,
+      "historical_error_count": 85,
+      "selected_historical_errors": 7
+    },
+    "Feature/Basic": {
+      "pool_size": 392,
+      "quota": 8,
+      "sample_rate": 0.02040816326530612,
+      "historical_architecture_accuracy": 0.6045918367346939,
+      "baseline_subset_reference": 0.450156139515278,
+      "architecture_minus_baseline_reference": 0.15443569721941586,
+      "historical_error_count": 155,
+      "selected_historical_errors": 6
+    },
+    "Reasoning/Causal": {
+      "pool_size": 129,
+      "quota": 8,
+      "sample_rate": 0.06201550387596899,
+      "historical_architecture_accuracy": 0.43410852713178294,
+      "baseline_subset_reference": 0.5267527675276753,
+      "architecture_minus_baseline_reference": -0.09264424039589236,
+      "historical_error_count": 73,
+      "selected_historical_errors": 6
+    },
+    "Structural/Local-Global": {
+      "pool_size": 100,
+      "quota": 6,
+      "sample_rate": 0.06,
+      "historical_architecture_accuracy": 0.9,
+      "baseline_subset_reference": 0.37662337662337664,
+      "architecture_minus_baseline_reference": 0.5233766233766234,
+      "historical_error_count": 10,
+      "selected_historical_errors": 4
+    },
+    "Structural/Uni.-Multi.": {
+      "pool_size": 700,
+      "quota": 6,
+      "sample_rate": 0.008571428571428572,
+      "historical_architecture_accuracy": 0.48714285714285716,
+      "baseline_subset_reference": 0.3766233766233766,
+      "architecture_minus_baseline_reference": 0.11051948051948057,
+      "historical_error_count": 359,
+      "selected_historical_errors": 4
+    },
+    "Matching/Robust": {
+      "pool_size": 100,
+      "quota": 6,
+      "sample_rate": 0.06,
+      "historical_architecture_accuracy": 0.95,
+      "baseline_subset_reference": 0.5475,
+      "architecture_minus_baseline_reference": 0.40249999999999997,
+      "historical_error_count": 5,
+      "selected_historical_errors": 4
+    },
+    "Matching/Isomorphic": {
+      "pool_size": 100,
+      "quota": 6,
+      "sample_rate": 0.06,
+      "historical_architecture_accuracy": 1.0,
+      "baseline_subset_reference": 0.5475,
+      "architecture_minus_baseline_reference": 0.4525,
+      "historical_error_count": 0,
+      "selected_historical_errors": 0
+    },
+    "Matching/Reverse": {
+      "pool_size": 100,
+      "quota": 6,
+      "sample_rate": 0.06,
+      "historical_architecture_accuracy": 1.0,
+      "baseline_subset_reference": 0.5475,
+      "architecture_minus_baseline_reference": 0.4525,
+      "historical_error_count": 0,
+      "selected_historical_errors": 0
+    }
+  },
+  "samples": [
+    {
+      "sample_id": "Align:caption2ts_qa_120:119",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 119,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits a distinctive V-shaped pattern, starting at 4.16, declining steadily to near-zero values around index 8-13, then recovering sharply to reach the maximum value of 4.32 at index 23.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:0",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 0,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "'This time-series data shows an overall upward trend from index 0 to approximately 150, rising from around 55 to peaks near 73, followed by high volatility with fluctuations between 54-71, and ending with a decline to around 56 by index 300.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:80",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 80,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits high volatility with multiple distinct peaks reaching above 100 and sharp drops to near-zero values. The data shows several cyclical patterns with pronounced spikes around indices 50-100, 200-250, and gradual stabilization toward lower values in the final segment.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:70",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 70,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits a cyclical pattern with three distinct phases: an initial upward trend from index 0-100 reaching peaks around 15-16, a prolonged plateau period with constant values of 13.38 from index 120-180, followed by alternating cycles of growth and decline with notable volatility and several sharp spikes throughout the remaining sequence.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:114",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 114,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "'This time-series data shows high volatility with values ranging from 62.75 to 137.46 around a mean of 102.96. The series exhibits a dramatic drop around index 70, followed by significant upward spikes occurring periodically throughout, particularly notable peaks around indices 280, 400, 500, and 670.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:5",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 5,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits a U-shaped pattern, starting at 5.81, declining to a minimum of 0.31 at index 9, then gradually recovering. Notable spikes occur at indices 18 (13.79) and 21 (12.72), creating significant volatility in the latter portion of the series.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:112",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 112,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "'This time series data exhibits a cyclical pattern with three distinct peaks around indices 40, 320, and 620, reaching maximum values near 15.07. The series oscillates between approximately 3.57 and 15.07, showing regular upward and downward trends with relatively smooth transitions between cycles.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:9",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 9,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits multiple distinct phases: initial stability around 5-6, gradual increase to peak at 21.77 (index 47), decline to minimum 2.94 (index 202), followed by moderate fluctuations, and culminating in a dramatic spike reaching maximum 48.90 near the end before sharp decline.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:115",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 115,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits cyclical patterns with values ranging from 0.00 to 47.53 (mean: 4.71). Notable features include several extreme spikes reaching above 20, particularly around indices 67, 91, 113, 137, 161, 275, 322, 355, and two exceptional peaks at 47.53 and 43.98 near index 470. A distinctive gap of zero values occurs between indices 480-500, followed by resumed cyclical behavior with gradually increasing baseline levels.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:24",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 24,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits relatively stable values around 14.98 with notable volatility spikes. A dramatic drop occurs around index 190 (minimum 10.80), followed by recovery. Significant upward spikes reach 18.83 around indices 160-180 and 400-450, with scattered anomalous peaks throughout the sequence.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:101",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 101,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "'This time series data exhibits a sparse pattern with predominantly zero values interrupted by intermittent spikes ranging from 0.03 to 0.23. The highest peaks occur at indices 63, 291, 511, and 571, with most non-zero events clustered in irregular intervals throughout the 750-point sequence.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:2",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 2,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits strong periodic patterns with regular cycles of sharp peaks reaching 15-30 and valleys near zero. Notable anomalies include a zero-value gap around index 480-490 and several extreme spikes, with the maximum value of 30.29 occurring around index 250.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:71",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 71,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "'This time series data exhibits high volatility with values fluctuating between 89.88 and 98.99 around a mean of 95.13. The series shows multiple peaks reaching near 99.0 around indices 25, 120-140, 160-180, and 270, with corresponding troughs dropping to approximately 90-92 levels throughout the sequence.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:93",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 93,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "'This time series exhibits an overall upward trend from approximately 89-91 to 92-95, with distinct step-like increases occurring around indices 200, 280, and 480. The data shows periodic fluctuations between stable plateaus, with notable peaks reaching 95.0 and occasional drops creating temporary volatility patterns throughout the sequence.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:88",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 88,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "'This time series exhibits a dramatic upward trend from index 0-25, rising from 37.74 to nearly 100, followed by sustained high-level fluctuations around 97-99 through index 200. A notable sharp decline occurs around index 210-220, dropping to approximately 74, before recovering and stabilizing around 90-95 toward the end.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:32",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 32,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "'This time series exhibits a distinctive pattern with initial values around 15, followed by a prolonged flat period at 10.76 from index 6-77, then dramatic fluctuations including a peak at 26.29, declining to minimum 4.73, before gradually recovering to higher values around 15-16.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:90",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 90,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "'This time series exhibits a distinctive pattern with values starting around 7, rising to a peak of 9.93 at index 6, then declining steadily to a minimum of 1.71 at index 16, followed by a gradual recovery to 7.32 by the end.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:92",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 92,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "'This time series exhibits a multi-phase pattern starting at 60.0, rising to peaks around 62.0 (index 110-130), then declining to a minimum of 57.0 (index 550-600), followed by gradual recovery to approximately 60.0 by the end, showing clear volatility with distinct upward and downward trends.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:8",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 8,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "'This time series data shows fluctuating values between 3.23 and 9.95 with a mean of 6.12. The data exhibits several distinct peaks reaching above 9.0 around indices 270, 390, and 590, with notable volatility and cyclical patterns throughout the sequence.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Align:caption2ts_qa_120:107",
+      "assigned_task": "CrossModal/Semantic→TS",
+      "all_task_tags": [
+        "CrossModal/Semantic→TS"
+      ],
+      "subset": "Align",
+      "row_index": 107,
+      "task_type": "['caption']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "'This time series exhibits a gradual decline from index 0-12 (6.21 to 0.28), followed by a dramatic spike peaking at 38.60 around index 17, then rapidly decreasing back to stable levels around 5.4 by index 23.' According to the above textual description of a time series, select the time series from the following four options that most accurately reflects the described characteristics."
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:496",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 496,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "-934.95",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the minimum value in the series?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:476",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 476,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 193.48",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the 99th percentile value of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:422",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 422,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 504.42",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the 90th percentile value of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:484",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 484,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "-6.60",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the mean value of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:455",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 455,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 1062.35",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the range of this sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:457",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 457,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 234.33",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the 99th percentile value of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:436",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 436,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 359.85",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the 90th percentile value of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:492",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 492,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 79.86",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the mean value of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:421",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 421,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 70.36",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the standard deviation of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:405",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 405,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 164.60",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the mean value of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:412",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 412,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "-269.86",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the minimum value in the series?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:427",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 427,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "-484.77",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the minimum value in the series?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:462",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 462,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 523.36",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the maximum value in the series?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:454",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 454,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "-166.68",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the minimum value in the series?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:481",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 481,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 670.17",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the maximum value in the series?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:448",
+      "assigned_task": "Structural/Non-Stationarity",
+      "all_task_tags": [
+        "Structural/Non-Stationarity",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 448,
+      "task_type": "['stationarity']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 625.72",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the maximum value in the series?"
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:73",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 73,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "H",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:44",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 44,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "alibaba",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:42",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 42,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "H",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:1",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 1,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "alibaba",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:91",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 91,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "H",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:63",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 63,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "H",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:112",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 112,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "alibaba",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:72",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 72,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "H",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:48",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 48,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "H",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:64",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 64,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "alibaba",
+      "freq": "5T",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:4",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 4,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "H",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:37",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 37,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "alibaba",
+      "freq": "5T",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:30",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 30,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "H",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:96",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 96,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic_hourly",
+      "freq": "H",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:23",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 23,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "alibaba",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Align:ts2caption_qa_120:114",
+      "assigned_task": "CrossModal/TS→Semantic",
+      "all_task_tags": [
+        "CrossModal/TS→Semantic"
+      ],
+      "subset": "Align",
+      "row_index": 114,
+      "task_type": "caption",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "era5_2018",
+      "freq": "H",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Given the provided time series numerical or graphical data, select the description from the four options that best corresponds to the data."
+    },
+    {
+      "sample_id": "Match:qats_400:181",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 181,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:115",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 115,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:167",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 167,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:144",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 144,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:163",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 163,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:117",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 117,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:157",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 157,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:149",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 149,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:143",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 143,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:184",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 184,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:108",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 108,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:198",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 198,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:154",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 154,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:138",
+      "assigned_task": "Matching/Localization",
+      "all_task_tags": [
+        "Matching/Localization"
+      ],
+      "subset": "Match",
+      "row_index": 138,
+      "task_type": "['find it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:508",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season."
+      ],
+      "subset": "InWild",
+      "row_index": 508,
+      "task_type": "['seasonality analysis']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "The seasonality analysis of the sequence can be performed using seas_acf1 as a reference metric. The calculation method is seas_acf1 is as follows: The `seas_acf1` feature captures seasonal autocorrelation at lag $ m $: $ \\rho_m(x) = \\frac{\\gamma_m(x)}{\\gamma_0(x)} $, where $ \\gamma_k(x) $ is the autocovariance and $ \\gamma_0(x) $ is the variance. Values near ±1 imply strong seasonal correlation; near 0 implies weak seasonality. Now, please answer the following question: Based on the 52-week time series data, is it true that the series exhibits strong positive seasonal autocorrelation with consistent patterns repeating at regular intervals?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:742",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 742,
+      "task_type": "['seasonality analysis', 'causal reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Analyze the time series data between indices 16-58. Which of the following statements most accurately describes the causal relationship between the two variables and their seasonal patterns?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:143",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 143,
+      "task_type": "['seasonality analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "288",
+      "historical_architecture_correct": false,
+      "question": "Based on the provided Time Series 1 data, please provide the period length for the seasonal component."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:644",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 644,
+      "task_type": "['seasonality analysis', 'inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Given the above multivariate time series containing Time Series 1 and Time Series 2, which of the following statements is correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:279",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 279,
+      "task_type": "['seasonality analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "The seasonality analysis of the sequence can be performed using seasonal_strength as a reference metric. The calculation method is seasonal_strength is as follows: The `seasonal_strength` feature quantifies seasonality strength as $ 1 - \\frac{\\mathrm{Var}(R_t)}{\\mathrm{Var}(S_t + R_t)} $, where $ S_t $ and $ R_t $ are the seasonal and remainder components. Higher values indicate stronger seasonal patterns. Now, please answer the following question: Which of the following statements about the overall seasonality of this series is correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:299",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 299,
+      "task_type": "['seasonality analysis', 'analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "If we observe the patterns of this time series at index positions 141-164 (Segment A) and 237-260 (Segment B), which of the following statements is correct?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:145",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 145,
+      "task_type": "['seasonality analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "186",
+      "historical_architecture_correct": false,
+      "question": "Based on the provided Time Series 1 data, please provide the period length for the seasonal component."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:273",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 273,
+      "task_type": "['seasonality analysis', 'counterfactual reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "The `seasonal_strength` feature quantifies seasonality strength as $ 1 - \\\\frac{\\\\mathrm{Var}(R_t)}{\\\\mathrm{Var}(S_t + R_t)} $, where $ S_t $ and $ R_t $ are the seasonal and remainder components. Higher values indicate stronger seasonal patterns. Observe this time series and analyze its seasonal component; then judge the statement as true or false: The daily-level series exhibits a moderate seasonal strength (0.3 ≤ seasonal strength < 0.7) with a period of roughly seven days."
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:74",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 74,
+      "task_type": "['seasonality analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what type of waveform does the Time Series 1 most resemble?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:876",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season."
+      ],
+      "subset": "InWild",
+      "row_index": 876,
+      "task_type": "['seasonality analysis']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Based on the data of Time Series 1 provided, determine whether the statement is true or false: The data between index 511 and 638 shows a relatively clear daily periodic pattern."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:1063",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 1063,
+      "task_type": "['seasonality analysis', 'causal reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Based on the time series data, which of the following best describes the relationship between periodic spikes in Time Series 1 and subsequent changes in Time Series 2 patterns?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:70",
+      "assigned_task": "Feature/Season.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 70,
+      "task_type": "['seasonality analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "If the extreme values at indices 7 and 19 (corresponding to March 2001 and March 2002) in the time series were replaced with the average of their respective adjacent values, how would this counterfactual scenario most likely affect the seasonality characteristics of the first 24 data points?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:251",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 251,
+      "task_type": "['noise analysis', 'causal reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "The noise analysis of the sequence can be performed using entropy as a reference metric. The calculation method is entropy is as follows: The `entropy` feature computes normalized spectral entropy $ H_s = -\\sum p_j \\log_2(p_j) / \\log_2(K) $, where $ p_j $ are normalized power spectral density components. Values near 0 indicate regularity; near 1 imply high-frequency noise. Now, please answer the following question: When analyzing the fluctuations between indices 25-35 in the time series, are these variations more likely to represent meaningful signal changes or random noise?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:853",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise"
+      ],
+      "subset": "InWild",
+      "row_index": 853,
+      "task_type": "['noise analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Based on the analysis of 28-day time series data, regarding the noise characteristics of two variables, Time Series 1 and Time Series 2, which of the following statements is correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:665",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 665,
+      "task_type": "['noise analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "The noise analysis of the sequence can be performed using residual_std as a reference metric. The calculation method is residual_std is as follows: The `residual_std` feature is the standard deviation of STL residuals $ R_t = x_t - T_t - S_t $, reflecting the amplitude of random noise. Smaller values indicate more stable residuals. Now, please answer the following question: In the given time series data, if the anomaly around index 278 had not occurred, which of the following statements about the noise characteristics and behavior of Time Series 1 and Time Series 2 would most likely be true?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:94",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 94,
+      "task_type": "['noise analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:594",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 594,
+      "task_type": "['noise analysis', 'causal reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data, does the sequence exhibit characteristics of mostly random noise or does it show evidence of causal patterns?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:203",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 203,
+      "task_type": "['noise analysis', 'deductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "The `residual_std` feature is the standard deviation of STL residuals $ R_t = x_t - T_t - S_t $, reflecting the amplitude of random noise. Smaller values indicate more stable residuals. True or False: If residual_std is used to quantify noise level, the segment from indices 39–59 exhibits greater noise than the segment from indices 119–139."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:65",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 65,
+      "task_type": "['noise analysis', 'inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Examine this hourly time series data (index 0 represents Thursday 00:00, index 671 represents Sunday 23:00). Regarding the noise characteristics of subsequence B compared to subsequence A, which of the following conclusions can be inferred? (Subsequence A is at indices 0-47, 96-215, 264-383, 432-551, 600-671; subsequence B is at the remaining indices.)"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:1008",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise"
+      ],
+      "subset": "InWild",
+      "row_index": 1008,
+      "task_type": "['noise analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Given the above multivariate time series containing Time Series 1 and Time Series 2, which of the following statements is correct?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:251",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 251,
+      "task_type": "['noise analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in the Time Series 1. Based on the Time Series 1 data provided, which type does the noise in the Time Series 1 most resemble?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:477",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise"
+      ],
+      "subset": "InWild",
+      "row_index": 477,
+      "task_type": "['noise analysis']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "True or False: Based on the time series data between February 28, 2020 (index 37) and June 4, 2020 (index 119), the longest plateau (period with constant values) occurs in the range where the value is approximately 800."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:956",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 956,
+      "task_type": "['noise analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "In the provided time series data, both Time Series 1 and Time Series 2 had non-noise outliers during a certain period. What is the range of the index where this outlier occurred?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:101",
+      "assigned_task": "Feature/Noise",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 101,
+      "task_type": "['noise analysis', 'analogical reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "When examining the time series data between indices 68 to 148, which of the following statements best represents an analogical inference about the observed noise patterns in Time Series 1 and Time Series 2?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:627",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 627,
+      "task_type": "['volatility analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "If the volatility pattern observed in the time series segment between indices 20-25 had been maintained throughout indices 35-40, what would be the most likely characteristic of the data during that period?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:772",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 772,
+      "task_type": "['volatility analysis', 'analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data, does the first time series (Time Series 1) exhibit higher volatility than the second time series (Time Series 2) over the entire observation period?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:741",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 741,
+      "task_type": "['volatility analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "According to diagnostic principles: Persistent volatility clusters in feature utilization are indicators of instability. Structural heterogeneity in usage patterns without extreme values often reflects non-critical variation. When both Time Series 1 and Time Series 2 exhibit volatility, the metric with higher peaks poses a greater operational risk. Regular patterns in volatility often correspond to scheduled events, while irregular volatility suggests random or external influences. Based on the observed statistical characteristics of the time series, which of the following conclusions can be logically deduced?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:191",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 191,
+      "task_type": "['volatility analysis', 'causal reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Analyzing the time-series segments from index 68–81 (Segment 1) and index 160–173 (Segment 2), which statement is most reasonable?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:76",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 76,
+      "task_type": "['volatility analysis', 'inductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Is the following description correct: The volatility of the time series segment with indices 94-100 is higher than that of the time series segment with indices 46-52?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:57",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 57,
+      "task_type": "['volatility analysis', 'analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "The volatility analysis of the sequence can be performed using arch_lm as a reference metric. The calculation method is arch_lm is as follows: The `arch_lm` feature quantifies conditional heteroskedasticity via the R-squared of a regression of $ x_t^2 $ on its $ p $-lagged values. High values (close to 1) imply volatility clustering; low values suggest homoskedasticity. Now, please answer the following question: Based on the volatility characteristics of the time series data from 2000 to 2005, does this series exhibit significant volatility clustering that would warrant the application of ARCH/GARCH modeling techniques?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:993",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat."
+      ],
+      "subset": "InWild",
+      "row_index": 993,
+      "task_type": "['volatility analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "The volatility analysis of the sequence can be performed using stability as a reference metric. The calculation method is stability is as follows: The `stability` feature measures variation in local means $ M_j $ over segments of length $ W $, computed as $ \\mathrm{Var}(\\{M_j\\}) $. Higher values imply greater fluctuation in average levels; lower values suggest stable means. Now, please answer the following question: Given the above multivariate time series containing Time Series 1 and Time Series 2, which of the following statements is correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:346",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 346,
+      "task_type": "['volatility analysis', 'analogical reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "When comparing the volatility patterns between indices 15-25 and indices 40-50, which observation is most accurate?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:1005",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat."
+      ],
+      "subset": "InWild",
+      "row_index": 1005,
+      "task_type": "['volatility analysis']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "The volatility analysis of the sequence can be performed using stability as a reference metric. The calculation method is stability is as follows: The `stability` feature measures variation in local means $ M_j $ over segments of length $ W $, computed as $ \\mathrm{Var}(\\{M_j\\}) $. Higher values imply greater fluctuation in average levels; lower values suggest stable means. Now, please answer the following question: Given the above multivariate time series containing Time Series 1 and Time Series 2, which of the following statements is correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:92",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 92,
+      "task_type": "['volatility analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Examining the time series data between indices 24-29 (corresponding to approximately late 2001 to early 2002), which statement most accurately describes the volatility characteristics of this specific segment compared to the rest of the series?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:374",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 374,
+      "task_type": "['volatility analysis', 'inductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "The volatility analysis of the sequence can be performed using arch_lm as a reference metric. The calculation method is arch_lm is as follows: The `arch_lm` feature quantifies conditional heteroskedasticity via the R-squared of a regression of $ x_t^2 $ on its $ p $-lagged values. High values (close to 1) imply volatility clustering; low values suggest homoskedasticity. Now, please answer the following question: Based on the statistical analysis of this time series data, which of the following statements is correct?  "
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:28",
+      "assigned_task": "Feature/Volat.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 28,
+      "task_type": "['volatility analysis', 'inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Analyze the provided time series data from index 100 to 300. Which of the following statements is most correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:1080",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 1080,
+      "task_type": "['basic analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "In the time series data, what would most likely happen to Time Series 2 patterns if Time Series 1 had maintained a consistent level around 3.5%?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:152",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 152,
+      "task_type": "['basic analysis', 'counterfactual reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "In this hourly time series data of road traffic volume, if data segment A (indices 0-47, 96-143, 264-311, 432-479) represents weekends, and data segment B (indices 48-95, 216-263, 384-431, 552-599) represents weekdays, are the peak values of data segment A generally higher than those of data segment B?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:257",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 257,
+      "task_type": "['trend analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data, which of the following statements most accurately describes the trend characteristics of this data?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:312",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 312,
+      "task_type": "['noise analysis', 'counterfactual reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "The noise analysis of the sequence can be performed using residual_std as a reference metric. The calculation method is residual_std is as follows: The `residual_std` feature is the standard deviation of STL residuals $ R_t = x_t - T_t - S_t $, reflecting the amplitude of random noise. Smaller values indicate more stable residuals. Now, please answer the following question: If the random fluctuations between indices 30-40 were completely eliminated while maintaining the overall trend, would the residual standard deviation of the entire series decrease?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:651",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 651,
+      "task_type": "['counterfactual reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "If Time Series 1 had not experienced the sharp drops below 30 units during the observation period, what kind of pattern might Time Series 2 exhibit between the index range of 300-400?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:296",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 296,
+      "task_type": "['noise analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data, if the noise component were completely removed from this sequence, which of the following would most accurately describe the resulting pattern?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:1016",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 1016,
+      "task_type": "['counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "In the given time series data, we observe several significant abnormal events in Time Series 2. If these events had NOT occurred and Time Series 2 had instead maintained its behavior throughout this period, which of the following statements would most likely be true regarding Time Series 1 behavior?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:535",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 535,
+      "task_type": "['basic analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data provided, which statistical property best characterizes the behavior of this sequence?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:1083",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 1083,
+      "task_type": "['trend analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Based on the trend characteristics observed in both metrics, which of the following most accurately describes what would have happened to Time Series 2 if the system had never experienced Time Series 1 spikes above 10%?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:328",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 328,
+      "task_type": "['counterfactual reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "The counterfactual reasoning of the sequence can be performed using lumpiness as a reference metric. The calculation method is lumpiness is as follows: The `lumpiness` feature measures variation in local variances $ V_j $ over segments of length $ W $, computed as $ \\mathrm{Var}(\\{V_j\\}) $. Higher values indicate uneven volatility across segments. Now, please answer the following question: If the volatility pattern during the index 20-24 had instead followed the pattern observed during the index 140-144, would the lumpiness value of the entire time series be higher or lower?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:120",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 120,
+      "task_type": "['volatility analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Examining the time series data, if we compare the volatility patterns in the segment from index 10 to 25 with the segment from index 75 to 90, which statement is most accurate about how these segments would respond to external shocks?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:434",
+      "assigned_task": "Reasoning/Count.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 434,
+      "task_type": "['seasonality analysis', 'counterfactual reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Based on the time series data spanning from November 2001 to October 2004, which of the following statements most accurately describes the seasonality characteristics of this data?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:194",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 194,
+      "task_type": "['trend analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 0.40",
+      "historical_architecture_correct": false,
+      "question": "Based on the provided Time Series 1 data, please provide the slope of the Time Series 1."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:982",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend"
+      ],
+      "subset": "InWild",
+      "row_index": 982,
+      "task_type": "['trend analysis']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Based on the provided Time Series 1 and Time Series 2, which of the following statements is correct about their trend changes after index 1600?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:673",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend"
+      ],
+      "subset": "InWild",
+      "row_index": 673,
+      "task_type": "['trend analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Based on the provided two time series data, the change patterns shown by Time Series 1 and Time Series 2 at the end of the sequence (around hours 500-672) most likely reflect what underlying phenomenon?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:111",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 111,
+      "task_type": "['trend analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data, which of the following statements most accurately characterizes the trend behavior of this series?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:209",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 209,
+      "task_type": "['trend analysis', 'analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Comparing the segments of time series data from index 10 to 20 and from index 30 to 40, which statement about their downward trends is correct?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:192",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 192,
+      "task_type": "['trend analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "-0.12",
+      "historical_architecture_correct": false,
+      "question": "Based on the provided Time Series 1 data, please provide the slope of the Time Series 1."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:472",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 472,
+      "task_type": "['trend analysis', 'deductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Examining the time series data between index 30 and 40, which statement is more likely to be true based on trend analysis and deductive reasoning?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:166",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 166,
+      "task_type": "['trend analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in the Time Series 1. Based on the Time Series 1 data provided, please determine the overall trend direction of the Time series 1. Slope > 0.1 suggests an upward trend, slope < -0.1 suggests a downward trend, otherwise it is a vague trend."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:668",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 668,
+      "task_type": "['trend analysis', 'analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Based on the provided time series data between indices 68-142, what kind of correlation is shown between the first time series and the second time series?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:595",
+      "assigned_task": "Feature/Trend",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 595,
+      "task_type": "['trend analysis', 'analogical reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Analyze the provided time series data and rank the average growth rates of the segments between index 80-100 (referred to as Segment 1), 100-120 (referred to as Segment 2), 120-140 (referred to as Segment 3), and 140-160 (referred to as Segment 4)."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:979",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 979,
+      "task_type": "['seasonality analysis', 'deductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "The `seasonal_strength` feature quantifies seasonality strength as $ 1 - \\\\frac{\\\\mathrm{Var}(R_t)}{\\\\mathrm{Var}(S_t + R_t)} $, where $ S_t $ and $ R_t $ are the seasonal and remainder components. Higher values indicate stronger seasonal patterns. Based on the provided Time Series 1 and Time Series 2, which one exhibits stronger seasonality?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:130",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 130,
+      "task_type": "['trend analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data, which conclusion can be drawn about the segment between indices 32-39 compared to the segment between indices 40-47?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:519",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 519,
+      "task_type": "['noise analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Based on this time series data(start index 0 represents Thursday 00:00), which of the following conclusions can be most reasonably deduced through the analysis of the noise patterns?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:518",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 518,
+      "task_type": "['trend analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Analyzing the time series data between indices 31-40, which conclusion can be drawn about the trend behavior during this specific period?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:1",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 1,
+      "task_type": "['noise analysis', 'deductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "The `entropy` feature computes normalized spectral entropy $ H_s = -\\\\sum p_j \\\\log_2(p_j) / \\\\log_2(K) $, where $ p_j $ are normalized power spectral density components. Values near 0 indicate regularity; near 1 imply high-frequency noise. Based on the provided time series data, which of the following statements is correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:237",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 237,
+      "task_type": "['seasonality analysis', 'deductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Examining the time series data between indices 50-70 (early March to early April 2020), does this segment show a consistent weekly pattern where values increase more rapidly on weekdays compared to weekends?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:989",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 989,
+      "task_type": "['noise analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "The noise analysis of the sequence can be performed using entropy as a reference metric. The calculation method is entropy is as follows: The `entropy` feature computes normalized spectral entropy $ H_s = -\\sum p_j \\log_2(p_j) / \\log_2(K) $, where $ p_j $ are normalized power spectral density components. Values near 0 indicate regularity; near 1 imply high-frequency noise. Now, please answer the following question: The following analytical guidelines apply: Metrics exhibiting high-frequency, unpredictable variation are best managed using reactive resource provisioning. Step-wise behavior with low-frequency trends and detectable autocorrelation is indicative of structured, process-driven activity and supports proactive planning. White noise in a feature suggests volatility without long-term structure, often tied to dynamic bursts. Comparable entropy and predictability in two features imply suitability for shared forecasting and control strategies. Which conclusion can be logically deduced about the inherent noise characteristics of these two features, and what management strategy would this support?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:180",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 180,
+      "task_type": "['deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Based on the time series data, which of the following statements most accurately characterizes the structure of this series?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:915",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 915,
+      "task_type": "['basic analysis', 'deductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "The `crossing_points` feature counts how often the series crosses its median $ M_d(X) $, computed as $ C = \\\\sum \\\\mathbb{I}(b_i \\\\neq b_{i+1}) $, where $ b_i = x_i \\\\le M_d(X) $. High values imply frequent oscillations; low values suggest smoother trends. When observing Time Series 4, can it be found that the number of crossing points between index 200 and 300 is greater than 10?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:981",
+      "assigned_task": "Reasoning/Ded.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 981,
+      "task_type": "['basic analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "The `crossing_points` feature counts how often the series crosses its median $ M_d(X) $, computed as $ C = \\\\sum \\\\mathbb{I}(b_i \\\\neq b_{i+1}) $, where $ b_i = x_i \\\\le M_d(X) $. High values imply frequent oscillations; low values suggest smoother trends. Based on the provided Time Series 1 and Time Series 2, which of the following is the correct count of crossing points?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:880",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 880,
+      "task_type": "['basic analysis', 'inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Based on the three time series spanning 24 hours with 1-hour sampling frequency, which of the following statements best describes the overall distributional characteristics across all three sequences?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:506",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 506,
+      "task_type": "['seasonality analysis', 'inductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data, does the segment between indices 24-35 exhibit a similar seasonal pattern when compared to the segment between indices 36-47?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:617",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 617,
+      "task_type": "['inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Based on the provided time series data, in which of the following intervals can a step point be identified?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:775",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 775,
+      "task_type": "['inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Based on the observed time series data, which of the following inductive conclusions about the relationship between Time Series 1 and Time Series 2 is best supported by the observed patterns?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:232",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 232,
+      "task_type": "['seasonality analysis', 'inductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Based on the overall characteristics of the sequence, which analysis is more relevant to understanding its patterns?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:250",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 250,
+      "task_type": "['seasonality analysis', 'inductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "True or False: Given that, by some definition, indices 5–9 and 15–19 share the same seasonal pattern, the data between indices 11–17 and 18–24 also exhibit the same seasonal pattern when viewed across the entire time series."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:747",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 747,
+      "task_type": "['volatility analysis', 'inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Given the above multivariate time series containing Time Series 1 and Time Series 2, which of the following statements is correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:702",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 702,
+      "task_type": "['inductive reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Based on the time series data, which of the following statements is more accurate?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:268",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 268,
+      "task_type": "['noise analysis', 'inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Based on the time series data, which inference about the underlying process is most supported by the data's noise characteristics?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:817",
+      "assigned_task": "Reasoning/Ind.",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Ind."
+      ],
+      "subset": "InWild",
+      "row_index": 817,
+      "task_type": "['seasonality analysis', 'inductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "When examining the time series data between indices 140 and 220, based on inductive reasoning, which statement most accurately describes the characteristics of the seasonal pattern?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:392",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 392,
+      "task_type": "['noise analysis', 'analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Based on this hourly time series data, is the following statement correct: the segment from index 121 to 144, when compared to the segment from index 504 to 527, exhibits similar residual noise characteristics."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:813",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 813,
+      "task_type": "['basic analysis', 'analogical reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Based on time series data observations at 5-minute intervals for two systems, which of the following conclusions can be most accurately drawn when comparing a system with cyclical changes in Time Series 2 to another system that displays identical Time Series 1 patterns but maintains a flat Time Series 2 profile instead of the trend shown here?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:556",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 556,
+      "task_type": "['noise analysis', 'analogical reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Looking at the time series data, which segment exhibits noise characteristics most analogous to the pattern observed between indices 53-59?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:400",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 400,
+      "task_type": "['trend analysis', 'analogical reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data from 2000 March to 2005 February, which statement better characterizes the overall pattern observed in the data?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:824",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 824,
+      "task_type": "['trend analysis', 'analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Based on the overall pattern of the provided time series data, what kind of relationship is shown between the two time series?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:509",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 509,
+      "task_type": "['trend analysis', 'analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Based on this time series data, determine whether the statement is true or false: The average growth rate of the segment between index 20 and 40 is greater than that of the segment between index 60 and 80."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:957",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 957,
+      "task_type": "['analogical reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Wwhich of the following conclusions would be most reasonable when applying analogical reasoning to a new system that shows similar Time Series 1 behavior and with Time Series 2 behavior like index 315-430?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:792",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 792,
+      "task_type": "['analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Based on the data of Time Series 1 and Time Series 2 provided, do the two show a positive correlation between index 43 and 66?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:409",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 409,
+      "task_type": "['trend analysis', 'analogical reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "If we regard a time series with similar statistical characteristics as a certain natural or social phenomenon, which of the following scenarios most closely reflects the typical behavior of such a dataset?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:265",
+      "assigned_task": "Reasoning/Analog.",
+      "all_task_tags": [
+        "Reasoning/Analog."
+      ],
+      "subset": "InWild",
+      "row_index": 265,
+      "task_type": "['analogical reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "If we analogize the pattern shown in this time series to natural phenomena, would the behavior be more similar to:"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:64",
+      "assigned_task": "Feature/Basic",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Count."
+      ],
+      "subset": "InWild",
+      "row_index": 64,
+      "task_type": "['basic analysis', 'counterfactual reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "If the values between indices 32-38 (August 2002 to February 2003) had remained at their period average instead of showing the observed increase, would the maximum value in the entire time series still have occurred at index 56 (May 2004)?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:696",
+      "assigned_task": "Feature/Basic",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 696,
+      "task_type": "['basic analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "198.07",
+      "historical_architecture_correct": false,
+      "question": "Given the values of Time Series 1 and Time Series 2, what is the 99th percentile value of the Time Series 2"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:562",
+      "assigned_task": "Feature/Basic",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 562,
+      "task_type": "['basic analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "The `crossing_points` feature counts how often the series crosses its median $ M_d(X) $, computed as $ C = \\\\sum \\\\mathbb{I}(b_i \\\\neq b_{i+1}) $, where $ b_i = x_i \\\\le M_d(X) $. High values imply frequent oscillations; low values suggest smoother trends. Based on the provided time series data, which of the following statements about the number of crossing points between index 20 and 34 is correct?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:760",
+      "assigned_task": "Feature/Basic",
+      "all_task_tags": [
+        "Feature/Basic"
+      ],
+      "subset": "InWild",
+      "row_index": 760,
+      "task_type": "['basic analysis']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "In this segment of the observational data, is the fluctuation range of Time Series 1 smaller than that of Time Series 2?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:796",
+      "assigned_task": "Feature/Basic",
+      "all_task_tags": [
+        "Feature/Basic"
+      ],
+      "subset": "InWild",
+      "row_index": 796,
+      "task_type": "['basic analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Given the above multivariate time series containing Time Series 1 and Time Series 2, which of the following statements is correct?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:374",
+      "assigned_task": "Feature/Basic",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 374,
+      "task_type": "['basic analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": " 267.94",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on the Time Series 1 data provided, what is the 99th percentile value of the sequence?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:667",
+      "assigned_task": "Feature/Basic",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 667,
+      "task_type": "['basic analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "70.55",
+      "historical_architecture_correct": true,
+      "question": "Given the values of Time Series 1 and Time Series 2, what is the 90th percentile value of the Time Series 2?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:194",
+      "assigned_task": "Feature/Basic",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Reasoning/Ded."
+      ],
+      "subset": "InWild",
+      "row_index": 194,
+      "task_type": "['basic analysis', 'deductive reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Analyzing the time series data between indices 12-36, what is the most accurate characterization of the local pattern observed during this period?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:281",
+      "assigned_task": "Reasoning/Causal",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 281,
+      "task_type": "['volatility analysis', 'causal reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Analyze the time series data between indices 91-119 and indices 21-42. Which of the following statements is most accurate?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:1079",
+      "assigned_task": "Reasoning/Causal",
+      "all_task_tags": [
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 1079,
+      "task_type": "['causal reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "cloudops",
+      "freq": "5T",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Based on the data of Time Series 1 and 2, does the following phenomenon exist and is the statement correct: Whenever Time Series 1 experiences an extreme outlier, Time Series 2 undergoes a significant change, indicating a strong correlation between the two."
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:288",
+      "assigned_task": "Reasoning/Causal",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 288,
+      "task_type": "['trend analysis', 'causal reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "M",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Based on the time series data, would a long-term trend-following strategy be more effective than a mean-reversion approach for this particular data series?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:2",
+      "assigned_task": "Reasoning/Causal",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 2,
+      "task_type": "['noise analysis', 'causal reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "The noise analysis of the sequence can be performed using residual_std as a reference metric. The calculation method is residual_std is as follows: The `residual_std` feature is the standard deviation of STL residuals $ R_t = x_t - T_t - S_t $, reflecting the amplitude of random noise. Smaller values indicate more stable residuals. Now, please answer the following question: Examining the time series data between indices 50-60, which of the following best explains the observed fluctuation pattern in terms of noise characteristics?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:939",
+      "assigned_task": "Reasoning/Causal",
+      "all_task_tags": [
+        "Feature/Volat.",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 939,
+      "task_type": "['volatility analysis', 'causal reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Analyzing the volatility patterns across all four time series, which statement best describes the relationship between the observed fluctuation characteristics and their underlying causes?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:389",
+      "assigned_task": "Reasoning/Causal",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 389,
+      "task_type": "['trend analysis', 'causal reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Analyzing the time series data, what can be inferred about the causal relationship between events occurring around index 68 and index 85?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:391",
+      "assigned_task": "Reasoning/Causal",
+      "all_task_tags": [
+        "Feature/Season.",
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 391,
+      "task_type": "['seasonality analysis', 'causal reasoning']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "healthcare",
+      "freq": "D",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Which of the following patterns could independently explain a segment or component of the time series, assuming decomposition into trend, seasonality, and residuals?"
+    },
+    {
+      "sample_id": "InWild:tsqa_1084:680",
+      "assigned_task": "Reasoning/Causal",
+      "all_task_tags": [
+        "Reasoning/Causal"
+      ],
+      "subset": "InWild",
+      "row_index": 680,
+      "task_type": "['causal reasoning']",
+      "qa_type": "a binary question",
+      "local_overall": "local",
+      "is_univariate": false,
+      "domain": "climate",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Based on the data of Time Series 1 and Time Series 2 provided, which of the following statements is correct regarding the data between index 0 and 114?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:597",
+      "assigned_task": "Structural/Local-Global",
+      "all_task_tags": [
+        "Structural/Local-Global",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 597,
+      "task_type": "['index']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "D",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on provided Time Series 1, which of the following options has a downward trend?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:556",
+      "assigned_task": "Structural/Local-Global",
+      "all_task_tags": [
+        "Structural/Local-Global",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 556,
+      "task_type": "['index']",
+      "qa_type": "numerical",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "307",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on provided Time Series 1, where does the global maximum value of the series occur? (The index starts from 0)"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:582",
+      "assigned_task": "Structural/Local-Global",
+      "all_task_tags": [
+        "Structural/Local-Global",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 582,
+      "task_type": "['index']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on provided Time Series 1, does point 784 present a global maximum or minimum value or neither? (The index starts from 0)"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:573",
+      "assigned_task": "Structural/Local-Global",
+      "all_task_tags": [
+        "Structural/Local-Global",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 573,
+      "task_type": "['index']",
+      "qa_type": "numerical",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "12",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on provided Time Series 1, where does the global maximum value of the series occur? (The index starts from 0)"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:518",
+      "assigned_task": "Structural/Local-Global",
+      "all_task_tags": [
+        "Structural/Local-Global",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 518,
+      "task_type": "['index']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on provided Time Series 1, does point 1371 present a global maximum or minimum value or neither? (The index starts from 0)"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:540",
+      "assigned_task": "Structural/Local-Global",
+      "all_task_tags": [
+        "Structural/Local-Global",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 540,
+      "task_type": "['index']",
+      "qa_type": "numerical",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "1231",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on provided Time Series 1, where does the global minimum value of the series occur? (The index starts from 0)"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:648",
+      "assigned_task": "Structural/Uni.-Multi.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 648,
+      "task_type": "['basic analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "635.14",
+      "historical_architecture_correct": false,
+      "question": "Given the values of Time Series 1 and Time Series 2, what is the range of this Time Series 1?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:553",
+      "assigned_task": "Structural/Uni.-Multi.",
+      "all_task_tags": [
+        "Structural/Local-Global",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 553,
+      "task_type": "['index']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in a Time Series 1. Based on provided Time Series 1, which of the following options has a downward trend?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:247",
+      "assigned_task": "Structural/Uni.-Multi.",
+      "all_task_tags": [
+        "Feature/Noise",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 247,
+      "task_type": "['noise analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "B",
+      "historical_architecture_correct": false,
+      "question": "Here is a list of values in the Time Series 1. Based on the Time Series 1 data provided, based on the ratio of the residual variation to the sequence variation (<0.1 no noise, 0.1-0.33 for low, 0.33-0.66 for medium, >0.66 for high), which category does the noise level of the sequence belong to?"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:694",
+      "assigned_task": "Structural/Uni.-Multi.",
+      "all_task_tags": [
+        "Feature/Basic",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 694,
+      "task_type": "['basic analysis']",
+      "qa_type": "numerical",
+      "local_overall": "overall",
+      "is_univariate": false,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "258.0",
+      "historical_architecture_correct": false,
+      "question": "Given the values of Time Series 1 and Time Series 2, what is the 99th percentile value of the Time Series 2"
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:153",
+      "assigned_task": "Structural/Uni.-Multi.",
+      "all_task_tags": [
+        "Feature/Trend",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 153,
+      "task_type": "['trend analysis']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in the Time Series 1. Based on the provided Time Series 1, please determine whether the Time Series 1 exhibits persistence (long-term positive correlation), which means that past trends are likely to continue into the future (For example, if the series has been increasing recently, it is highly likely to continue increasing in the future).It can be measured by the Hurst Exponent."
+    },
+    {
+      "sample_id": "Base:synthtic_qa_700:568",
+      "assigned_task": "Structural/Uni.-Multi.",
+      "all_task_tags": [
+        "Structural/Local-Global",
+        "Structural/Uni.-Multi."
+      ],
+      "subset": "Base",
+      "row_index": 568,
+      "task_type": "['index']",
+      "qa_type": "numerical",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "synthetic",
+      "freq": "unknown",
+      "answer": "33",
+      "historical_architecture_correct": true,
+      "question": "Here is a list of values in a Time Series 1. Based on provided Time Series 1, where does the global maximum value of the series occur? (The index starts from 0)"
+    },
+    {
+      "sample_id": "Match:qats_400:77",
+      "assigned_task": "Matching/Robust",
+      "all_task_tags": [
+        "Matching/Robust"
+      ],
+      "subset": "Match",
+      "row_index": 77,
+      "task_type": "['smooth it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:47",
+      "assigned_task": "Matching/Robust",
+      "all_task_tags": [
+        "Matching/Robust"
+      ],
+      "subset": "Match",
+      "row_index": 47,
+      "task_type": "['smooth it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:57",
+      "assigned_task": "Matching/Robust",
+      "all_task_tags": [
+        "Matching/Robust"
+      ],
+      "subset": "Match",
+      "row_index": 57,
+      "task_type": "['smooth it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "A",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:7",
+      "assigned_task": "Matching/Robust",
+      "all_task_tags": [
+        "Matching/Robust"
+      ],
+      "subset": "Match",
+      "row_index": 7,
+      "task_type": "['smooth it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": false,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:79",
+      "assigned_task": "Matching/Robust",
+      "all_task_tags": [
+        "Matching/Robust"
+      ],
+      "subset": "Match",
+      "row_index": 79,
+      "task_type": "['smooth it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:40",
+      "assigned_task": "Matching/Robust",
+      "all_task_tags": [
+        "Matching/Robust"
+      ],
+      "subset": "Match",
+      "row_index": 40,
+      "task_type": "['smooth it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "local",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:248",
+      "assigned_task": "Matching/Isomorphic",
+      "all_task_tags": [
+        "Matching/Isomorphic"
+      ],
+      "subset": "Match",
+      "row_index": 248,
+      "task_type": "['choose it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:290",
+      "assigned_task": "Matching/Isomorphic",
+      "all_task_tags": [
+        "Matching/Isomorphic"
+      ],
+      "subset": "Match",
+      "row_index": 290,
+      "task_type": "['choose it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:271",
+      "assigned_task": "Matching/Isomorphic",
+      "all_task_tags": [
+        "Matching/Isomorphic"
+      ],
+      "subset": "Match",
+      "row_index": 271,
+      "task_type": "['choose it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:244",
+      "assigned_task": "Matching/Isomorphic",
+      "all_task_tags": [
+        "Matching/Isomorphic"
+      ],
+      "subset": "Match",
+      "row_index": 244,
+      "task_type": "['choose it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:285",
+      "assigned_task": "Matching/Isomorphic",
+      "all_task_tags": [
+        "Matching/Isomorphic"
+      ],
+      "subset": "Match",
+      "row_index": 285,
+      "task_type": "['choose it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:241",
+      "assigned_task": "Matching/Isomorphic",
+      "all_task_tags": [
+        "Matching/Isomorphic"
+      ],
+      "subset": "Match",
+      "row_index": 241,
+      "task_type": "['choose it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Which of the following four candidate sequences, each the same length as Time Series 1, has the most similar pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:380",
+      "assigned_task": "Matching/Reverse",
+      "all_task_tags": [
+        "Matching/Reverse"
+      ],
+      "subset": "Match",
+      "row_index": 380,
+      "task_type": "['reverse it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "B",
+      "historical_architecture_correct": true,
+      "question": "Each of the following four candidate sequences is the reversed version of an original sequence with the same length as Time Series 1. Which original sequence is most similar in pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:303",
+      "assigned_task": "Matching/Reverse",
+      "all_task_tags": [
+        "Matching/Reverse"
+      ],
+      "subset": "Match",
+      "row_index": 303,
+      "task_type": "['reverse it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Each of the following four candidate sequences is the reversed version of an original sequence with the same length as Time Series 1. Which original sequence is most similar in pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:376",
+      "assigned_task": "Matching/Reverse",
+      "all_task_tags": [
+        "Matching/Reverse"
+      ],
+      "subset": "Match",
+      "row_index": 376,
+      "task_type": "['reverse it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "A",
+      "historical_architecture_correct": true,
+      "question": "Each of the following four candidate sequences is the reversed version of an original sequence with the same length as Time Series 1. Which original sequence is most similar in pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:309",
+      "assigned_task": "Matching/Reverse",
+      "all_task_tags": [
+        "Matching/Reverse"
+      ],
+      "subset": "Match",
+      "row_index": 309,
+      "task_type": "['reverse it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Each of the following four candidate sequences is the reversed version of an original sequence with the same length as Time Series 1. Which original sequence is most similar in pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:357",
+      "assigned_task": "Matching/Reverse",
+      "all_task_tags": [
+        "Matching/Reverse"
+      ],
+      "subset": "Match",
+      "row_index": 357,
+      "task_type": "['reverse it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "economy",
+      "freq": "1w",
+      "answer": "D",
+      "historical_architecture_correct": true,
+      "question": "Each of the following four candidate sequences is the reversed version of an original sequence with the same length as Time Series 1. Which original sequence is most similar in pattern to Time Series 1?"
+    },
+    {
+      "sample_id": "Match:qats_400:315",
+      "assigned_task": "Matching/Reverse",
+      "all_task_tags": [
+        "Matching/Reverse"
+      ],
+      "subset": "Match",
+      "row_index": 315,
+      "task_type": "['reverse it']",
+      "qa_type": "a multiple choice question",
+      "local_overall": "overall",
+      "is_univariate": true,
+      "domain": "traffic",
+      "freq": "1h",
+      "answer": "C",
+      "historical_architecture_correct": true,
+      "question": "Each of the following four candidate sequences is the reversed version of an original sequence with the same length as Time Series 1. Which original sequence is most similar in pattern to Time Series 1?"
+    }
+  ]
+}

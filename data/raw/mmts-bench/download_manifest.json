@@ -1,0 +1,456 @@
+{
+  "source_url": "https://anonymous.4open.science/api/repo/MMTS-BENCH-BEF7/zip",
+  "zip_path": "/root/autodl-tmp/time-series-agent/data/raw/MMTS-BENCH-BEF7.zip",
+  "zip_sha256": "6a6ca8da810215b9c2f5b40603a06f04fae161ee63169c18b3da2943b71672e1",
+  "out_dir": "/root/autodl-tmp/time-series-agent/data/raw/mmts-bench",
+  "downloaded_at": "2026-07-29T13:46:07Z",
+  "n_files": 111,
+  "total_bytes": 19394866,
+  "has_benchmark": true,
+  "files": [
+    {
+      "path": "README.md",
+      "size": 3508
+    },
+    {
+      "path": "comparison.csv",
+      "size": 6599
+    },
+    {
+      "path": "comparison.md",
+      "size": 9870
+    },
+    {
+      "path": "requirements.txt",
+      "size": 5088
+    },
+    {
+      "path": "download_manifest.json",
+      "size": 10690
+    },
+    {
+      "path": "Ablation/README.md",
+      "size": 1731
+    },
+    {
+      "path": "Extra_experiment_results/robustness_experiments.pdf",
+      "size": 3243689
+    },
+    {
+      "path": "Ablation/ChatTS-Components/config.json",
+      "size": 1317
+    },
+    {
+      "path": "Ablation/ChatTS-Components/configuration_qwen2.py",
+      "size": 18430
+    },
+    {
+      "path": "Ablation/ChatTS-Components/generation_config.json",
+      "size": 242
+    },
+    {
+      "path": "Ablation/ChatTS-Components/modeling_qwen2.py",
+      "size": 89704
+    },
+    {
+      "path": "Ablation/ChatTS-Components/processing_qwen2_ts.py",
+      "size": 9271
+    },
+    {
+      "path": "Ablation/ChatTS-Components/special_tokens_map.json",
+      "size": 354
+    },
+    {
+      "path": "Ablation/ChatTS-Components/tokenizer_config.json",
+      "size": 4919
+    },
+    {
+      "path": "Ablation/LLaMA-Factory-Components/dataset_info.json",
+      "size": 208
+    },
+    {
+      "path": "Ablation/LLaMA-Factory-Components/train_chatts.sh",
+      "size": 877
+    },
+    {
+      "path": "Ablation/Test-Scripts/cal_acc.py",
+      "size": 2423
+    },
+    {
+      "path": "Ablation/Test-Scripts/eval_model.py",
+      "size": 8976
+    },
+    {
+      "path": "Ablation/Test-Scripts/utils/extract_answer.py",
+      "size": 3863
+    },
+    {
+      "path": "Ablation/Test-Scripts/utils/get_prompt.py",
+      "size": 4613
+    },
+    {
+      "path": "Ablation/Test-Scripts/utils/numpy_func.py",
+      "size": 1276
+    },
+    {
+      "path": "Ablation/Test-Scripts/utils/llms/close_sourced.py",
+      "size": 894
+    },
+    {
+      "path": "Ablation/Test-Scripts/utils/llms/open_sourced.py",
+      "size": 3088
+    },
+    {
+      "path": "Ablation/Test-Scripts/utils/llms/packged_llms.py",
+      "size": 2809
+    },
+    {
+      "path": "Benchmark/Align/caption2ts_qa_120.csv",
+      "size": 1118240
+    },
+    {
+      "path": "Benchmark/Align/ts2caption_qa_120.csv",
+      "size": 367053
+    },
+    {
+      "path": "Benchmark/Base/synthtic_qa_700.csv",
+      "size": 5737806
+    },
+    {
+      "path": "Benchmark/InWild/tsqa_1084.csv",
+      "size": 6442217
+    },
+    {
+      "path": "Benchmark/Match/qats_400.csv",
+      "size": 1506452
+    },
+    {
+      "path": "Generate_QA/Align/LLM_response_cp2ts.ipynb",
+      "size": 19663
+    },
+    {
+      "path": "Generate_QA/Align/LLM_response_ts2cp.ipynb",
+      "size": 24523
+    },
+    {
+      "path": "Generate_QA/Align/custom_openai_client.py",
+      "size": 4177
+    },
+    {
+      "path": "Generate_QA/Align/datasets_create.ipynb",
+      "size": 1468
+    },
+    {
+      "path": "Generate_QA/Align/extract_subset_to_csv.py",
+      "size": 11131
+    },
+    {
+      "path": "Generate_QA/Align/utils.py",
+      "size": 7280
+    },
+    {
+      "path": "Generate_QA/Base/generate_question.py",
+      "size": 13544
+    },
+    {
+      "path": "Generate_QA/Base/non_stationary_synthetic.py",
+      "size": 5010
+    },
+    {
+      "path": "Generate_QA/Base/readme.md",
+      "size": 2240
+    },
+    {
+      "path": "Generate_QA/Base/requirements.txt",
+      "size": 29
+    },
+    {
+      "path": "Generate_QA/Base/stationary_synthetic.py",
+      "size": 3543
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/generate_question.py",
+      "size": 13521
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/generate_stationary_question.py",
+      "size": 22768
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/index_question_templates.json",
+      "size": 1868
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/non_stationary_synthetic.py",
+      "size": 5010
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/readme.md",
+      "size": 2476
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/requirements.txt",
+      "size": 29
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/stationary_synthetic.py",
+      "size": 3543
+    },
+    {
+      "path": "Generate_QA/InWild/custom_openai_client.py",
+      "size": 4177
+    },
+    {
+      "path": "Generate_QA/InWild/question_generator.ipynb",
+      "size": 25479
+    },
+    {
+      "path": "Generate_QA/InWild/question_generator.py",
+      "size": 20935
+    },
+    {
+      "path": "Generate_QA/Match/DtwAnalyzer.py",
+      "size": 7507
+    },
+    {
+      "path": "Generate_QA/Match/DtwAnalyzer_noise.py",
+      "size": 7485
+    },
+    {
+      "path": "Generate_QA/Match/FinditProcessor.py",
+      "size": 8516
+    },
+    {
+      "path": "Generate_QA/Match/PatternProcessor.py",
+      "size": 15571
+    },
+    {
+      "path": "Generate_QA/Match/PatternProcessor_noise.py",
+      "size": 18065
+    },
+    {
+      "path": "Generate_QA/Match/ReverseitProcessor.py",
+      "size": 757
+    },
+    {
+      "path": "Generate_QA/Match/SmoothitProcessor.py",
+      "size": 2174
+    },
+    {
+      "path": "Generate_QA/Match/image_analyze.py",
+      "size": 7053
+    },
+    {
+      "path": "Generate_QA/Match/question_generator.ipynb",
+      "size": 18344
+    },
+    {
+      "path": "Generate_QA/Match/readme.md",
+      "size": 754
+    },
+    {
+      "path": "Generate_QA/Match/utils.py",
+      "size": 8698
+    },
+    {
+      "path": "Generate_QA/Base/TS_generator/noise.py",
+      "size": 2277
+    },
+    {
+      "path": "Generate_QA/Base/TS_generator/readme.md",
+      "size": 1269
+    },
+    {
+      "path": "Generate_QA/Base/TS_generator/season.py",
+      "size": 15199
+    },
+    {
+      "path": "Generate_QA/Base/TS_generator/trend.py",
+      "size": 2775
+    },
+    {
+      "path": "Generate_QA/Base/TS_generator/unit.py",
+      "size": 5825
+    },
+    {
+      "path": "Generate_QA/Base/TS_generator/utils.py",
+      "size": 3611
+    },
+    {
+      "path": "Generate_QA/Base/templates/README.md",
+      "size": 1457
+    },
+    {
+      "path": "Generate_QA/Base/templates/templates.json",
+      "size": 6708
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/noise.py",
+      "size": 2277
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/readme.md",
+      "size": 1269
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/season.py",
+      "size": 15199
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/trend.py",
+      "size": 2775
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/unit.py",
+      "size": 5825
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/utils.py",
+      "size": 3611
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/__pycache__/generate_stationary_question.cpython-39.pyc",
+      "size": 13305
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/noise.cpython-311.pyc",
+      "size": 4215
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/noise.cpython-39.pyc",
+      "size": 2167
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/season.cpython-311.pyc",
+      "size": 14429
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/season.cpython-39.pyc",
+      "size": 6147
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/trend.cpython-311.pyc",
+      "size": 3967
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/trend.cpython-39.pyc",
+      "size": 2268
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/unit.cpython-311.pyc",
+      "size": 8404
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/unit.cpython-39.pyc",
+      "size": 3580
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/utils.cpython-311.pyc",
+      "size": 6861
+    },
+    {
+      "path": "Generate_QA/Data_synthetic/TS_generator/__pycache__/utils.cpython-39.pyc",
+      "size": 3522
+    },
+    {
+      "path": "Run_Test/TS-LLMs/README.md",
+      "size": 2290
+    },
+    {
+      "path": "Run_Test/close-source/graph_generator.py",
+      "size": 8758
+    },
+    {
+      "path": "Run_Test/close-source/run_mmts_bench.py",
+      "size": 35449
+    },
+    {
+      "path": "Run_Test/close-source/run_mmts_bench_vision.py",
+      "size": 42988
+    },
+    {
+      "path": "Run_Test/close-source/run_mmts_bench_vision_text.py",
+      "size": 43367
+    },
+    {
+      "path": "Run_Test/open-source/graph_generator.py",
+      "size": 8758
+    },
+    {
+      "path": "Run_Test/open-source/run_mmts_bench.py",
+      "size": 35545
+    },
+    {
+      "path": "Run_Test/open-source/run_mmts_bench_vision.py",
+      "size": 43030
+    },
+    {
+      "path": "Run_Test/open-source/run_mmts_bench_vision_text.py",
+      "size": 43406
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ChatTS/cal_acc.py",
+      "size": 2476
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ChatTS/cal_num.py",
+      "size": 3147
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ChatTS/eval_chatts.py",
+      "size": 6095
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ChatTime/eval_chattime.py",
+      "size": 3798
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ChatTime/model.py",
+      "size": 12827
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ITFormer/cal_acc.py",
+      "size": 2456
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ITFormer/cal_num.py",
+      "size": 3102
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ITFormer/dataset.py",
+      "size": 36271
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ITFormer/eval_itformer.py",
+      "size": 11553
+    },
+    {
+      "path": "Run_Test/TS-LLMs/ITFormer/infer.yaml",
+      "size": 520
+    },
+    {
+      "path": "Run_Test/TS-LLMs/utils/extract_answer.py",
+      "size": 3863
+    },
+    {
+      "path": "Run_Test/TS-LLMs/utils/get_prompt.py",
+      "size": 4613
+    },
+    {
+      "path": "Run_Test/TS-LLMs/utils/numpy_func.py",
+      "size": 1276
+    },
+    {
+      "path": "Run_Test/TS-LLMs/utils/llms/close_sourced.py",
+      "size": 894
+    },
+    {
+      "path": "Run_Test/TS-LLMs/utils/llms/open_sourced.py",
+      "size": 3088
+    },
+    {
+      "path": "Run_Test/TS-LLMs/utils/llms/packged_llms.py",
+      "size": 2809
+    }
+  ]
+}

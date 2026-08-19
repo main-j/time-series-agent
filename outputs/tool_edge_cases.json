@@ -1,0 +1,1746 @@
+{
+  "n_total": 130,
+  "n_pass": 130,
+  "n_fail": 0,
+  "n_crash": 0,
+  "n_nonfinite_success": 24,
+  "failures": [],
+  "nonfinite": [
+    {
+      "case": "constant",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "zeros",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=3",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "change_points",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "change_points",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "pairwise_distance",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "pairwise_distance",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": true
+    }
+  ],
+  "all": [
+    {
+      "case": "empty_list",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "stl_strength",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "change_points",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "pairwise_distance",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Need >=2 series",
+      "note": "failed_as_expected: Need >=2 series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_list",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Need query and longer series",
+      "note": "failed_as_expected: Need query and longer series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series at index 1",
+      "note": "failed_as_expected: Empty series at index 1",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "stl_strength",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "change_points",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "pairwise_distance",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Need >=2 series",
+      "note": "failed_as_expected: Need >=2 series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Empty series",
+      "note": "failed_as_expected: Empty series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "empty_inner",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Need query and longer series",
+      "note": "failed_as_expected: Need query and longer series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "either",
+      "success": false,
+      "error": "zero-size array to reduction operation maximum which has no identity",
+      "note": "controlled_fail: zero-size array to reduction operation maximum which has no identity | warnings=4",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1",
+      "tool": "change_points",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1_adf",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "either",
+      "success": false,
+      "error": "Invalid input, x is constant",
+      "note": "controlled_fail: Invalid input, x is constant",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1_stl",
+      "tool": "stl_strength",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "len1_lag",
+      "tool": "lag_corr",
+      "args": {
+        "lag": 1
+      },
+      "expected": "fail",
+      "success": false,
+      "error": "lag too large",
+      "note": "failed_as_expected: lag too large",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "stl_strength",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "stl_strength",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "either",
+      "success": false,
+      "error": "Invalid input, x is constant",
+      "note": "controlled_fail: Invalid input, x is constant",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "either",
+      "success": false,
+      "error": "Invalid input, x is constant",
+      "note": "controlled_fail: Invalid input, x is constant",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "change_points",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "change_points",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "zeros",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "const_multi",
+      "tool": "pairwise_distance",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "constant",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "zeros",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "const_multi",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "nan",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=3",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "inf",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "nan",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "stl_strength",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "inf",
+      "tool": "stl_strength",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "nan",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "either",
+      "success": false,
+      "error": "exog contains inf or nans",
+      "note": "controlled_fail: exog contains inf or nans",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "inf",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "either",
+      "success": false,
+      "error": "SVD did not converge",
+      "note": "controlled_fail: SVD did not converge",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "nan",
+      "tool": "change_points",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "change_points",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "interval_compare",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "lag_corr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=1",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "pairwise_distance",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "pairwise_distance",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "smooth_reverse_stats",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "nan",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "inf",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success | warnings=2",
+      "ok": true,
+      "has_nonfinite": true
+    },
+    {
+      "case": "huge_tiny",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "huge_tiny",
+      "tool": "fft_period",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "huge_tiny",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "huge_tiny",
+      "tool": "stl_strength",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "huge_tiny",
+      "tool": "autocorr",
+      "args": {},
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "huge_tiny",
+      "tool": "pairwise_distance",
+      "args": {
+        "method": "euclidean"
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "spike",
+      "tool": "sliding_stats",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "spike",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "spike",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "spike",
+      "tool": "change_points",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "spike",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "window_too_big",
+      "tool": "sliding_stats",
+      "args": {
+        "window": 10000
+      },
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "validated",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "window_zero",
+      "tool": "sliding_stats",
+      "args": {
+        "window": 0
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "window_neg",
+      "tool": "sliding_stats",
+      "args": {
+        "window": -5
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "lag_too_big",
+      "tool": "lag_corr",
+      "args": {
+        "lag": 10000
+      },
+      "expected": "fail",
+      "success": false,
+      "error": "lag too large",
+      "note": "failed_as_expected: lag too large",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "max_lag_huge",
+      "tool": "autocorr",
+      "args": {
+        "max_lag": 10000
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "period_1",
+      "tool": "stl_strength",
+      "args": {
+        "period": 1
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "period_len",
+      "tool": "stl_strength",
+      "args": {
+        "period": 100
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "period_neg",
+      "tool": "stl_strength",
+      "args": {
+        "period": -3
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "interval_bad",
+      "tool": "interval_compare",
+      "args": {
+        "start": 80,
+        "mid": 20,
+        "end": 90
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "interval_oob",
+      "tool": "interval_compare",
+      "args": {
+        "start": -10,
+        "mid": 200,
+        "end": 500
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "pair_need2",
+      "tool": "pairwise_distance",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Need >=2 series",
+      "note": "failed_as_expected: Need >=2 series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "subseq_need2",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "fail",
+      "success": false,
+      "error": "Need query and longer series",
+      "note": "failed_as_expected: Need query and longer series",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "mismatch_pair",
+      "tool": "pairwise_distance",
+      "args": {
+        "method": "euclidean"
+      },
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "mismatch_dtw",
+      "tool": "pairwise_distance",
+      "args": {
+        "method": "dtw"
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "mismatch_locate",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "validated",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "locate_embedded",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "validated",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "pair_reverse",
+      "tool": "pairwise_distance",
+      "args": {
+        "method": "euclidean"
+      },
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "pair_dtw",
+      "tool": "pairwise_distance",
+      "args": {
+        "method": "dtw"
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "alt_extrema",
+      "tool": "local_extrema",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "validated",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "linear_slope",
+      "tool": "describe_series",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "validated",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "linear_diff",
+      "tool": "diff_stats",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "validated",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "real_pair",
+      "tool": "pairwise_distance",
+      "args": {
+        "method": "euclidean"
+      },
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "real_dtw",
+      "tool": "pairwise_distance",
+      "args": {
+        "method": "dtw"
+      },
+      "expected": "either",
+      "success": true,
+      "error": null,
+      "note": "success",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "real_locate",
+      "tool": "subsequence_locate",
+      "args": {},
+      "expected": "success",
+      "success": true,
+      "error": null,
+      "note": "",
+      "ok": true,
+      "has_nonfinite": false
+    },
+    {
+      "case": "real_trunc3_adf",
+      "tool": "adf_stationarity",
+      "args": {},
+      "expected": "either",
+      "success": false,
+      "error": "sample size is too short to use selected regression component",
+      "note": "controlled_fail: sample size is too short to use selected regression component",
+      "ok": true,
+      "has_nonfinite": false
+    }
+  ]
+}

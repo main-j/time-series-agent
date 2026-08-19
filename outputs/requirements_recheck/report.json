@@ -1,0 +1,237 @@
+{
+  "summary": {
+    "requirements_pass": 35,
+    "requirements_fail": 0,
+    "gaps_noted": 3
+  },
+  "checks": [
+    {
+      "group": "shared",
+      "name": "series_text_matches_mmts_official_Text",
+      "ok": true,
+      "detail": "mismatch=0/30"
+    },
+    {
+      "group": "shared",
+      "name": "baseline_and_architecture_see_same_series_text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "shared",
+      "name": "baseline_has_no_temporal_profile_leak",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "single_shot_no_tools",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "one_model_call",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "answer_parsed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "delimiters_question_timeseries_candidates",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "structured_final_answer_format",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "reason_before_answer",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "no_tool_catalog",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "no_architecture_modules_in_prompt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "pipeline_tool_calls_always_0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "pipeline_model_calls_always_1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "baseline",
+      "name": "pipeline_valid_outputs_on_choice",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "architecture",
+      "name": "planner_non_tool",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "architecture",
+      "name": "integration_non_tool",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "architecture",
+      "name": "homogeneous_may_use_tools",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "architecture",
+      "name": "heterogeneous_may_use_tools",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "architecture",
+      "name": "homogeneous_forbids_final_answer",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "architecture",
+      "name": "integration_is_final_answer_role",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "architecture",
+      "name": "homogeneous_whitelist_short",
+      "ok": true,
+      "detail": "n=5"
+    },
+    {
+      "group": "architecture",
+      "name": "homogeneous_whitelist_medium",
+      "ok": true,
+      "detail": "n=5"
+    },
+    {
+      "group": "architecture",
+      "name": "homogeneous_whitelist_long",
+      "ok": true,
+      "detail": "n=5"
+    },
+    {
+      "group": "architecture",
+      "name": "heterogeneous_whitelist_structure",
+      "ok": true,
+      "detail": "n=11"
+    },
+    {
+      "group": "architecture",
+      "name": "heterogeneous_whitelist_reasoning",
+      "ok": true,
+      "detail": "n=5"
+    },
+    {
+      "group": "architecture",
+      "name": "heterogeneous_whitelist_matching",
+      "ok": true,
+      "detail": "n=6"
+    },
+    {
+      "group": "architecture",
+      "name": "heterogeneous_whitelist_alignment",
+      "ok": true,
+      "detail": "n=2"
+    },
+    {
+      "group": "architecture",
+      "name": "e2e_Base_routing_and_stages",
+      "ok": true,
+      "detail": "roles=['structure', 'reasoning'] tools=5 stages=6h/4e"
+    },
+    {
+      "group": "architecture",
+      "name": "e2e_InWild_routing_and_stages",
+      "ok": true,
+      "detail": "roles=['reasoning', 'structure'] tools=5 stages=6h/4e"
+    },
+    {
+      "group": "architecture",
+      "name": "e2e_Match_routing_and_stages",
+      "ok": true,
+      "detail": "roles=['matching'] tools=4 stages=6h/2e"
+    },
+    {
+      "group": "architecture",
+      "name": "e2e_Align_routing_and_stages",
+      "ok": true,
+      "detail": "roles=['alignment', 'structure'] tools=5 stages=6h/4e"
+    },
+    {
+      "group": "architecture",
+      "name": "mock_pipeline_has_tools_while_baseline_none",
+      "ok": true,
+      "detail": "base=0 arch=4"
+    },
+    {
+      "group": "architecture",
+      "name": "mock_pipeline_more_model_calls_than_baseline",
+      "ok": true,
+      "detail": "base=1 arch=10"
+    },
+    {
+      "group": "architecture",
+      "name": "trace_records_plan_profile_evidence_final",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "architecture",
+      "name": "prompt_versions_frozen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "group": "gap",
+      "name": "baseline_prompt_not_byteidentical_to_official_Text",
+      "ok": false,
+      "detail": "intentional: XML delimiters + thinking_process; official uses Question:/Available Options: and final_answer only"
+    },
+    {
+      "group": "gap",
+      "name": "n_evaluations_gt_1_majority_vote",
+      "ok": false,
+      "detail": "config n_evaluations=1; official supports multi-eval vote"
+    },
+    {
+      "group": "gap",
+      "name": "max_series_text_chars_may_truncate_in_default_config",
+      "ok": false,
+      "detail": "experiment.yaml max_series_text_chars=8000; official does not truncate"
+    }
+  ]
+}

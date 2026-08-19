@@ -162,13 +162,49 @@ def test_planner_agent_expected_plan(prompts):
     sample = _sample_univariate()
     plan_json = json.dumps(
         {
-            "reasoning": "Trend analysis overall univariate -> all scales + structure/reasoning.",
+            "reasoning": "Trend analysis needs multi-scale structure evidence plus reasoning.",
+            "task_summary": "Determine the overall trend of Time Series 1.",
+            "target_output": "Return the option letter best supported by trend evidence.",
+            "answer_type": "choice",
             "capability": "feature_analysis",
             "scope": "overall",
             "univariate": True,
-            "scales": ["short", "medium", "long"],
-            "heterogeneous_agents": ["structure", "reasoning"],
-            "notes": "simulated",
+            "homo_assignments": [
+                {
+                    "scale": "short",
+                    "objective": "Inspect local slope changes.",
+                    "required_measurements": ["local_slope_changes"],
+                    "validation_requirements": ["Ground claims in tool evidence."],
+                },
+                {
+                    "scale": "medium",
+                    "objective": "Inspect mid-scale direction.",
+                    "required_measurements": ["mid_scale_direction"],
+                    "validation_requirements": [],
+                },
+                {
+                    "scale": "long",
+                    "objective": "Inspect global trend.",
+                    "required_measurements": ["global_trend_direction"],
+                    "validation_requirements": [],
+                },
+            ],
+            "hetero_assignments": [
+                {
+                    "role": "structure",
+                    "objective": "Quantify trend direction.",
+                    "required_measurements": ["endpoint_slope"],
+                    "validation_requirements": ["Do not invent slope values."],
+                },
+                {
+                    "role": "reasoning",
+                    "objective": "Map trend evidence onto candidates.",
+                    "required_measurements": ["candidate_trend_support"],
+                    "validation_requirements": [],
+                },
+            ],
+            "success_criteria": ["Cover endpoint_slope with tool evidence."],
+            "notes": "no tool names here",
         }
     )
     llm = ScriptedLLM([plan_json])
@@ -181,10 +217,15 @@ def test_planner_agent_expected_plan(prompts):
     assert plan.scales == [ScaleName.SHORT, ScaleName.MEDIUM, ScaleName.LONG]
     assert HeterogeneousRole.STRUCTURE in plan.heterogeneous_agents
     assert HeterogeneousRole.REASONING in plan.heterogeneous_agents
+    assert plan.homo_assignments[0].required_measurements == ["local_slope_changes"]
+    assert plan.hetero_assignments[0].required_measurements == ["endpoint_slope"]
 
     text = _joined(llm.calls[0])
     _has_tags(text, ["question", "candidates", "metadata"])
-    assert "do NOT call tools" in text or "do NOT call tools" in prompts.render("planner_v1")["system"]
+    assert "subset=" not in text
+    assert "task_type=" not in text
+    assert "Do NOT invent or mention tool names" in prompts.get("planner_v1")["system"]
+    assert "Hard routing rules" not in prompts.get("planner_v1")["system"]
     llm.assert_consumed()
 
 
@@ -192,13 +233,31 @@ def test_homogeneous_short_tool_loop_then_observe(prompts, tools):
     sample = _sample_univariate()
     from ts_agent.schemas.models import AgentPlan
 
+    from ts_agent.schemas.models import HomoAssignment, HeteroAssignment
+
     plan = AgentPlan(
         reasoning="Focus on local volatility in short scale.",
+        task_summary="Measure local volatility of Time Series 1.",
+        target_output="Return observations about local volatility.",
+        answer_type="choice",
         capability="feature_analysis",
         scope="local",
         univariate=True,
-        scales=[ScaleName.SHORT],
-        heterogeneous_agents=[HeterogeneousRole.STRUCTURE],
+        homo_assignments=[
+            HomoAssignment(
+                scale=ScaleName.SHORT,
+                objective="Measure local volatility.",
+                required_measurements=["local_volatility"],
+                validation_requirements=["Use tool evidence; do not invent numbers."],
+            )
+        ],
+        hetero_assignments=[
+            HeteroAssignment(
+                role=HeterogeneousRole.STRUCTURE,
+                objective="Interpret volatility evidence.",
+                required_measurements=["local_volatility"],
+            )
+        ],
         notes="windowed short-scale scan",
     )
     # Round1: request whitelist tool; Round2: interpret with empty tool_calls
@@ -237,11 +296,18 @@ def test_homogeneous_short_tool_loop_then_observe(prompts, tools):
 
     # prompt wiring
     text1 = _joined(llm.calls[0])
-    _has_tags(text1, ["question", "candidates", "plan", "timeseries", "metadata", "tool_catalog", "tool_results"])
+    _has_tags(
+        text1,
+        ["question", "candidates", "assignment", "plan_context", "timeseries", "metadata", "tool_catalog", "tool_results"],
+    )
     assert "n_series=1" in text1
-    assert "windowed short-scale scan" in text1
+    assert "local_volatility" in text1
+    assert "use_when:" in text1
+    assert "avoid_when:" in text1
+    assert "limitations:" in text1
     assert "sliding_stats" in text1  # whitelist catalog for short
     assert "pairwise_distance" not in text1  # not in short whitelist
+    assert "goal-driven, not keyword-driven" in prompts.get("homogeneous_v1")["system"]
     text2 = _joined(llm.calls[1])
     assert "(none)" not in text2.split("<tool_results>")[1][:20] or "sliding_stats" in text2
     llm.assert_consumed()
@@ -323,14 +389,32 @@ def test_heterogeneous_matching_uses_distance_tool(prompts, tools):
     sample = _sample_multivariate()
     from ts_agent.schemas.models import AgentPlan
 
+    from ts_agent.schemas.models import HomoAssignment, HeteroAssignment
+
     plan = AgentPlan(
         reasoning="Match nearest candidate.",
+        task_summary="Find the candidate series most similar to the query.",
+        target_output="Return the option letter of the nearest candidate.",
+        answer_type="choice",
         capability="sequence_matching",
         scope="overall",
         univariate=False,
-        scales=[ScaleName.SHORT],
-        heterogeneous_agents=[HeterogeneousRole.MATCHING],
-        notes="use pairwise_distance",
+        homo_assignments=[
+            HomoAssignment(
+                scale=ScaleName.SHORT,
+                objective="Collect short-scale shape cues.",
+                required_measurements=["local_shape_summary"],
+            )
+        ],
+        hetero_assignments=[
+            HeteroAssignment(
+                role=HeterogeneousRole.MATCHING,
+                objective="Rank candidates by similarity to the query series.",
+                required_measurements=["pairwise_similarity", "nearest_candidate"],
+                validation_requirements=["Map winning series_index through option_to_series."],
+            )
+        ],
+        notes="",
     )
     profile = TemporalProfile(summary="short: local var; medium: period~12; long: mild trend")
     round1 = json.dumps(
@@ -369,12 +453,26 @@ def test_heterogeneous_matching_uses_distance_tool(prompts, tools):
     text = _joined(llm.calls[0])
     _has_tags(
         text,
-        ["question", "candidates", "plan", "timeseries", "temporal_profile", "prior_task_evidence", "tool_catalog", "tool_results"],
+        [
+            "question",
+            "candidates",
+            "assignment",
+            "plan_context",
+            "timeseries",
+            "temporal_profile",
+            "prior_task_evidence",
+            "tool_catalog",
+            "tool_results",
+        ],
     )
-    assert "use pairwise_distance" in text
+    assert "pairwise_similarity" in text
+    assert "nearest_candidate" in text
+    assert "use_when:" in text
     assert "pairwise_distance" in text
     assert "option_to_series" in text
     assert "query_series_index=1" in text
+    assert "goal-driven, not keyword-driven" in prompts.get("heterogeneous_v1")["system"]
+    assert "Tool selection guide" not in prompts.get("heterogeneous_v1")["system"]
     llm.assert_consumed()
 
 
@@ -587,20 +685,20 @@ def test_integration_no_tools_final_answer(prompts):
         [
             "question",
             "candidates",
-            "plan",
-            "timeseries",
-            "temporal_profile",
-            "task_evidence",
-            "preference_votes",
-            "tool_backed_majority",
-            "metadata",
+            "question_type",
+            "planner_intent",
+            "homo_perception",
+            "heter_reasoning",
+            "execution_metadata",
         ],
     )
-    assert "Given Time Series 1" in text
-    assert '"tool_backed": false' in text
+    assert "<preference_votes>" not in text
+    assert "<tool_backed_majority>" not in text
+    assert "Given Time Series 1" not in text
     assert "do NOT call tools" in prompts.get("integration_v1")["system"]
-    # Integration must not expose tool catalog
+    # Integration must not expose tool catalog or raw tool dumps
     assert "<tool_catalog>" not in text
+    assert "executed_tools" not in text
     llm.assert_consumed()
 
 
@@ -698,8 +796,9 @@ def test_integration_ignores_model_authored_tool_summary(prompts):
     ans = IntegrationAgent(llm, prompts).run(sample, plan, TemporalProfile(), [forged])
     assert ans.answer == "B"
     text = _joined(llm.calls[0])
-    assert '"tool_backed": false' in text
-    assert "<tool_backed_majority>\n(none)" in text
+    assert '"verified": false' in text or '"verified_preference": null' in text
+    assert "<tool_backed_majority>" not in text
+    assert "<execution_metadata>" in text
     llm.assert_consumed()
 
 

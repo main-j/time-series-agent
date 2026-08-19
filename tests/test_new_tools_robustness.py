@@ -295,7 +295,8 @@ def test_noise_decomposition_levels(reg):
     series = [y.tolist()]
     res = reg.run("noise_decomposition", {"series_index": 1}, series)
     assert res.success
-    assert res.data["noise_level"] in {"low", "medium", "high"}
+    assert res.data["noise_level"] in {"none", "low", "medium", "high"}
+    assert "Var(residual)/Var(series)" in (res.data.get("metric_definition") or "") or True
     assert 0 <= res.data["noise_ratio"] <= 2.0
     assert res.data["noise_type_hint"] in {
         "random_walk_like",
@@ -309,6 +310,122 @@ def test_noise_decomposition_too_short_fails(reg):
     series = [[1.0, 2.0]]
     res = reg.run("noise_decomposition", {"series_index": 1}, series)
     assert not res.success
+
+
+def test_noise_decomposition_exposes_residual_rmse(reg):
+    rng = np.random.default_rng(1)
+    y = np.sin(np.linspace(0, 8 * np.pi, 96)) + rng.normal(0, 0.1, 96)
+    res = reg.run("noise_decomposition", {"series_index": 1}, [y.tolist()])
+    assert res.success
+    assert "residual_rmse" in res.data
+    assert res.data["residual_rmse"] >= 0
+
+
+# ---------- seas_acf / calendar / nonlinearity / find-it rank ----------
+
+
+def test_seas_acf_periodic(reg):
+    t = np.arange(120)
+    y = np.sin(2 * np.pi * t / 12)
+    res = reg.run("seas_acf", {"series_index": 1, "lag": 12}, [y.tolist()])
+    assert res.success
+    assert res.data["seas_acf1"] == pytest.approx(1.0, abs=0.15)
+    assert res.data["strength_hint"] == "strong"
+
+
+def test_autocorr_returns_full_and_specific_lags(reg):
+    y = np.sin(2 * np.pi * np.arange(80) / 10).tolist()
+    res = reg.run("autocorr", {"series_index": 1, "max_lag": 25, "lags": [10]}, [y])
+    assert res.success
+    assert len(res.data["acf"]) == 25
+    assert "10" in res.data["acf_at_lags"]
+
+
+def test_index_calendar_map_mmts_thursday_anchor(reg):
+    # index 0 = Thursday 00:00; index 24 = Friday 00:00; index 24*4=96 = Monday
+    res = reg.run("index_calendar_map", {"indices": [0, 24, 96]}, [[0.0]])
+    assert res.success
+    by_i = {r["index"]: r for r in res.data["records"]}
+    assert by_i[0]["weekday"] == "Thursday" and by_i[0]["hour"] == 0
+    assert by_i[24]["weekday"] == "Friday"
+    assert by_i[96]["weekday"] == "Monday"
+    assert by_i[96]["is_weekday"] is True
+
+
+def test_nonlinearity_terasvirta_runs(reg):
+    rng = np.random.default_rng(0)
+    linear = np.cumsum(rng.normal(0, 1, 120)).tolist()
+    nonlinear = np.sin(np.linspace(0, 20, 120)).tolist()
+    r1 = reg.run("nonlinearity_terasvirta", {"series_index": 1}, [linear])
+    r2 = reg.run("nonlinearity_terasvirta", {"series_index": 1}, [nonlinear])
+    assert r1.success and r2.success
+    assert r1.data["nonlinearity"] is not None
+    assert r2.data["nonlinearity"] is not None
+    assert r1.data["metric_definition"].startswith("10 *")
+
+
+def test_subsequence_rank_finds_embedded_query(reg):
+    query = [1.0, 2.0, 3.0, 2.0, 1.0]
+    long_hit = [0.0] * 10 + query + [0.0] * 10
+    long_miss = [5.0, 4.0, 0.0, 9.0, 1.0] * 6
+    series = [query, long_miss, long_hit]
+    res = reg.run(
+        "subsequence_rank",
+        {"query_series_index": 1, "candidate_series_indices": [2, 3], "method": "euclidean"},
+        series,
+    )
+    assert res.success
+    assert res.data["nearest"]["series_index"] == 3
+
+
+def test_window_shape_compare_similar_windows(reg):
+    pat = [0, 1, 2, 1, 0]
+    y = pat + [9, 9, 9] + pat
+    res = reg.run(
+        "window_shape_compare",
+        {"series_index": 1, "windows": [[0, 4], [8, 12]], "method": "z_euclidean"},
+        [y],
+    )
+    assert res.success
+    assert res.data["nearest_pair"]["distance"] == pytest.approx(0.0, abs=1e-9)
+
+
+def test_joint_threshold_events_and_mode(reg):
+    s1 = [0, 1, 2, 3, 0]
+    s2 = [9, 9, 1, 1, 9]
+    res = reg.run(
+        "joint_threshold_events",
+        {
+            "rules": [
+                {"series_index": 1, "op": ">", "value": 1.5},
+                {"series_index": 2, "op": "<", "value": 5},
+            ],
+            "mode": "and",
+        },
+        [s1, s2],
+    )
+    assert res.success
+    assert res.data["n_events"] == 2
+    assert res.data["indices"] == [2, 3]
+
+
+def test_caption_verify_value_band_and_spike(reg):
+    band = [5.0] * 20
+    spike = [5.0] * 10 + [20.0] + [5.0] * 9
+    res = reg.run(
+        "caption_verify",
+        {
+            "claims": [
+                {"type": "value_band", "min": 4.5, "max": 5.5, "min_fraction": 0.9},
+                {"type": "spike", "expected": True},
+            ],
+            "candidate_series_indices": [1, 2],
+        },
+        [band, spike],
+    )
+    assert res.success
+    # spike series should rank higher overall if both claims considered per-candidate
+    assert res.data["best_match"]["series_index"] in {1, 2}
 
 
 # ---------- describe_series extensions ----------

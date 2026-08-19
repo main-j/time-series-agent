@@ -1,0 +1,13 @@
+{
+  "exp_name": "checklist_weighted_50",
+  "checklist_file": "/root/autodl-tmp/time-series-agent/outputs/weighted_mmts_selection_50/sample_ids.txt",
+  "exclude_file": null,
+  "extra_exclude": [],
+  "total_checklist": 50,
+  "excluded": 0,
+  "target": 50,
+  "pending": 50,
+  "resume": true,
+  "limit": null,
+  "started_at": "2026-08-03T20:14:41"
+}

@@ -72,9 +72,20 @@ class MockLLMProvider(LLMProvider):
         role_hint = joined.lower()
         t0 = time.time()
         has_tool_results = "<tool_results>" in joined and "(none)" not in joined.split("<tool_results>")[-1][:80]
+        call_tag = str(kwargs.get("call_tag", "mock"))
 
         if "agentplan" in role_hint or ("execution plan" in role_hint and "planner" in role_hint):
             text = self._plan(joined)
+        elif ":s1s2:" in call_tag or "evidencecapabilityplan" in role_hint or "evidence planning + capability" in role_hint:
+            text = self._stage_s1s2(joined, call_tag)
+        elif ":s3:" in call_tag or "toolworkflow" in role_hint or "tool workflow planning" in role_hint:
+            text = self._stage_s3(joined, call_tag)
+        elif ":s4:" in call_tag or "invocationplan" in role_hint or "stage 4: tool invocation" in role_hint:
+            text = self._stage_s4(joined, call_tag)
+        elif ":s5:" in call_tag and "homogeneous" in call_tag:
+            text = self._stage_homo_s5(joined, call_tag)
+        elif ":s5:" in call_tag and "heterogeneous" in call_tag:
+            text = self._stage_hetero_s5(joined, call_tag)
         elif "scaleobservation" in role_hint or "-scale homogeneous" in role_hint or "short-scale" in role_hint or "medium-scale" in role_hint or "long-scale" in role_hint:
             text = self._scale(joined, has_tool_results)
         elif "taskevidence" in role_hint or "heterogeneous task agent" in role_hint:
@@ -98,8 +109,153 @@ class MockLLMProvider(LLMProvider):
             latency_sec=latency,
             raw={"provider": "mock"},
         )
-        self._maybe_record(messages, resp, call_tag=str(kwargs.get("call_tag", "mock")))
+        self._maybe_record(messages, resp, call_tag=call_tag)
         return resp
+
+    def _stage_s1s2(self, joined: str, call_tag: str) -> str:
+        is_hetero = "heterogeneous" in call_tag or "heterogeneous" in joined.lower()
+        if is_hetero and "<temporal_profile>" in joined:
+            # Prefer no-tool when profile already present (smoke path)
+            return json.dumps(
+                {
+                    "reasoning": "Mock: use temporal profile; no new tools.",
+                    "evidence_plan": {
+                        "objective": "reconcile profile",
+                        "claims_to_support": [{"claim": "profile sufficient", "required_evidence": ["upstream stats"]}],
+                    },
+                    "capability_selection": {
+                        "selected_tools": [],
+                        "no_tool_decision": {
+                            "skip_tools": True,
+                            "reason": "Mock temporal profile already has evidence",
+                            "evidence_sources": [{"type": "upstream_observation", "ref": "medium:step1", "field": "stats"}],
+                        },
+                    },
+                }
+            )
+        tool = "describe_series"
+        if "medium" in call_tag:
+            tool = "fft_period"
+        elif "long" in call_tag:
+            tool = "adf_stationarity"
+        elif "matching" in call_tag:
+            tool = "pairwise_distance"
+        return json.dumps(
+            {
+                "reasoning": "Mock evidence+capability plan.",
+                "evidence_plan": {
+                    "objective": "gather evidence",
+                    "claims_to_support": [{"claim": "basic structure", "required_evidence": ["stats"]}],
+                    "analysis_scope": {},
+                },
+                "capability_selection": {
+                    "selected_tools": [{"tool": tool, "reason": "mock", "supports_evidence": ["stats"]}],
+                    "no_tool_decision": None,
+                },
+            }
+        )
+
+    def _stage_s3(self, joined: str, call_tag: str) -> str:
+        tools = re.findall(r'"tool":\s*"([a-z_]+)"', joined)
+        # Prefer selected_tools section tools
+        selected = []
+        for m in re.finditer(r'"selected_tools"\s*:\s*\[(.*?)\]', joined, flags=re.S):
+            selected = re.findall(r'"tool":\s*"([a-z_]+)"', m.group(1))
+            break
+        names = selected or tools[:2] or ["describe_series"]
+        # dedupe preserving order
+        seen = []
+        for n in names:
+            if n not in seen and n not in {"string"}:
+                seen.append(n)
+        if not seen:
+            seen = ["describe_series"]
+        workflow = [
+            {"step": i + 1, "tool": name, "output_key": name, "input_binding": {}}
+            for i, name in enumerate(seen[:3])
+        ]
+        return json.dumps({"reasoning": "Mock workflow.", "workflow": workflow})
+
+    def _stage_s4(self, joined: str, call_tag: str) -> str:
+        steps = re.findall(r'"step":\s*(\d+).*?"tool":\s*"([a-z_]+)"', joined, flags=re.S)
+        if not steps:
+            tools = re.findall(r'"tool":\s*"([a-z_]+)"', joined)
+            steps = [(str(i + 1), t) for i, t in enumerate(tools[:3])]
+        calls = []
+        for step, tool in steps:
+            args: Dict[str, Any] = {}
+            if tool != "describe_series":
+                args["series_index"] = 1
+            if tool == "pairwise_distance":
+                args = {"method": "euclidean"}
+            if tool == "cross_series_compare":
+                args = {"series_index_1": 1, "series_index_2": 2}
+            calls.append({"step": int(step), "tool": tool, "args": args})
+        if not calls:
+            calls = [{"step": 1, "tool": "describe_series", "args": {}}]
+        return json.dumps({"reasoning": "Mock invocation.", "calls": calls})
+
+    def _stage_homo_s5(self, joined: str, call_tag: str) -> str:
+        scale = "short"
+        for s in ("short", "medium", "long"):
+            if f":{s}:" in call_tag or f"scale={s}" in joined.lower():
+                scale = s
+        call_ids = re.findall(r'"call_id":\s*"([^"]+)"', joined)
+        return json.dumps(
+            {
+                "reasoning": "Mock homo S5 integration.",
+                "scale": scale,
+                "observations": ["Mock observation after staged tools."],
+                "evidence_intervals": [],
+                "confidence": 0.55,
+                "tool_calls": [],
+                "structured_observations": [
+                    {
+                        "claim": "structure observed",
+                        "evidence": [
+                            {
+                                "type": "stats",
+                                "value": True,
+                                "call_id": call_ids[0] if call_ids else None,
+                                "provenance": "tool" if call_ids else "unresolved",
+                            }
+                        ],
+                        "confidence": "tool_supported" if call_ids else "unresolved",
+                    }
+                ],
+                "coverage": {"stats": "tool_supported" if call_ids else "unresolved"},
+                "unresolved_claims": [],
+            }
+        )
+
+    def _stage_hetero_s5(self, joined: str, call_tag: str) -> str:
+        role = "structure"
+        m = re.search(r"role=([a-z_]+)", joined.lower())
+        if m:
+            role = m.group(1)
+        for r in ("matching", "alignment", "reasoning", "structure"):
+            if f":{r}:" in call_tag:
+                role = r
+        prefs = re.findall(r'"candidate_preference":\s*"([A-D])"', joined)
+        pref = prefs[-1] if prefs else "A"
+        cites = re.findall(r'"call_id":\s*"([^"]+)"', joined)
+        return json.dumps(
+            {
+                "reasoning": "Mock hetero S5 integration.",
+                "role": role,
+                "hypothesis": "mock",
+                "evidence": ["Mock evidence"],
+                "candidate_preference": pref,
+                "confidence": 0.6,
+                "tool_calls": [],
+                "cited_tool_call_ids": cites[:3],
+                "executed_tools": [],
+                "tool_summaries": [],
+                "reasoning_claims": [],
+                "coverage": {},
+                "unresolved_claims": [],
+            }
+        )
 
     def _plan(self, joined: str) -> str:
         text = joined.lower()

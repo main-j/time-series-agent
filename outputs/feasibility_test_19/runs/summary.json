@@ -1,0 +1,387 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:496",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      838
+    ],
+    "task_type": "['stationarity']",
+    "gold": "-934.95",
+    "arch_pred": "-934.95",
+    "arch_ok": true,
+    "baseline_pred": "-934.95",
+    "baseline_ok": true,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 79.50705456733704,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Base_synthtic_qa_700_496"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:597",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      1299
+    ],
+    "task_type": "['index']",
+    "gold": "D",
+    "arch_pred": "D",
+    "arch_ok": true,
+    "baseline_pred": "D",
+    "baseline_ok": true,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 54.57749319076538,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Base_synthtic_qa_700_597"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:648",
+    "subset": "SubsetName.BASE",
+    "n_series": 2,
+    "series_lengths": [
+      512,
+      394
+    ],
+    "task_type": "['basic analysis']",
+    "gold": "635.14",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": "616.06",
+    "baseline_ok": true,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 96.53445148468018,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Base_synthtic_qa_700_648"
+  },
+  {
+    "sample_id": "Base:synthtic_qa_700:194",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      1077
+    ],
+    "task_type": "['trend analysis']",
+    "gold": " 0.40",
+    "arch_pred": "0.399",
+    "arch_ok": true,
+    "baseline_pred": "9.45",
+    "baseline_ok": false,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 56.554622650146484,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Base_synthtic_qa_700_194"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:508",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      52
+    ],
+    "task_type": "['seasonality analysis']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": "B",
+    "baseline_ok": true,
+    "arch_model_calls": 6,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 59.222636699676514,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_508"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:251",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      78
+    ],
+    "task_type": "['noise analysis', 'causal reasoning']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": "A",
+    "baseline_ok": false,
+    "arch_model_calls": 6,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 51.91714334487915,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_251"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:627",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      40
+    ],
+    "task_type": "['volatility analysis', 'counterfactual reasoning']",
+    "gold": "B",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": "C",
+    "baseline_ok": false,
+    "arch_model_calls": 6,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 60.998491525650024,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_627"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:64",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      72
+    ],
+    "task_type": "['basic analysis', 'counterfactual reasoning']",
+    "gold": "B",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": "A",
+    "baseline_ok": false,
+    "arch_model_calls": 6,
+    "arch_tool_calls": 1,
+    "arch_latency_sec": 48.39585995674133,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_64"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:979",
+    "subset": "SubsetName.INWILD",
+    "n_series": 2,
+    "series_lengths": [
+      864,
+      864
+    ],
+    "task_type": "['seasonality analysis', 'deductive reasoning']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": "A",
+    "baseline_ok": true,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 3,
+    "arch_latency_sec": 99.05558562278748,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_979"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:880",
+    "subset": "SubsetName.INWILD",
+    "n_series": 3,
+    "series_lengths": [
+      24,
+      24,
+      24
+    ],
+    "task_type": "['basic analysis', 'inductive reasoning']",
+    "gold": "A",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": "A",
+    "baseline_ok": true,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 5,
+    "arch_latency_sec": 115.80415487289429,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_880"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:281",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      168
+    ],
+    "task_type": "['volatility analysis', 'causal reasoning']",
+    "gold": "D",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": "B",
+    "baseline_ok": false,
+    "arch_model_calls": 6,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 90.67336535453796,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_281"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:392",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      672
+    ],
+    "task_type": "['noise analysis', 'analogical reasoning']",
+    "gold": "A",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": "B",
+    "baseline_ok": false,
+    "arch_model_calls": 7,
+    "arch_tool_calls": 2,
+    "arch_latency_sec": 93.805166721344,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_392"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:1080",
+    "subset": "SubsetName.INWILD",
+    "n_series": 2,
+    "series_lengths": [
+      864,
+      864
+    ],
+    "task_type": "['basic analysis', 'counterfactual reasoning']",
+    "gold": "D",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": "B",
+    "baseline_ok": false,
+    "arch_model_calls": 8,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 123.12498736381531,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/InWild_tsqa_1084_1080"
+  },
+  {
+    "sample_id": "Match:qats_400:248",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      48,
+      48,
+      48,
+      48,
+      48
+    ],
+    "task_type": "['choose it']",
+    "gold": "C",
+    "arch_pred": "C",
+    "arch_ok": true,
+    "baseline_pred": "C",
+    "baseline_ok": true,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 12,
+    "arch_latency_sec": 127.49082565307617,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Match_qats_400_248"
+  },
+  {
+    "sample_id": "Match:qats_400:77",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      13,
+      13,
+      13,
+      13,
+      13
+    ],
+    "task_type": "['smooth it']",
+    "gold": "C",
+    "arch_pred": "C",
+    "arch_ok": true,
+    "baseline_pred": "C",
+    "baseline_ok": true,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 52.57997250556946,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Match_qats_400_77"
+  },
+  {
+    "sample_id": "Match:qats_400:181",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      168,
+      504,
+      504,
+      504,
+      504
+    ],
+    "task_type": "['find it']",
+    "gold": "D",
+    "arch_pred": "D",
+    "arch_ok": true,
+    "baseline_pred": "C",
+    "baseline_ok": false,
+    "arch_model_calls": 5,
+    "arch_tool_calls": 4,
+    "arch_latency_sec": 89.34222149848938,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Match_qats_400_181"
+  },
+  {
+    "sample_id": "Match:qats_400:380",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      13,
+      13,
+      13,
+      13,
+      13
+    ],
+    "task_type": "['reverse it']",
+    "gold": "B",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": "B",
+    "baseline_ok": true,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 12,
+    "arch_latency_sec": 132.3965449333191,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Match_qats_400_380"
+  },
+  {
+    "sample_id": "Align:ts2caption_qa_120:73",
+    "subset": "SubsetName.ALIGN",
+    "n_series": 1,
+    "series_lengths": [
+      24
+    ],
+    "task_type": "caption",
+    "gold": "B",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": "B",
+    "baseline_ok": true,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 16,
+    "arch_latency_sec": 107.90639758110046,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Align_ts2caption_qa_120_73"
+  },
+  {
+    "sample_id": "Align:caption2ts_qa_120:119",
+    "subset": "SubsetName.ALIGN",
+    "n_series": 4,
+    "series_lengths": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "task_type": "['caption']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": "B",
+    "baseline_ok": true,
+    "arch_model_calls": 9,
+    "arch_tool_calls": 12,
+    "arch_latency_sec": 138.86728239059448,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/runs/Align_caption2ts_qa_120_119"
+  }
+]

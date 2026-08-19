@@ -1,0 +1,103 @@
+{
+  "scored": {
+    "ok": 1211,
+    "n": 2222
+  },
+  "skipped": 202,
+  "by_subset": {
+    "Base": {
+      "n": 684,
+      "ok": 504
+    },
+    "InWild": {
+      "n": 961,
+      "ok": 468
+    },
+    "Match": {
+      "n": 375,
+      "ok": 152
+    },
+    "Align": {
+      "n": 202,
+      "ok": 87
+    }
+  },
+  "by_task": {
+    "Structural/Non-Stationarity": {
+      "n": 99,
+      "ok": 86
+    },
+    "Structural/Local-Global": {
+      "n": 98,
+      "ok": 81
+    },
+    "Structural/Uni.-Multi.": {
+      "n": 684,
+      "ok": 504
+    },
+    "Feature/Trend": {
+      "n": 294,
+      "ok": 199
+    },
+    "Feature/Season.": {
+      "n": 239,
+      "ok": 111
+    },
+    "Feature/Noise": {
+      "n": 233,
+      "ok": 89
+    },
+    "Feature/Volat.": {
+      "n": 167,
+      "ok": 86
+    },
+    "Feature/Basic": {
+      "n": 357,
+      "ok": 244
+    },
+    "Reasoning/Ded.": {
+      "n": 175,
+      "ok": 83
+    },
+    "Reasoning/Ind.": {
+      "n": 163,
+      "ok": 78
+    },
+    "Reasoning/Causal": {
+      "n": 116,
+      "ok": 60
+    },
+    "Reasoning/Analog.": {
+      "n": 137,
+      "ok": 56
+    },
+    "Reasoning/Count.": {
+      "n": 91,
+      "ok": 42
+    },
+    "Matching/Isomorphic": {
+      "n": 100,
+      "ok": 60
+    },
+    "Matching/Robust": {
+      "n": 100,
+      "ok": 41
+    },
+    "Matching/Localization": {
+      "n": 92,
+      "ok": 28
+    },
+    "Matching/Reverse": {
+      "n": 83,
+      "ok": 23
+    },
+    "CrossModal/TS→Semantic": {
+      "n": 109,
+      "ok": 57
+    },
+    "CrossModal/Semantic→TS": {
+      "n": 93,
+      "ok": 30
+    }
+  }
+}

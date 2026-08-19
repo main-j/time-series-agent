@@ -1,0 +1,17 @@
+{
+  "exp_name": "gen_smoke_v1_code_routing",
+  "checklist_file": "outputs/splits/generalization_v1/smoke_76/sample_ids.txt",
+  "exclude_file": null,
+  "extra_exclude": [],
+  "total_checklist": 76,
+  "excluded": 0,
+  "target": 76,
+  "pending": 3,
+  "resume": false,
+  "limit": 3,
+  "started_at": "2026-08-03T19:44:09",
+  "finished_at": "2026-08-03T19:47:25",
+  "completed": 3,
+  "architecture_correct": 1,
+  "baseline_correct": 0
+}

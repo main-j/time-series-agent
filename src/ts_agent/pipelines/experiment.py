@@ -71,13 +71,17 @@ class ExperimentPipeline:
             plan = self.planner.run(sample)
             scales = plan.scales or [ScaleName.SHORT, ScaleName.MEDIUM, ScaleName.LONG]
             observations = []
+            homo_stages = {}
             for scale in scales:
                 obs, c = self.homo.run(sample, scale, plan=plan)
                 observations.append(obs)
                 tool_calls += c
+                if getattr(self.homo, "last_stage_trace", None):
+                    homo_stages[scale.value] = self.homo.last_stage_trace
             profile = build_temporal_profile(observations)
             roles = plan.heterogeneous_agents or [HeterogeneousRole.STRUCTURE]
             evidences = []
+            hetero_stages = {}
             for role in roles:
                 # Pass completed peer-role evidences so later roles are not information-isolated.
                 ev, c = self.hetero.run(
@@ -89,7 +93,12 @@ class ExperimentPipeline:
                 )
                 evidences.append(ev)
                 tool_calls += c
+                if getattr(self.hetero, "last_stage_trace", None):
+                    hetero_stages[role.value] = self.hetero.last_stage_trace
             final = self.integration.run(sample, plan, profile, evidences)
+            integration_bundle = None
+            if getattr(self.integration, "last_bundle", None) is not None:
+                integration_bundle = self.integration.last_bundle.model_dump()
             return RunTrace(
                 sample_id=sample.sample_id,
                 experiment="architecture",
@@ -107,6 +116,9 @@ class ExperimentPipeline:
                     "temporal_profile": profile.model_dump(),
                     "evidences": [e.model_dump() for e in evidences],
                     "final": final.model_dump(),
+                    "homo_stages": homo_stages,
+                    "hetero_stages": hetero_stages,
+                    "integration_bundle": integration_bundle,
                     "subset": sample.subset.value,
                     "task_type": sample.task_type,
                     "prompt_versions": self.prompts.versions(),

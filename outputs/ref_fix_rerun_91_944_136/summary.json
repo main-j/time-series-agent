@@ -1,0 +1,87 @@
+[
+  {
+    "sample_id": "Base:synthtic_qa_700:91",
+    "subset": "SubsetName.BASE",
+    "n_series": 1,
+    "series_lengths": [
+      642
+    ],
+    "task_type": "['noise analysis']",
+    "gold": "A",
+    "arch_pred": "C",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 16,
+    "arch_tool_calls": 11,
+    "arch_latency_sec": 349.0131483078003,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/ref_fix_rerun_91_944_136/runs/Base_synthtic_qa_700_91",
+    "tool_scan": {
+      "attempted": 11,
+      "ok": 11,
+      "fail": 0,
+      "pathish": 0,
+      "examples": []
+    }
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:944",
+    "subset": "SubsetName.INWILD",
+    "n_series": 4,
+    "series_lengths": [
+      720,
+      720,
+      720,
+      720
+    ],
+    "task_type": "['causal reasoning']",
+    "gold": "C",
+    "arch_pred": "A",
+    "arch_ok": false,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 14,
+    "arch_tool_calls": 14,
+    "arch_latency_sec": 291.2516052722931,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/ref_fix_rerun_91_944_136/runs/InWild_tsqa_1084_944",
+    "tool_scan": {
+      "attempted": 14,
+      "ok": 14,
+      "fail": 0,
+      "pathish": 0,
+      "examples": []
+    }
+  },
+  {
+    "sample_id": "Match:qats_400:136",
+    "subset": "SubsetName.MATCH",
+    "n_series": 5,
+    "series_lengths": [
+      26,
+      78,
+      78,
+      78,
+      52
+    ],
+    "task_type": "['find it']",
+    "gold": "A",
+    "arch_pred": "A",
+    "arch_ok": true,
+    "baseline_pred": null,
+    "baseline_ok": null,
+    "arch_model_calls": 12,
+    "arch_tool_calls": 6,
+    "arch_latency_sec": 143.4880919456482,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/ref_fix_rerun_91_944_136/runs/Match_qats_400_136",
+    "tool_scan": {
+      "attempted": 6,
+      "ok": 6,
+      "fail": 0,
+      "pathish": 0,
+      "examples": []
+    }
+  }
+]

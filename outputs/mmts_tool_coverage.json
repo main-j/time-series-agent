@@ -1,0 +1,43 @@
+{
+  "n_samples": 2424,
+  "n_gaps": 0,
+  "n_samples_with_gaps": 0,
+  "capability_counts": {
+    "hurst": 65,
+    "describe_basic": 473,
+    "volatility": 52,
+    "seasonality": 127,
+    "describe_percentile": 190,
+    "stationarity": 101,
+    "segment_trend": 121,
+    "value_at_index": 112,
+    "local_extrema_count": 101,
+    "global_index": 100,
+    "interval_compare": 204,
+    "advanced_features": 96,
+    "extrema": 72,
+    "noise_decomp": 25,
+    "counterfactual": 124,
+    "crossing_points": 38,
+    "anomaly": 30,
+    "change_point": 2,
+    "lag_causal": 45,
+    "step_levels": 9,
+    "extrema_alignment": 1,
+    "reverse_smooth": 200,
+    "subsequence": 100,
+    "pairwise_match": 100,
+    "caption_align": 240
+  },
+  "gap_by_capability": {},
+  "gaps": [],
+  "role_tool_counts": {
+    "alignment": 21,
+    "long": 24,
+    "matching": 9,
+    "medium": 24,
+    "reasoning": 27,
+    "short": 24,
+    "structure": 29
+  }
+}

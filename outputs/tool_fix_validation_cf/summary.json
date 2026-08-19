@@ -1,0 +1,41 @@
+[
+  {
+    "sample_id": "InWild:tsqa_1084:1080",
+    "subset": "SubsetName.INWILD",
+    "n_series": 2,
+    "series_lengths": [
+      864,
+      864
+    ],
+    "task_type": "['basic analysis', 'counterfactual reasoning']",
+    "gold": "D",
+    "arch_pred": "B",
+    "arch_ok": false,
+    "baseline_pred": "B",
+    "baseline_ok": false,
+    "arch_model_calls": 13,
+    "arch_tool_calls": 9,
+    "arch_latency_sec": 178.39549684524536,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/tool_fix_validation_cf/InWild_tsqa_1084_1080"
+  },
+  {
+    "sample_id": "InWild:tsqa_1084:64",
+    "subset": "SubsetName.INWILD",
+    "n_series": 1,
+    "series_lengths": [
+      72
+    ],
+    "task_type": "['basic analysis', 'counterfactual reasoning']",
+    "gold": "B",
+    "arch_pred": "B",
+    "arch_ok": true,
+    "baseline_pred": "A",
+    "baseline_ok": false,
+    "arch_model_calls": 10,
+    "arch_tool_calls": 6,
+    "arch_latency_sec": 112.98341393470764,
+    "arch_error": null,
+    "out_dir": "/root/autodl-tmp/time-series-agent/outputs/tool_fix_validation_cf/InWild_tsqa_1084_64"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "overall": {
+    "ok": 1,
+    "n": 1
+  },
+  "skipped": 0,
+  "by_subset": {
+    "Base": {
+      "ok": 1,
+      "n": 1
+    }
+  },
+  "by_task": {
+    "Structural/Uni.-Multi.": {
+      "label": "Uni.-Multi.",
+      "ok": 1,
+      "n": 1
+    },
+    "Feature/Trend": {
+      "label": "Trend",
+      "ok": 1,
+      "n": 1
+    }
+  }
+}

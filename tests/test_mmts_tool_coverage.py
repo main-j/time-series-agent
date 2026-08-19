@@ -18,29 +18,36 @@ RAW = ROOT / "data" / "raw" / "mmts-bench"
 INDEX = ROOT / "data" / "processed" / "mmts-bench" / "index.jsonl"
 
 TASK_TOOLS = {
-    "basic analysis": ["describe_series"],
+    "basic analysis": ["describe_series", "advanced_features", "nonlinearity_terasvirta"],
     "trend analysis": ["describe_series", "segment_trend", "hurst_exponent"],
-    "seasonality analysis": ["fft_period", "stl_strength", "autocorr"],
+    "seasonality analysis": ["fft_period", "stl_strength", "autocorr", "waveform_features", "seas_acf"],
     "noise analysis": ["noise_decomposition", "sliding_stats"],
-    "volatility analysis": ["sliding_stats", "diff_stats"],
-    "stationarity": ["adf_stationarity"],
-    "index": ["global_extrema", "value_at_index", "segment_trend", "local_extrema"],
-    "deductive reasoning": ["interval_compare", "step_levels", "segment_trend"],
-    "inductive reasoning": ["interval_compare", "segment_trend", "change_points"],
-    "causal reasoning": ["lag_corr", "interval_compare"],
-    "analogical reasoning": ["cross_series_compare", "interval_compare", "segment_trend"],
-    "counterfactual reasoning": ["interval_compare", "lag_corr", "segment_trend"],
+    "volatility analysis": ["sliding_stats", "diff_stats", "advanced_features"],
+    "stationarity": ["adf_stationarity", "describe_series"],
+    "index": ["global_extrema", "value_at_index", "segment_trend", "local_extrema", "index_calendar_map"],
+    "deductive reasoning": ["interval_compare", "step_levels", "segment_trend", "peaks_above_threshold"],
+    "inductive reasoning": ["interval_compare", "segment_trend", "change_points", "bimodal_detect"],
+    "causal reasoning": ["lag_corr", "interval_compare", "hurst_exponent"],
+    "analogical reasoning": [
+        "cross_series_compare",
+        "interval_compare",
+        "segment_trend",
+        "extrema_align",
+        "window_shape_compare",
+    ],
+    "counterfactual reasoning": ["counterfactual_simulate", "interval_compare", "lag_corr", "segment_trend"],
     "choose it": ["pairwise_distance"],
-    "find it": ["subsequence_locate"],
-    "reverse it": ["smooth_reverse_stats"],
-    "smooth it": ["smooth_reverse_stats", "pairwise_distance"],
+    "find it": ["subsequence_locate", "subsequence_rank"],
+    "reverse it": ["reverse_match"],
+    "smooth it": ["smooth_shape_match", "pairwise_distance"],
     "caption": [
         "describe_series",
         "step_levels",
         "local_extrema",
+        "caption_verify",
+        "segment_trend",
         "fft_period",
         "stl_strength",
-        "segment_trend",
         "noise_decomposition",
         "anomaly_detect",
     ],
@@ -52,6 +59,12 @@ KW_TOOLS = [
     (r"\b(anomaly|outlier|spike)\b", ["anomaly_detect"]),
     (r"\b(value at index|at index \d+)\b", ["value_at_index", "global_extrema"]),
     (r"\b(global max|global min)\b", ["global_extrema"]),
+    (r"\b(waveform|sine|square|triangle|sawtooth)\b", ["waveform_features"]),
+    (r"\b(seas_acf1|seasonal autocorrelation)\b", ["seas_acf", "autocorr"]),
+    (r"\b(nonlinearity|terasvirta)\b", ["nonlinearity_terasvirta"]),
+    (r"\b(weekday|weekend|thursday|monday)\b", ["index_calendar_map"]),
+    (r"\bfind it\b", ["subsequence_rank", "subsequence_locate"]),
+    (r"\bsmooth it\b", ["smooth_shape_match"]),
 ]
 
 
@@ -97,6 +110,17 @@ HOMO_EXTRA = {
     "Match": ["describe_series", "local_extrema", "diff_stats", "sliding_stats"],
 }
 
+# Matching-specialized tools are owned by the matching/alignment hetero roles.
+MATCHING_ONLY_TOOLS = {
+    "subsequence_locate",
+    "subsequence_rank",
+    "smooth_shape_match",
+    "reverse_match",
+    "pairwise_distance",
+    "robust_shape_match",
+    "smooth_reverse_stats",
+}
+
 HETERO_TASK_TOOLS = TASK_TOOLS
 
 
@@ -113,6 +137,8 @@ def _needed_for_homo(meta, row) -> set[str]:
         tools.add("cross_series_compare")
     if any("causal" in t for t in tasks):
         tools.add("lag_corr")
+    if meta["subset"] == "Match":
+        tools -= MATCHING_ONLY_TOOLS
     return tools
 
 

@@ -1,0 +1,13 @@
+{
+  "exp_name": "tool_fix_batch_v1",
+  "checklist_file": "/root/autodl-tmp/time-series-agent/outputs/weighted_mmts_selection_200/sample_ids.txt",
+  "exclude_file": "/root/autodl-tmp/time-series-agent/outputs/feasibility_test_19/sample_ids.txt",
+  "extra_exclude": [],
+  "total_checklist": 200,
+  "excluded": 19,
+  "target": 181,
+  "pending": 181,
+  "resume": false,
+  "limit": null,
+  "started_at": "2026-08-03T14:38:40"
+}
